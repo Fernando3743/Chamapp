@@ -1,20 +1,22 @@
 'use client'
 
 import Link from 'next/link'
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 export default function Hero() {
+  const { t } = usePageTranslations('home');
   return (
     <section className="hero">
       <div className="hero-content">
         <div className="hero-text">
-          <h1>One Platform, <span className="gradient-text">Infinite Business Solutions</span></h1>
-          <p>Transform your business with our all-in-one software platform. From real estate to barbershops, we provide everything you need to run, manage, and grow your business.</p>
+          <h1>{t('heroTitle')} <span className="gradient-text">{t('heroTitleHighlight')}</span></h1>
+          <p>{t('heroSubtitle')}</p>
           <div className="hero-buttons">
             <Link href="/register" className="cta-button primary-cta">
-              Start Free Trial
+              {t('startYourBusiness')}
             </Link>
             <Link href="#demo" className="cta-button">
-              Watch Demo
+              {t('watchDemo')}
             </Link>
           </div>
           <div className="trust-indicators">
@@ -22,45 +24,45 @@ export default function Hero() {
               <svg fill="currentColor" viewBox="0 0 20 20">
                 <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
               </svg>
-              <span>No credit card required</span>
+              <span>{t('noCreditCard')}</span>
             </div>
             <div className="trust-item">
               <svg fill="currentColor" viewBox="0 0 20 20">
                 <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
               </svg>
-              <span>14-day free trial</span>
+              <span>{t('startFreeTrial')}</span>
             </div>
             <div className="trust-item">
               <svg fill="currentColor" viewBox="0 0 20 20">
                 <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
               </svg>
-              <span>Cancel anytime</span>
+              <span>{t('cancelAnytime')}</span>
             </div>
           </div>
         </div>
         <div className="hero-visual">
           <div className="glass-card">
-            <h3>Your Businesses</h3>
+            <h3>{t('yourBusinesses')}</h3>
             <div className="business-preview">
               <div className="business-type">
                 <div className="business-icon">🏠</div>
                 <div className="business-info">
-                  <h3>Real Estate Pro</h3>
-                  <p>Property management & CRM</p>
+                  <h3>{t('realEstatePro')}</h3>
+                  <p>{t('realEstateProDesc')}</p>
                 </div>
               </div>
               <div className="business-type">
                 <div className="business-icon">✂️</div>
                 <div className="business-info">
-                  <h3>BarberShop Manager</h3>
-                  <p>Appointments & inventory</p>
+                  <h3>{t('barberShopManager')}</h3>
+                  <p>{t('barberShopManagerDesc')}</p>
                 </div>
               </div>
               <div className="business-type">
                 <div className="business-icon">🍔</div>
                 <div className="business-info">
-                  <h3>Restaurant Suite</h3>
-                  <p>Orders & table management</p>
+                  <h3>{t('restaurantSuite')}</h3>
+                  <p>{t('restaurantSuiteDesc')}</p>
                 </div>
               </div>
             </div>

@@ -2,10 +2,13 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import LanguageSelector from './LanguageSelector'
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { t } = usePageTranslations('home');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,28 +47,29 @@ export default function Navbar() {
           </Link>
           
           <div className={`nav-links ${mobileMenuOpen ? 'show' : ''}`}>
-            <a href="#features" onClick={handleSmoothScroll}>Features</a>
-            <a href="#solutions" onClick={handleSmoothScroll}>Solutions</a>
-            <a href="#pricing" onClick={handleSmoothScroll}>Pricing</a>
-            <a href="#testimonials" onClick={handleSmoothScroll}>Testimonials</a>
-            <a href="#faq" onClick={handleSmoothScroll}>FAQ</a>
+            <a href="#features" onClick={handleSmoothScroll}>{t('featuresTitle')}</a>
+            <a href="#solutions" onClick={handleSmoothScroll}>{t('solutions')}</a>
+            <a href="#pricing" onClick={handleSmoothScroll}>{t('pricing')}</a>
+            <a href="#testimonials" onClick={handleSmoothScroll}>{t('testimonials')}</a>
+            <a href="#faq" onClick={handleSmoothScroll}>{t('faq')}</a>
             <Link href="/login" className="cta-button" onClick={handleSmoothScroll}>
-              Sign In
+              {t('signIn')}
             </Link>
             <Link href="/register" className="cta-button primary-cta" onClick={handleSmoothScroll} style={{ position: 'relative' }}>
-              Get Started
-              <span className="notification-badge">New</span>
+              {t('startYourBusiness') || t('getStarted')}
+              <span className="notification-badge">{t('new')}</span>
             </Link>
           </div>
         </div>
         
         <div className="nav-right">
+          <LanguageSelector />
           <Link href="/login" className="cta-button">
-            Sign In
+            {t('signIn')}
           </Link>
           <Link href="/register" className="cta-button primary-cta" style={{ position: 'relative' }}>
-            Get Started
-            <span className="notification-badge">New</span>
+            {t('startYourBusiness') || t('getStarted')}
+            <span className="notification-badge">{t('new')}</span>
           </Link>
           
           <button 

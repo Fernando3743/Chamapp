@@ -177,6 +177,11 @@ nav {
     display: none;
   }
 
+  .language-selector {
+    order: -1;
+    margin-right: auto;
+  }
+
   .nav-links.show {
     display: flex;
   }

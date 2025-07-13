@@ -2,15 +2,17 @@
 
 import Link from 'next/link';
 import { Check } from 'lucide-react';
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 const Pricing = () => {
+  const { t } = usePageTranslations('home');
 
   const plans = [
     {
-      name: 'Starter',
+      name: t('starter'),
       price: '$29',
       period: '/month',
-      description: 'Perfect for small businesses just getting started',
+      description: t('starterDesc'),
       features: [
         'Up to 2 business profiles',
         'Basic templates & customization',
@@ -21,10 +23,10 @@ const Pricing = () => {
       featured: false
     },
     {
-      name: 'Professional',
+      name: t('professional'),
       price: '$79',
       period: '/month',
-      description: 'Most popular choice for growing businesses',
+      description: t('professionalDesc'),
       features: [
         'Up to 5 business profiles',
         'Advanced templates & full customization',
@@ -37,10 +39,10 @@ const Pricing = () => {
       featured: true
     },
     {
-      name: 'Enterprise',
-      price: 'Custom',
+      name: t('enterprise'),
+      price: t('custom'),
       period: '',
-      description: 'Tailored solutions for large organizations',
+      description: t('enterpriseDesc'),
       features: [
         'Unlimited business profiles',
         'Custom development',
@@ -58,10 +60,10 @@ const Pricing = () => {
     <section className="pricing" id="pricing">
       <div className="section-header">
         <h2>
-          Simple, Transparent <span className="gradient-text">Pricing</span>
+          {t('simpleTransparentPricing')} <span className="gradient-text">{t('pricingWord')}</span>
         </h2>
         <p>
-          Choose the plan that fits your business needs
+          {t('choosePlanForBusiness')}
         </p>
       </div>
 
@@ -87,7 +89,7 @@ const Pricing = () => {
               href="/register"
               className={plan.featured ? 'cta-button primary-cta' : 'cta-button'}
             >
-              {plan.name === 'Enterprise' ? 'Contact Sales' : 'Get Started'}
+              {plan.name === t('enterprise') ? t('contactSales') : t('getStarted')}
             </Link>
           </div>
         ))}

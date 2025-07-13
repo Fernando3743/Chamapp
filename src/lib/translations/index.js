@@ -7,41 +7,62 @@ import { profileTranslations } from './pages/profile';
 import { businessesTranslations } from './pages/businesses';
 import { bookingTranslations } from './pages/booking';
 
-// Combine translations for each language
-export const translations = {
-  en: {
-    common: common.en,
-    home: homeTranslations.en,
-    login: loginTranslations.en,
-    register: registerTranslations.en,
-    profile: profileTranslations.en,
-    businesses: businessesTranslations.en,
-    booking: bookingTranslations.en
-  },
-  es: {
-    common: common.es,
-    home: homeTranslations.es,
-    login: loginTranslations.es,
-    register: registerTranslations.es,
-    profile: profileTranslations.es,
-    businesses: businessesTranslations.es,
-    booking: bookingTranslations.es
+// Combine all page translations
+const allTranslations = {
+  common,
+  home: homeTranslations,
+  login: loginTranslations,
+  register: registerTranslations,
+  profile: profileTranslations,
+  businesses: businessesTranslations,
+  booking: bookingTranslations
+};
+
+// Helper function to get translation by key and language
+export const getTranslation = (page, key, language) => {
+  try {
+    const pageTranslations = allTranslations[page];
+    if (!pageTranslations) {
+      console.warn(`Page translations not found: ${page}`);
+      return key;
+    }
+
+    const translationObject = pageTranslations[key];
+    if (!translationObject) {
+      console.warn(`Translation key not found: ${page}.${key}`);
+      return key;
+    }
+
+    const translation = translationObject[language];
+    if (!translation) {
+      console.warn(`Translation not found for language: ${language} in ${page}.${key}`);
+      return translationObject.en || key; // Fallback to English
+    }
+
+    return translation;
+  } catch (error) {
+    console.error('Translation error:', error);
+    return key;
   }
 };
 
-// Helper function to get nested translation
-export const getTranslation = (language, path) => {
-  const keys = path.split('.');
-  let value = translations[language];
-  
-  for (const key of keys) {
-    if (value && typeof value === 'object' && key in value) {
-      value = value[key];
-    } else {
-      // Return the path if translation not found (for debugging)
-      return path;
-    }
-  }
-  
-  return value || path;
+// Legacy support - maintain old structure for backward compatibility
+export const translations = {
+  en: {},
+  es: {}
 };
+
+// Build legacy structure from new nested format
+Object.keys(allTranslations).forEach(page => {
+  const pageTranslations = allTranslations[page];
+  Object.keys(pageTranslations).forEach(key => {
+    const translationObj = pageTranslations[key];
+    if (translationObj && typeof translationObj === 'object') {
+      if (!translations.en[page]) translations.en[page] = {};
+      if (!translations.es[page]) translations.es[page] = {};
+      
+      translations.en[page][key] = translationObj.en;
+      translations.es[page][key] = translationObj.es;
+    }
+  });
+});

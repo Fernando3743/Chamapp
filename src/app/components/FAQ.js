@@ -2,30 +2,32 @@
 
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 const FAQ = () => {
+  const { t } = usePageTranslations('home');
   const [activeIndex, setActiveIndex] = useState(null);
 
   const faqs = [
     {
-      question: 'How quickly can I get started?',
-      answer: 'You can get started immediately! After signing up, you\'ll have access to our template library. Most businesses are up and running within 15 minutes using our pre-built templates. Customization can be done at your own pace.'
+      question: t('faq1Question'),
+      answer: t('faq1Answer')
     },
     {
-      question: 'Do I need technical knowledge to use ChameleonApp?',
-      answer: 'Not at all! ChameleonApp is designed for business owners, not developers. Our drag-and-drop interface and pre-built templates make it easy for anyone to create professional business applications without any coding knowledge.'
+      question: t('faq2Question'),
+      answer: t('faq2Answer')
     },
     {
-      question: 'Can I manage multiple businesses from one account?',
-      answer: 'Yes! Depending on your plan, you can manage multiple business profiles from a single account. Each business gets its own dashboard, branding, and settings while you maintain centralized control.'
+      question: t('faq3Question'),
+      answer: t('faq3Answer')
     },
     {
-      question: 'What kind of support do you offer?',
-      answer: 'We offer comprehensive support including detailed documentation, video tutorials, email support for all plans, and priority phone support for Professional and Enterprise plans. Enterprise customers also get a dedicated account manager.'
+      question: t('faq4Question'),
+      answer: t('faq4Answer')
     },
     {
-      question: 'Is my data secure?',
-      answer: 'Absolutely. We use bank-level 256-bit SSL encryption, regular security audits, and comply with GDPR and other data protection regulations. Your data is backed up daily and stored in secure, redundant data centers.'
+      question: t('faq5Question'),
+      answer: t('faq5Answer')
     }
   ];
 
@@ -38,10 +40,10 @@ const FAQ = () => {
       <div className="faq-container">
         <div className="section-header">
           <h2>
-            Frequently Asked <span className="gradient-text">Questions</span>
+            {t('frequentlyAsked')} <span className="gradient-text">{t('questions')}</span>
           </h2>
           <p>
-            Everything you need to know about ChameleonApp
+            {t('everythingAboutChameleonApp')}
           </p>
         </div>
 

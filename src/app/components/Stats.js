@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 const AnimatedCounter = ({ end, suffix, duration = 2000, isVisible }) => {
   const [count, setCount] = useState(0);
@@ -33,12 +34,13 @@ const AnimatedCounter = ({ end, suffix, duration = 2000, isVisible }) => {
 const Stats = () => {
   const [isVisible, setIsVisible] = useState(false);
   const statsRef = useRef(null);
+  const { t } = usePageTranslations('home');
 
   const stats = [
-    { value: 10000, suffix: '+', label: 'Active Businesses' },
-    { value: 50, suffix: 'M+', label: 'Transactions Processed' },
-    { value: 99.9, suffix: '%', label: 'Uptime Guarantee' },
-    { value: 24, suffix: '/7', label: 'Customer Support' }
+    { value: 10000, suffix: '+', label: t('activeBusinesses') },
+    { value: 50, suffix: 'M+', label: t('transactionsProcessed') },
+    { value: 99.9, suffix: '%', label: t('uptimeGuarantee') },
+    { value: 24, suffix: '/7', label: t('customerSupport') }
   ];
 
   useEffect(() => {

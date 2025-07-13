@@ -1,74 +1,76 @@
 'use client';
 
 import { Home, Scissors, Utensils, Dumbbell, Heart, Briefcase } from 'lucide-react';
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 const BusinessTypes = () => {
+  const { t } = usePageTranslations('home');
 
   const businessTypes = [
     {
       icon: <Home className="w-12 h-12" />,
-      title: 'Real Estate',
+      title: t('realEstate'),
       features: [
-        'Property listings management',
-        'Virtual tours & galleries',
-        'Client CRM & follow-ups',
-        'Document management',
-        'Commission tracking'
+        t('propertyListingsManagement'),
+        t('virtualToursGalleries'),
+        t('clientCrmFollowUps'),
+        t('documentManagement'),
+        t('commissionTracking')
       ]
     },
     {
       icon: <Scissors className="w-12 h-12" />,
-      title: 'Barber Shops',
+      title: t('barberShops'),
       features: [
-        'Online appointment booking',
-        'Staff scheduling',
-        'Customer feedback system',
-        'Inventory management',
-        'Loyalty programs'
+        t('onlineAppointmentBooking'),
+        t('staffSchedulingFull'),
+        t('customerFeedbackSystem'),
+        t('inventoryManagement'),
+        t('loyaltyPrograms')
       ]
     },
     {
       icon: <Utensils className="w-12 h-12" />,
-      title: 'Restaurants',
+      title: t('restaurants'),
       features: [
-        'Digital menu with QR codes',
-        'Table reservations',
-        'Order management',
-        'Kitchen display system',
-        'Delivery integration'
+        t('digitalMenuQrCodes'),
+        t('tableReservationsFull'),
+        t('orderManagement'),
+        t('kitchenDisplaySystem'),
+        t('deliveryIntegration')
       ]
     },
     {
       icon: <Dumbbell className="w-12 h-12" />,
-      title: 'Fitness & Sports',
+      title: t('fitnessSports'),
       features: [
-        'Member management',
-        'Class scheduling',
-        'Personal training bookings',
-        'Payment processing',
-        'Progress tracking'
+        t('memberManagement'),
+        t('classSchedulingFull'),
+        t('personalTrainingBookings'),
+        t('paymentProcessing'),
+        t('progressTrackingFull')
       ]
     },
     {
       icon: <Heart className="w-12 h-12" />,
-      title: 'Health & Wellness',
+      title: t('healthWellness'),
       features: [
-        'Patient appointments',
-        'Medical records',
-        'Prescription management',
-        'Billing & insurance',
-        'Telemedicine support'
+        t('patientAppointments'),
+        t('medicalRecords'),
+        t('prescriptionManagement'),
+        t('billingInsurance'),
+        t('telemedicineSupport')
       ]
     },
     {
       icon: <Briefcase className="w-12 h-12" />,
-      title: 'Professional Services',
+      title: t('professionalServices'),
       features: [
-        'Inventory tracking',
-        'POS integration',
-        'Customer database',
-        'Sales analytics',
-        'Multi-channel selling'
+        t('inventoryTracking'),
+        t('posIntegration'),
+        t('customerDatabase'),
+        t('salesAnalytics'),
+        t('multiChannelSelling')
       ]
     }
   ];
@@ -77,10 +79,10 @@ const BusinessTypes = () => {
     <section className="business-types" id="solutions">
       <div className="section-header">
         <h2>
-          Solutions for <span className="gradient-text">Every Industry</span>
+          {t('solutionsForEveryIndustry').split(' ').slice(0, 2).join(' ')} <span className="gradient-text">{t('solutionsForEveryIndustry').split(' ').slice(2).join(' ')}</span>
         </h2>
         <p>
-          Pre-built solutions tailored to your specific business needs
+          {t('preBuiltSolutions')}
         </p>
       </div>
 

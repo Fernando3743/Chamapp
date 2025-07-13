@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run supabase:start\" \"npm run dev:wait\"",
-    "dev:wait": "sleep 10 && npm run dev:next",
-    "dev:next": "next dev --turbopack",
+    "dev": "next dev --turbopack",
+    "dev:full": "concurrently \"npm run supabase:start\" \"npm run dev:wait\"",
+    "dev:wait": "sleep 10 && npm run dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

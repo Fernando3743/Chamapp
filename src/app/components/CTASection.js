@@ -1,25 +1,27 @@
 'use client';
 
 import Link from 'next/link';
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 const CTASection = () => {
+  const { t } = usePageTranslations('home');
 
   return (
     <section className="cta-section">
       <div className="cta-content">
         <h2>
-          Ready to Transform Your Business?
+          {t('readyToTransform')}
         </h2>
         <p>
-          Join thousands of businesses already using ChameleonApp to streamline their operations and grow faster.
+          {t('joinThousands')}
         </p>
         
         <Link href="/register" className="cta-button primary-cta">
-          Start Your Free 14-Day Trial
+          {t('startFreeTrial')}
         </Link>
         
         <p style={{ marginTop: '24px', fontSize: '14px', color: 'var(--text-secondary)' }}>
-          No credit card required • Cancel anytime
+          {t('noCreditCard')} • {t('cancelAnytime')}
         </p>
       </div>
     </section>

@@ -2,48 +2,50 @@
 
 import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 const Testimonials = () => {
+  const { t } = usePageTranslations('home');
   const [isPaused, setIsPaused] = useState(false);
 
   const testimonials = [
     {
       id: 1,
-      content: "BusinessHub transformed how we manage our real estate portfolio. The automation features alone save us 20+ hours per week. Absolutely game-changing!",
-      author: "John Davis",
-      role: "Real Estate Agency Owner",
+      content: t('testimonial1'),
+      author: t('testimonial1Author'),
+      role: t('testimonial1Role'),
       avatar: "JD",
       rating: 5
     },
     {
       id: 2,
-      content: "The appointment scheduling system is perfect for our barbershop. Clients love the easy booking process, and we've reduced no-shows by 40%.",
-      author: "Marcus Williams",
-      role: "Barbershop Owner",
+      content: t('testimonial2'),
+      author: t('testimonial2Author'),
+      role: t('testimonial2Role'),
       avatar: "MW",
       rating: 5
     },
     {
       id: 3,
-      content: "Managing multiple restaurant locations has never been easier. The real-time analytics help us make better decisions every day.",
-      author: "Sarah Chen",
-      role: "Restaurant Chain Manager",
+      content: t('testimonial3'),
+      author: t('testimonial3Author'),
+      role: t('testimonial3Role'),
       avatar: "SC",
       rating: 5
     },
     {
       id: 4,
-      content: "BusinessHub's gym management features are incredible. Member check-ins, class bookings, and payment processing all in one place!",
-      author: "Alex Lopez",
-      role: "Fitness Center Owner",
+      content: t('testimonial4'),
+      author: t('testimonial4Author'),
+      role: t('testimonial4Role'),
       avatar: "AL",
       rating: 5
     },
     {
       id: 5,
-      content: "The customization options are endless. We've built exactly what we need for our medical practice without any coding knowledge.",
-      author: "Dr. Rachel Park",
-      role: "Medical Practice Owner",
+      content: t('testimonial5'),
+      author: t('testimonial5Author'),
+      role: t('testimonial5Role'),
       avatar: "RP",
       rating: 5
     }
@@ -57,10 +59,10 @@ const Testimonials = () => {
       <div className="testimonials-container">
         <div className="section-header">
           <h2>
-            Loved by <span className="gradient-text">Thousands of Businesses</span>
+            {t('lovedByThousands')} <span className="gradient-text">{t('thousandsOfBusinesses')}</span>
           </h2>
           <p>
-            See what our customers have to say about ChameleonApp
+            {t('seeWhatCustomersSay')}
           </p>
         </div>
 

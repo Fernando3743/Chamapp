@@ -11,31 +11,32 @@ import { getTranslation } from '../lib/translations';
 export const usePageTranslations = (pageName) => {
   const { language } = useLanguage();
   
-  // Translation function that looks up keys in the page's translation namespace
+  // Translation function that looks up keys using the new nested structure
   const t = (key) => {
-    // First try page-specific translation
-    const pageTranslation = getTranslation(language, `${pageName}.${key}`);
-    if (pageTranslation !== `${pageName}.${key}`) {
-      return pageTranslation;
+    try {
+      // First try page-specific translation using new structure
+      const pageTranslation = getTranslation(pageName, key, language);
+      if (pageTranslation !== key) {
+        return pageTranslation;
+      }
+      
+      // Fall back to common translations
+      const commonTranslation = getTranslation('common', key, language);
+      if (commonTranslation !== key) {
+        return commonTranslation;
+      }
+      
+      // Return the key if no translation found
+      console.warn(`Translation not found: ${pageName}.${key} for language: ${language}`);
+      return key;
+    } catch (error) {
+      console.error('Translation error in usePageTranslations:', error);
+      return key;
     }
-    
-    // Fall back to common translations
-    const commonTranslation = getTranslation(language, `common.${key}`);
-    if (commonTranslation !== `common.${key}`) {
-      return commonTranslation;
-    }
-    
-    // Return the key if no translation found
-    return key;
   };
-  
-  // Get all translations for the page (useful for passing to child components)
-  const pageTranslations = getTranslation(language, pageName) || {};
-  const commonTranslations = getTranslation(language, 'common') || {};
   
   return {
     t,
-    language,
-    translations: { ...commonTranslations, ...pageTranslations }
+    language
   };
 };

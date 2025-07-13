@@ -1,30 +1,32 @@
 'use client';
 
 import Link from 'next/link';
+import { usePageTranslations } from '../../hooks/usePageTranslations';
 
 const Footer = () => {
+  const { t } = usePageTranslations('home');
 
   const footerLinks = {
     product: [
-      { label: 'Features', href: '#features' },
-      { label: 'Pricing', href: '#pricing' },
-      { label: 'Templates', href: '#' },
-      { label: 'Integrations', href: '#' },
-      { label: 'API Documentation', href: '#' }
+      { label: t('featuresTitle'), href: '#features' },
+      { label: t('pricing'), href: '#pricing' },
+      { label: t('templates'), href: '#' },
+      { label: t('integrations'), href: '#' },
+      { label: t('apiDocumentation'), href: '#' }
     ],
     company: [
-      { label: 'About Us', href: '#' },
-      { label: 'Careers', href: '#' },
-      { label: 'Blog', href: '#' },
-      { label: 'Press', href: '#' },
-      { label: 'Contact Us', href: '#' }
+      { label: t('aboutUs'), href: '#' },
+      { label: t('careers'), href: '#' },
+      { label: t('blog'), href: '#' },
+      { label: t('press'), href: '#' },
+      { label: t('contactUs'), href: '#' }
     ],
     support: [
-      { label: 'Help Center', href: '#' },
-      { label: 'Community', href: '#' },
-      { label: 'Status', href: '#' },
-      { label: 'Terms of Service', href: '#' },
-      { label: 'Privacy Policy', href: '#' }
+      { label: t('helpCenter'), href: '#' },
+      { label: t('community'), href: '#' },
+      { label: t('status'), href: '#' },
+      { label: t('termsOfService'), href: '#' },
+      { label: t('privacyPolicy'), href: '#' }
     ]
   };
 
@@ -44,7 +46,7 @@ const Footer = () => {
             BusinessHub
           </h3>
           <p>
-            Empowering businesses with all-in-one software solutions. From startups to enterprises, we provide the tools you need to succeed in the digital age.
+            {t('footerDescription')}
           </p>
           <div className="social-links">
             {socialLinks.map((social, index) => (
@@ -62,7 +64,7 @@ const Footer = () => {
 
         {/* Product Links */}
         <div className="footer-links">
-          <h4>Product</h4>
+          <h4>{t('product')}</h4>
           <ul>
             {footerLinks.product.map((link, index) => (
               <li key={index}>
@@ -76,7 +78,7 @@ const Footer = () => {
 
         {/* Company Links */}
         <div className="footer-links">
-          <h4>Company</h4>
+          <h4>{t('company')}</h4>
           <ul>
             {footerLinks.company.map((link, index) => (
               <li key={index}>
@@ -90,7 +92,7 @@ const Footer = () => {
 
         {/* Support Links */}
         <div className="footer-links">
-          <h4>Support</h4>
+          <h4>{t('support')}</h4>
           <ul>
             {footerLinks.support.map((link, index) => (
               <li key={index}>
@@ -107,7 +109,7 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className="footer-bottom">
         <p>
-          © 2025 BusinessHub. All rights reserved. Made with ❤️ for businesses worldwide.
+          © 2025 BusinessHub. {t('allRightsReserved')} {t('madeWithLove')}
         </p>
       </div>
     </footer>

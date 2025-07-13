@@ -1,39 +1,67 @@
 // Login page translations
 export const loginTranslations = {
-  en: {
-    welcomeBack: 'Welcome Back',
-    signInToAccount: 'Sign in to your account',
-    signIn: 'Sign In',
-    signingIn: 'Signing In...',
-    enterEmail: 'Enter your email address',
-    enterPassword: 'Enter your password',
-    rememberMe: 'Remember me',
-    forgotPassword: 'Forgot your password?',
-    dontHaveAccount: "Don't have an account?",
-    emailRequired: 'Email (Required)',
-    passwordRequired: 'Password (Required)',
-    invalidCredentials: 'Invalid email or password',
-    accountNotConfirmed: 'Please check your email to confirm your account',
-    tooManyAttempts: 'Too many login attempts. Please try again later.',
-    backToHome: 'Back to Home',
-    SignUp: 'Sign Up'
+  welcomeBack: {
+    en: 'Welcome Back',
+    es: 'Bienvenido de Vuelta'
   },
-  es: {
-    welcomeBack: 'Bienvenido de Vuelta',
-    signInToAccount: 'Inicia sesión en tu cuenta',
-    signIn: 'Iniciar Sesión',
-    signingIn: 'Iniciando Sesión...',
-    enterEmail: 'Ingresa tu dirección de correo',
-    enterPassword: 'Ingresa tu contraseña',
-    rememberMe: 'Recordarme',
-    forgotPassword: '¿Olvidaste tu contraseña?',
-    dontHaveAccount: '¿No tienes una cuenta?',
-    emailRequired: 'Correo (Requerido)',
-    passwordRequired: 'Contraseña (Requerida)',
-    invalidCredentials: 'Correo o contraseña inválidos',
-    accountNotConfirmed: 'Por favor revisa tu correo para confirmar tu cuenta',
-    tooManyAttempts: 'Demasiados intentos de inicio de sesión. Por favor intenta más tarde.',
-    backToHome: 'Volver al Inicio',
-    SignUp: 'Registrarse'
+  signInToAccount: {
+    en: 'Sign in to your account',
+    es: 'Inicia sesión en tu cuenta'
+  },
+  signIn: {
+    en: 'Sign In',
+    es: 'Iniciar Sesión'
+  },
+  signingIn: {
+    en: 'Signing In...',
+    es: 'Iniciando Sesión...'
+  },
+  enterEmail: {
+    en: 'Enter your email address',
+    es: 'Ingresa tu dirección de correo'
+  },
+  enterPassword: {
+    en: 'Enter your password',
+    es: 'Ingresa tu contraseña'
+  },
+  rememberMe: {
+    en: 'Remember me',
+    es: 'Recordarme'
+  },
+  forgotPassword: {
+    en: 'Forgot your password?',
+    es: '¿Olvidaste tu contraseña?'
+  },
+  dontHaveAccount: {
+    en: "Don't have an account?",
+    es: '¿No tienes una cuenta?'
+  },
+  emailRequired: {
+    en: 'Email (Required)',
+    es: 'Correo (Requerido)'
+  },
+  passwordRequired: {
+    en: 'Password (Required)',
+    es: 'Contraseña (Requerida)'
+  },
+  invalidCredentials: {
+    en: 'Invalid email or password',
+    es: 'Correo o contraseña inválidos'
+  },
+  accountNotConfirmed: {
+    en: 'Please check your email to confirm your account',
+    es: 'Por favor revisa tu correo para confirmar tu cuenta'
+  },
+  tooManyAttempts: {
+    en: 'Too many login attempts. Please try again later.',
+    es: 'Demasiados intentos de inicio de sesión. Por favor intenta más tarde.'
+  },
+  backToHome: {
+    en: 'Back to Home',
+    es: 'Volver al Inicio'
+  },
+  SignUp: {
+    en: 'Sign Up',
+    es: 'Registrarse'
   }
 };
