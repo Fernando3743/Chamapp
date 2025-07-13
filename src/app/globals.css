@@ -7,9 +7,11 @@
 @import './styles/glassmorphism.css';
 @import './styles/navigation.css';
 @import './styles/buttons.css';
+@import './styles/error-boundary.css';
 @import './styles/hero.css';
 @import './styles/language-selector.css';
 @import './styles/register.css';
+@import './styles/login-dropdown.css';
 
 /* Additional component styles that will be added as needed */
 

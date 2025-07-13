@@ -53,6 +53,21 @@
   --z-content: 10;
   --z-navigation: 1000;
   --z-mobile-menu: 1001;
+  --z-modal: 1500;
+  --z-modal-overlay: 2000;
+
+  /* Responsive Breakpoints - Standardized across the application */
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-large: 1280px;
+  --breakpoint-xl: 1440px;
+
+  /* Mobile-first responsive spacing */
+  --container-padding-mobile: var(--spacing-md);
+  --container-padding-tablet: var(--spacing-xl);
+  --container-padding-desktop: var(--spacing-2xl);
+  --container-max-width: 1400px;
 }
 
 /* CSS Reset and Base Styles */
@@ -114,6 +129,50 @@ html, body {
 @keyframes scroll {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+/* Standardized Responsive Breakpoints */
+@media (max-width: 480px) {
+  :root {
+    --font-size-xs: 11px;
+    --font-size-sm: 13px;
+    --font-size-base: 14px;
+    --font-size-lg: 16px;
+    --font-size-xl: 18px;
+    --font-size-2xl: 20px;
+    --font-size-3xl: 24px;
+    --font-size-4xl: 28px;
+    --font-size-5xl: 36px;
+    --font-size-6xl: 48px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  :root {
+    --spacing-4xl: 60px;
+    --spacing-3xl: 50px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  :root {
+    --spacing-4xl: 70px;
+    --spacing-3xl: 55px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  :root {
+    --spacing-4xl: 80px;
+    --spacing-3xl: 60px;
+  }
+}
+
+@media (min-width: 1281px) {
+  :root {
+    --spacing-4xl: 100px;
+    --spacing-3xl: 70px;
+  }
 }
 
 /* Accessibility - Reduced Motion */
