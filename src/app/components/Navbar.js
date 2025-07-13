@@ -211,7 +211,7 @@ const Navbar = memo(function Navbar() {
               {/* Account Section */}
               <div className="mobile-sidebar-nav-section">
                 <div className="mobile-sidebar-nav-section-title">Account</div>
-                <Link href="/login" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
+                <Link href="/signin" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
                   <span className="mobile-sidebar-nav-icon">
                     <LogInIcon />
                   </span>

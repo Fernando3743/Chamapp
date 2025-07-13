@@ -41,7 +41,7 @@
   position: fixed;
   top: 80px;
   right: 20px;
-  width: 320px;
+  width: 430px;
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(60px);
   border: 1px solid var(--glass-border);
