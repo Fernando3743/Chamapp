@@ -3,61 +3,43 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { usePageTranslations } from '../../hooks/usePageTranslations';
 import { useAuth } from '../contexts/AuthContext';
-import { validateUserRegistration, getFieldError, hasFieldError } from '../../lib/validation';
 import toast from 'react-hot-toast';
 import { 
-  Building, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Globe, 
-  User, 
-  Lock, 
-  CheckCircle,
   ArrowLeft,
-  Store,
-  Users,
-  Calendar,
-  AlertCircle,
+  Eye,
+  EyeOff,
   Loader2
 } from 'lucide-react';
 
 export default function RegisterPage() {
-  const { t } = usePageTranslations('register');
   const { signUp, loading: authLoading } = useAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
-    dateOfBirth: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    terms: false
   });
   
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState('');
-
-  const businessTypes = [
-    { value: 'barber', label: t('barberShops') },
-    { value: 'restaurant', label: t('restaurants') },
-    { value: 'real_estate', label: t('realEstate') },
-    { value: 'wellness', label: t('healthWellness') },
-    { value: 'fitness', label: t('fitnessSports') },
-    { value: 'professional', label: t('professionalServices') },
-    { value: 'beauty', label: t('beauty') },
-    { value: 'automotive', label: t('automotive') },
-    { value: 'education', label: t('education') },
-    { value: 'other', label: t('other') }
-  ];
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState(0);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const { name, value, type, checked } = e.target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setFormData(prev => ({ ...prev, [name]: newValue }));
+    
+    // Calculate password strength for password field
+    if (name === 'password') {
+      calculatePasswordStrength(value);
+    }
     
     // Clear field error when user starts typing
     if (errors[name]) {
@@ -70,15 +52,48 @@ export default function RegisterPage() {
     }
   };
 
+  const calculatePasswordStrength = (password) => {
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+    if (password.match(/[0-9]/)) strength++;
+    if (password.match(/[^a-zA-Z0-9]/)) strength++;
+    setPasswordStrength(strength);
+  };
+
+  const getPasswordStrengthText = () => {
+    const messages = ['Enter a password', 'Too weak', 'Weak', 'Fair', 'Good', 'Strong'];
+    return messages[passwordStrength] || messages[0];
+  };
+
+  const togglePasswordVisibility = (field) => {
+    if (field === 'password') {
+      setShowPassword(!showPassword);
+    } else {
+      setShowConfirmPassword(!showConfirmPassword);
+    }
+  };
+
   const handleFieldBlur = (e) => {
     const { name, value } = e.target;
     
-    // Validate specific field on blur for immediate feedback
-    const tempFormData = { ...formData, [name]: value };
-    const validation = validateUserRegistration(tempFormData);
+    // Email validation
+    if (name === 'email' && value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(value)) {
+        setErrors(prev => ({ ...prev, email: 'Please enter a valid email address' }));
+      } else {
+        setErrors(prev => ({ ...prev, email: '' }));
+      }
+    }
     
-    if (validation.errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: validation.errors[name] }));
+    // Password confirmation validation
+    if (name === 'confirmPassword' && value) {
+      if (value !== formData.password) {
+        setErrors(prev => ({ ...prev, confirmPassword: 'Passwords do not match' }));
+      } else {
+        setErrors(prev => ({ ...prev, confirmPassword: '' }));
+      }
     }
   };
 
@@ -87,18 +102,19 @@ export default function RegisterPage() {
     setIsLoading(true);
     setSubmitError('');
     
-    // Validate form
-    const validation = validateUserRegistration(formData);
-    if (!validation.isValid) {
-      setErrors(validation.errors);
+    // Basic validation
+    const newErrors = {};
+    if (!formData.firstName.trim()) newErrors.firstName = 'First name is required';
+    if (!formData.lastName.trim()) newErrors.lastName = 'Last name is required';
+    if (!formData.email.trim()) newErrors.email = 'Email is required';
+    if (!formData.password) newErrors.password = 'Password is required';
+    if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+    if (!formData.terms) newErrors.terms = 'You must agree to the terms';
+    
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
       setIsLoading(false);
-      
-      // Show toast notification for validation errors
-      const errorCount = Object.keys(validation.errors).length;
-      toast.error(`Please fix ${errorCount} error${errorCount > 1 ? 's' : ''} in the form`, {
-        duration: 6000,
-      });
-      
+      toast.error('Please fix the errors in the form', { duration: 6000 });
       return;
     }
     
@@ -107,294 +123,269 @@ export default function RegisterPage() {
         formData.email,
         formData.password,
         formData.firstName,
-        formData.lastName,
-        formData.phone,
-        formData.dateOfBirth
+        formData.lastName
       );
       
       if (data && !error) {
-        // Store registration data in localStorage for success page
-        localStorage.setItem('registrationData', JSON.stringify({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          userId: data.userId
-        }));
-        
-        // Show success toast
-        toast.success('Registration successful! Redirecting...', {
-          duration: 3000,
-        });
-        
-        // Redirect to success page after a brief delay
+        toast.success('Registration successful! Redirecting...', { duration: 3000 });
         setTimeout(() => {
-          router.push('/register/success');
+          router.push('/login');
         }, 1000);
       } else {
         const errorMessage = error?.message || 'Registration failed. Please try again.';
         setSubmitError(errorMessage);
-        toast.error(errorMessage, {
-          duration: 6000,
-        });
+        toast.error(errorMessage, { duration: 6000 });
       }
     } catch (error) {
       console.error('Registration error:', error);
       const errorMessage = 'An error occurred during registration. Please try again.';
       setSubmitError(errorMessage);
-      toast.error(errorMessage, {
-        duration: 6000,
-      });
+      toast.error(errorMessage, { duration: 6000 });
     } finally {
       setIsLoading(false);
     }
   };
 
-  const renderFieldError = (fieldName) => {
-    const error = getFieldError(fieldName, errors);
-    if (!error) return null;
-    
-    return (
-      <div className="flex items-center mt-1 text-red-600 text-sm">
-        <AlertCircle className="w-4 h-4 mr-1" />
-        {error}
-      </div>
-    );
-  };
-
   const getInputClassName = (fieldName) => {
-    const baseClass = "w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors text-gray-900 placeholder-gray-500 bg-white";
-    const errorClass = hasFieldError(fieldName, errors) ? "border-red-500 focus:ring-red-500 focus:border-red-500" : "border-gray-300";
-    return `${baseClass} ${errorClass}`;
+    let className = 'form-control';
+    if (errors[fieldName]) className += ' error';
+    if (formData[fieldName] && !errors[fieldName] && fieldName !== 'confirmPassword') className += ' success';
+    if (fieldName === 'confirmPassword' && formData.confirmPassword && formData.password === formData.confirmPassword) className += ' success';
+    return className;
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Link href="/" className="flex items-center text-blue-600 hover:text-blue-800 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            {t('backToHome')}
-          </Link>
-        </div>
+    <>
+      {/* Animated Background */}
+      <div className="bg-container">
+        <div className="gradient-sphere sphere-1"></div>
+        <div className="gradient-sphere sphere-2"></div>
+        <div className="gradient-sphere sphere-3"></div>
+      </div>
 
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 text-center">
-            <div className="flex justify-center mb-4">
-              <div className="bg-white/20 rounded-full p-3">
-                <Building className="w-8 h-8" />
-              </div>
-            </div>
-            <h1 className="text-3xl font-bold mb-2">{t('createAccount')}</h1>
-            <p className="text-blue-100 text-lg">{t('joinChameleonApp')}</p>
+      {/* Main Content */}
+      <div className="register-page">
+        {/* Back to Home */}
+        <Link href="/" className="back-home">
+          <ArrowLeft className="w-5 h-5" />
+          Back to Home
+        </Link>
+
+        {/* Register Container */}
+        <div className="register-container">
+          {/* Logo */}
+          <div className="register-logo">
+            <h1 className="gradient-text">BusinessHub</h1>
+            <p>All-in-One Business Solutions</p>
           </div>
 
-          {/* Progress Steps */}
-          <div className="bg-gray-50 px-8 py-4">
-            <div className="flex justify-between items-center max-w-2xl mx-auto">
-              <div className="flex items-center">
-                <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold">
-                  1
-                </div>
-                <span className="ml-2 text-sm font-medium text-gray-700">{t('personalInformation')}</span>
-              </div>
-              <div className="flex-1 h-px bg-gray-300 mx-4"></div>
-              <div className="flex items-center">
-                <div className="bg-gray-300 text-gray-500 rounded-full w-8 h-8 flex items-center justify-center text-sm font-semibold">
-                  2
-                </div>
-                <span className="ml-2 text-sm font-medium text-gray-500">{t('complete')}</span>
-              </div>
+          {/* Register Card */}
+          <div className="register-card">
+            <div className="form-header">
+              <h2>Create your account</h2>
+              <p>Already have an account? <Link href="/login">Sign in</Link></p>
             </div>
-          </div>
 
-          <div className="p-8">
-            {/* General Error Display */}
             {submitError && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <div className="flex items-center">
-                  <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
-                  <span className="text-red-700">{submitError}</span>
-                </div>
+              <div className="error-message show">
+                {submitError}
               </div>
             )}
 
-          <form onSubmit={handleSubmit} className="space-y-8">
-            {/* Personal Information Section */}
-            <div className="bg-gray-50 rounded-xl p-6">
-              <div className="flex items-center mb-6">
-                <div className="bg-blue-100 rounded-full p-2 mr-3">
-                  <User className="w-5 h-5 text-blue-600" />
-                </div>
-                <h2 className="text-xl font-semibold text-gray-900">{t('personalInformation')}</h2>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <User className="w-4 h-4 inline mr-2" />
-                    {t('firstNameRequired')}
-                  </label>
+            <form onSubmit={handleSubmit}>
+              {/* Name Fields */}
+              <div className="name-row">
+                <div className="form-group">
+                  <label htmlFor="firstName">First Name</label>
                   <input
                     type="text"
+                    id="firstName"
                     name="firstName"
+                    className={getInputClassName('firstName')}
+                    placeholder="John"
                     value={formData.firstName}
                     onChange={handleInputChange}
                     onBlur={handleFieldBlur}
-                    className={getInputClassName('firstName')}
                     required
                   />
-                  {renderFieldError('firstName')}
+                  {errors.firstName && (
+                    <div className="error-message show">{errors.firstName}</div>
+                  )}
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <User className="w-4 h-4 inline mr-2" />
-                    {t('lastNameRequired')}
-                  </label>
+                <div className="form-group">
+                  <label htmlFor="lastName">Last Name</label>
                   <input
                     type="text"
+                    id="lastName"
                     name="lastName"
+                    className={getInputClassName('lastName')}
+                    placeholder="Doe"
                     value={formData.lastName}
                     onChange={handleInputChange}
                     onBlur={handleFieldBlur}
-                    className={getInputClassName('lastName')}
                     required
                   />
-                  {renderFieldError('lastName')}
+                  {errors.lastName && (
+                    <div className="error-message show">{errors.lastName}</div>
+                  )}
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Mail className="w-4 h-4 inline mr-2" />
-                    {t('emailRequired')}
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    onBlur={handleFieldBlur}
-                    className={getInputClassName('email')}
-                    required
-                  />
-                  {renderFieldError('email')}
-                </div>
+              {/* Email */}
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  className={getInputClassName('email')}
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  onBlur={handleFieldBlur}
+                  required
+                />
+                {errors.email && (
+                  <div className="error-message show">{errors.email}</div>
+                )}
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Phone className="w-4 h-4 inline mr-2" />
-                    {t('phoneOptional')}
-                  </label>
+              {/* Password */}
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <div className="password-input-wrapper">
                   <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                    className={getInputClassName('phone')}
-                  />
-                  {renderFieldError('phone')}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Calendar className="w-4 h-4 inline mr-2" />
-                    {t('dateOfBirthOptional')}
-                  </label>
-                  <input
-                    type="date"
-                    name="dateOfBirth"
-                    value={formData.dateOfBirth}
-                    onChange={handleInputChange}
-                    className={getInputClassName('dateOfBirth')}
-                  />
-                  {renderFieldError('dateOfBirth')}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Lock className="w-4 h-4 inline mr-2" />
-                    {t('passwordRequired')}
-                  </label>
-                  <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
+                    id="password"
                     name="password"
+                    className={getInputClassName('password')}
+                    placeholder="Create a strong password"
                     value={formData.password}
                     onChange={handleInputChange}
                     onBlur={handleFieldBlur}
-                    className={getInputClassName('password')}
                     required
                   />
-                  {renderFieldError('password')}
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => togglePasswordVisibility('password')}
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
                 </div>
+                <div className="password-strength">
+                  {[1, 2, 3, 4].map((level) => (
+                    <div
+                      key={level}
+                      className={`strength-bar ${
+                        level <= passwordStrength
+                          ? passwordStrength <= 2
+                            ? 'weak active'
+                            : passwordStrength === 3
+                            ? 'medium active'
+                            : 'active'
+                          : ''
+                      }`}
+                    ></div>
+                  ))}
+                </div>
+                <div className="strength-text">{getPasswordStrengthText()}</div>
+                {errors.password && (
+                  <div className="error-message show">{errors.password}</div>
+                )}
+              </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Lock className="w-4 h-4 inline mr-2" />
-                    {t('confirmPasswordRequired')}
-                  </label>
+              {/* Confirm Password */}
+              <div className="form-group">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <div className="password-input-wrapper">
                   <input
-                    type="password"
+                    type={showConfirmPassword ? "text" : "password"}
+                    id="confirmPassword"
                     name="confirmPassword"
+                    className={getInputClassName('confirmPassword')}
+                    placeholder="Confirm your password"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     onBlur={handleFieldBlur}
-                    className={getInputClassName('confirmPassword')}
                     required
                   />
-                  {renderFieldError('confirmPassword')}
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => togglePasswordVisibility('confirmPassword')}
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
                 </div>
+                {errors.confirmPassword && (
+                  <div className="error-message show">{errors.confirmPassword}</div>
+                )}
               </div>
-            </div>
 
-            {/* Terms & Conditions */}
-            <div className="bg-blue-50 rounded-xl p-6 border border-blue-200">
-              <div className="flex items-start">
-                <input
-                  id="agree-terms"
-                  type="checkbox"
-                  className="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded mt-1"
-                  required
-                />
-                <label htmlFor="agree-terms" className="ml-3 block text-sm text-gray-900">
-                  <CheckCircle className="w-4 h-4 inline mr-2 text-blue-600" />
-                  {t('agreeToTerms')}{' '}
-                  <Link href="/terms" className="text-blue-600 hover:text-blue-800 font-medium">
-                    {t('termsOfService')}
-                  </Link>{' '}
-                  {t('and')}{' '}
-                  <Link href="/privacy" className="text-blue-600 hover:text-blue-800 font-medium">
-                    {t('privacyPolicy')}
-                  </Link>
+              {/* Terms Checkbox */}
+              <div className="checkbox-group">
+                <div className="checkbox-wrapper">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    name="terms"
+                    checked={formData.terms}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <div className="checkbox-custom"></div>
+                </div>
+                <label htmlFor="terms">
+                  I agree to the <Link href="/terms">Terms of Service</Link> and <Link href="/privacy">Privacy Policy</Link>
                 </label>
               </div>
-            </div>
+              {errors.terms && (
+                <div className="error-message show">{errors.terms}</div>
+              )}
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 sm:space-x-4 pt-6">
-              <Link 
-                href="/"
-                className="w-full sm:w-auto px-8 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-center font-medium"
-              >
-                {t('cancel')}
-              </Link>
-              <button
-                type="submit"
-                disabled={isLoading || authLoading}
-                className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-105 shadow-lg font-medium flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-              >
-                {(isLoading || authLoading) ? (
-                  <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                ) : (
-                  <CheckCircle className="w-5 h-5 mr-2" />
+              {/* Submit Button */}
+              <button type="submit" className="submit-btn" disabled={isLoading || authLoading}>
+                <span id="btnText" style={{ display: isLoading || authLoading ? 'none' : 'inline' }}>
+                  Create Account
+                </span>
+                {(isLoading || authLoading) && (
+                  <Loader2 className="loading w-5 h-5" />
                 )}
-                {(isLoading || authLoading) ? t('processing') || 'Processing...' : t('createAccount')}
               </button>
-            </div>
-          </form>
+
+              {/* Divider */}
+              <div className="divider">
+                <span>Or continue with</span>
+              </div>
+
+              {/* Social Login */}
+              <div className="social-login">
+                <button type="button" className="social-btn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                  </svg>
+                  Google
+                </button>
+                <button type="button" className="social-btn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
+                  </svg>
+                  Facebook
+                </button>
+              </div>
+
+              {/* Footer */}
+              <div className="form-footer">
+                By signing up, you agree to receive updates and special offers
+              </div>
+            </form>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

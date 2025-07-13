@@ -1,5 +1,5 @@
 import "./globals.css";
-import { LanguageProvider } from './contexts/LanguageContext';
+import { Providers } from './providers';
 
 export const metadata = {
   title: "BusinessHub - All-in-One Business Solutions",
@@ -10,9 +10,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="antialiased">
-        <LanguageProvider>
+        <Providers>
           {children}
-        </LanguageProvider>
+        </Providers>
       </body>
     </html>
   );

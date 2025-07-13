@@ -1,0 +1,446 @@
+/* Register Page Styles - Glassmorphism Design */
+
+/* Register Page Layout */
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Register Container */
+.register-container {
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  z-index: var(--z-content);
+}
+
+/* Logo */
+.register-logo {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.register-logo h1 {
+  font-size: 32px;
+  font-weight: 700;
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 10px;
+}
+
+.register-logo p {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+/* Glass Card */
+.register-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 30px;
+  padding: 50px 40px;
+  transition: all 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.1);
+}
+
+/* Form Header */
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.form-header h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.form-header p {
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.form-header a {
+  color: #667eea;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.form-header a:hover {
+  color: #764ba2;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-control {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(102, 126, 234, 0.5);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Name Fields Row */
+.name-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Password Input with Toggle */
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 5px;
+  transition: all 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: var(--text-primary);
+}
+
+/* Password Strength Indicator */
+.password-strength {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.strength-bar {
+  height: 3px;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.strength-bar.active {
+  background: var(--success-color);
+}
+
+.strength-bar.weak {
+  background: #ef4444;
+}
+
+.strength-bar.medium {
+  background: var(--warning-color);
+}
+
+.strength-text {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 5px;
+}
+
+/* Checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.checkbox-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  margin: 0;
+}
+
+.checkbox-custom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked ~ .checkbox-custom {
+  background: var(--primary-gradient);
+  border-color: transparent;
+}
+
+.checkbox-wrapper input[type="checkbox"]:checked ~ .checkbox-custom::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.checkbox-group label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.checkbox-group label a {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.checkbox-group label a:hover {
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 16px 30px;
+  background: var(--primary-gradient);
+  border: none;
+  border-radius: 100px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Divider */
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.divider::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.divider span {
+  position: relative;
+  background: var(--glass-bg);
+  padding: 0 20px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+/* Social Login */
+.social-login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.social-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Footer Links */
+.form-footer {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.form-footer a {
+  color: #667eea;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.form-footer a:hover {
+  color: #764ba2;
+}
+
+/* Error Messages */
+.error-message {
+  display: none;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #ef4444;
+}
+
+.error-message.show {
+  display: block;
+}
+
+/* Success State */
+.form-control.success {
+  border-color: rgba(74, 222, 128, 0.5);
+}
+
+.form-control.error {
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
+/* Loading State */
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+/* Back to Home */
+.back-home {
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  z-index: var(--z-content);
+}
+
+.back-home:hover {
+  color: var(--text-primary);
+  transform: translateX(-5px);
+}
+
+.back-home svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .register-card {
+    padding: 40px 25px;
+  }
+
+  .name-row {
+    grid-template-columns: 1fr;
+  }
+
+  .social-login {
+    grid-template-columns: 1fr;
+  }
+
+  .back-home {
+    top: 20px;
+    left: 20px;
+  }
+
+  .register-page {
+    padding: 60px 15px 20px;
+  }
+}
