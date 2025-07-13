@@ -1,0 +1,120 @@
+/* Glassmorphism Effects and Background */
+
+/* Animated Background Container */
+.bg-container {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: var(--z-background);
+  overflow: hidden;
+  max-width: 100vw;
+  pointer-events: none;
+}
+
+/* Gradient Spheres */
+.gradient-sphere {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.5;
+  animation: float 20s infinite ease-in-out;
+  z-index: var(--z-gradient-spheres);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.sphere-1 {
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  top: -300px;
+  right: -200px;
+  animation-delay: 0s;
+}
+
+.sphere-2 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  bottom: -200px;
+  left: -100px;
+  animation-delay: 5s;
+}
+
+.sphere-3 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: 10s;
+}
+
+/* Core Glass Card */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  padding: var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-normal) ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+}
+
+.glass-card h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+}
+
+/* Glass Effect Utilities */
+.glass-light {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(var(--glass-blur-light));
+  -webkit-backdrop-filter: blur(var(--glass-blur-light));
+}
+
+.glass-medium {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+}
+
+.glass-heavy {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
+}
+
+/* Mobile Responsiveness for Spheres */
+@media (max-width: 768px) {
+  .sphere-1 {
+    width: 400px !important;
+    height: 400px !important;
+    top: -200px !important;
+    right: -150px !important;
+  }
+
+  .sphere-2 {
+    width: 300px !important;
+    height: 300px !important;
+    bottom: -150px !important;
+    left: -100px !important;
+  }
+
+  .sphere-3 {
+    width: 200px !important;
+    height: 200px !important;
+  }
+}

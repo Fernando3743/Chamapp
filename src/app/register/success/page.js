@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { usePageTranslations } from '../../../hooks/usePageTranslations';
 import { 
   CheckCircle, 
   Building, 
@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 
 export default function RegistrationSuccessPage() {
-  const { t } = useLanguage();
+  const { t } = usePageTranslations('register');
   const router = useRouter();
   const [registrationData, setRegistrationData] = useState(null);
 

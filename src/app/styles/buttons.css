@@ -1,0 +1,92 @@
+/* Button System */
+
+/* CTA Buttons */
+.cta-button {
+  padding: 12px var(--spacing-lg);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 600;
+  backdrop-filter: blur(var(--glass-blur-light));
+  -webkit-backdrop-filter: blur(var(--glass-blur-light));
+  transition: all var(--duration-normal) ease;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+}
+
+.cta-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.primary-cta {
+  background: var(--primary-gradient);
+  border: none;
+}
+
+/* Notification Badge */
+.notification-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: #ef4444;
+  color: white;
+  font-size: var(--font-size-xs);
+  padding: 2px 6px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--text-primary);
+  animation: spin 1s ease-in-out infinite;
+}
+
+/* Button Variants */
+.btn-glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  backdrop-filter: blur(var(--glass-blur-light));
+  -webkit-backdrop-filter: blur(var(--glass-blur-light));
+}
+
+.btn-primary {
+  background: var(--primary-gradient);
+  color: var(--text-primary);
+  border: none;
+}
+
+/* Button Sizes */
+.btn-sm {
+  padding: 8px var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
+.btn-md {
+  padding: 12px var(--spacing-lg);
+  font-size: var(--font-size-base);
+}
+
+.btn-lg {
+  padding: 16px var(--spacing-xl);
+  font-size: var(--font-size-lg);
+}
+
+/* Focus States for Accessibility */
+.cta-button:focus-visible,
+.btn-glass:focus-visible,
+.btn-primary:focus-visible {
+  outline: 2px solid var(--primary-gradient);
+  outline-offset: 2px;
+}

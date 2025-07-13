@@ -1,0 +1,143 @@
+/* Hero Section Styles */
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 140px var(--spacing-2xl) var(--spacing-4xl);
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.hero-content {
+  max-width: 1400px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-4xl);
+  align-items: center;
+}
+
+.hero-text h1 {
+  font-size: clamp(var(--font-size-5xl), 6vw, var(--font-size-6xl));
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: var(--spacing-lg);
+  background: linear-gradient(135deg, #ffffff 0%, #a8a8a8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-text p {
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.6;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.hero-visual {
+  position: relative;
+}
+
+/* Trust Indicators */
+.trust-indicators {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-2xl);
+  flex-wrap: wrap;
+}
+
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.trust-item svg {
+  width: 20px;
+  height: 20px;
+  color: var(--success-color);
+}
+
+/* Business Preview */
+.business-preview {
+  display: grid;
+  gap: var(--spacing-md);
+}
+
+.business-type {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: var(--spacing-md);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  transition: all var(--duration-normal) ease;
+}
+
+.business-type:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(10px);
+}
+
+.business-icon {
+  width: 50px;
+  height: 50px;
+  background: var(--primary-gradient);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-2xl);
+}
+
+.business-info h3 {
+  font-size: var(--font-size-lg);
+  margin-bottom: 5px;
+}
+
+.business-info p {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+/* Mobile Hero Responsive */
+@media (max-width: 768px) {
+  .hero {
+    padding: 120px var(--spacing-md) var(--spacing-3xl);
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    text-align: center;
+    padding: 0 var(--spacing-md);
+    max-width: 100%;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .trust-indicators {
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+}

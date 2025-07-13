@@ -1,37 +1,72 @@
-'use client';
+'use client'
 
-import Link from 'next/link';
-import { useLanguage } from '../contexts/LanguageContext';
+import Link from 'next/link'
 
 export default function Hero() {
-  const { t } = useLanguage();
   return (
-    <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            {t('heroTitle')}
-            <span className="text-yellow-400"> {t('heroTitleHighlight')}</span>
-          </h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
-            {t('heroSubtitle')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/register" 
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-colors"
-            >
-              {t('startYourBusiness')}
+    <section className="hero">
+      <div className="hero-content">
+        <div className="hero-text">
+          <h1>One Platform, <span className="gradient-text">Infinite Business Solutions</span></h1>
+          <p>Transform your business with our all-in-one software platform. From real estate to barbershops, we provide everything you need to run, manage, and grow your business.</p>
+          <div className="hero-buttons">
+            <Link href="/register" className="cta-button primary-cta">
+              Start Free Trial
             </Link>
-            <Link 
-              href="/businesses" 
-              className="border-2 border-white text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-            >
-              {t('browseBusinesses')}
+            <Link href="#demo" className="cta-button">
+              Watch Demo
             </Link>
+          </div>
+          <div className="trust-indicators">
+            <div className="trust-item">
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+              </svg>
+              <span>No credit card required</span>
+            </div>
+            <div className="trust-item">
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+              </svg>
+              <span>14-day free trial</span>
+            </div>
+            <div className="trust-item">
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"/>
+              </svg>
+              <span>Cancel anytime</span>
+            </div>
+          </div>
+        </div>
+        <div className="hero-visual">
+          <div className="glass-card">
+            <h3>Your Businesses</h3>
+            <div className="business-preview">
+              <div className="business-type">
+                <div className="business-icon">🏠</div>
+                <div className="business-info">
+                  <h3>Real Estate Pro</h3>
+                  <p>Property management & CRM</p>
+                </div>
+              </div>
+              <div className="business-type">
+                <div className="business-icon">✂️</div>
+                <div className="business-info">
+                  <h3>BarberShop Manager</h3>
+                  <p>Appointments & inventory</p>
+                </div>
+              </div>
+              <div className="business-type">
+                <div className="business-icon">🍔</div>
+                <div className="business-info">
+                  <h3>Restaurant Suite</h3>
+                  <p>Orders & table management</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
-  );
+  )
 }
