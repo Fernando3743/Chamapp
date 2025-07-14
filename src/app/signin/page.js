@@ -3,13 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { 
-  loginUser,
-  selectIsLoginLoading,
-  selectLoginError,
-  clearError
-} from '../store/slices/authSlice';
+import { useSupabaseAuth } from '../contexts/SupabaseAuthContext';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 import { GoogleIcon, FacebookIcon } from '../components/icons';
 import AnimatedBackground from '../components/AnimatedBackground';
@@ -52,9 +46,7 @@ const getSecureErrorMessage = (error) => {
 };
 
 export default function SignInPage() {
-  const dispatch = useAppDispatch();
-  const isLoginLoading = useAppSelector(selectIsLoginLoading);
-  const loginError = useAppSelector(selectLoginError);
+  const { signIn, loading: isLoginLoading, error: authError } = useSupabaseAuth();
   const { t } = usePageTranslations('signin');
   const router = useRouter();
   
@@ -89,10 +81,6 @@ export default function SignInPage() {
     if (localErrors[name]) {
       setLocalErrors(prev => ({ ...prev, [name]: '' }));
     }
-    // Clear Redux login error when user starts typing
-    if (loginError) {
-      dispatch(clearError());
-    }
 
     // Handle remember me functionality
     if (name === 'rememberMe') {
@@ -106,7 +94,7 @@ export default function SignInPage() {
     if (name === 'email' && formData.rememberMe) {
       localStorage.setItem('rememberedEmail', value);
     }
-  }, [localErrors, loginError, dispatch, formData.email, formData.rememberMe]);
+  }, [localErrors, formData.email, formData.rememberMe]);
 
   const validateForm = useCallback(() => {
     const newErrors = {};
@@ -145,10 +133,11 @@ export default function SignInPage() {
     }
     
     try {
-      const result = await dispatch(loginUser({ 
-        email: formData.email, 
-        password: formData.password 
-      })).unwrap();
+      const { data, error } = await signIn(formData.email, formData.password);
+      
+      if (error) {
+        throw error;
+      }
       
       // Success
       toast.success('Login successful! Welcome back!', { duration: 3000 });
@@ -178,7 +167,7 @@ export default function SignInPage() {
       setShake(true);
       setTimeout(() => setShake(false), 500);
     }
-  }, [formData, validateForm, dispatch, router]);
+  }, [formData, validateForm, signIn, router]);
 
   const getInputClassName = useCallback((fieldName) => {
     let className = 'signin-form-control';
@@ -227,7 +216,7 @@ export default function SignInPage() {
           <div className="signin-form-header">
             <h2>Sign in to your account</h2>
             <p>
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/register">Create one</Link>
             </p>
           </div>
@@ -238,10 +227,10 @@ export default function SignInPage() {
           </div>
 
           {/* General Error Display */}
-          {loginError && (
+          {authError && (
             <div className="signin-general-error">
               <AlertCircle className="w-5 h-5" />
-              {getSecureErrorMessage(loginError)}
+              {getSecureErrorMessage(authError)}
             </div>
           )}
 

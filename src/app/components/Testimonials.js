@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 
-const Testimonials = () => {
+const Testimonials = React.memo(() => {
   const { t } = usePageTranslations('home');
   const [isPaused, setIsPaused] = useState(false);
 
@@ -99,6 +99,8 @@ const Testimonials = () => {
 
     </section>
   );
-};
+});
+
+Testimonials.displayName = 'Testimonials';
 
 export default Testimonials;

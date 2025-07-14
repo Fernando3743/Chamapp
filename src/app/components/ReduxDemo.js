@@ -12,11 +12,7 @@ import {
   removeNotification,
   clearAllNotifications
 } from '../store/slices/uiSlice';
-import { 
-  selectUser,
-  selectIsAuthenticated,
-  selectUserPreferences
-} from '../store/slices/authSlice';
+// Auth slice has been removed - using SupabaseAuthContext instead
 
 export default function ReduxDemo() {
   const dispatch = useAppDispatch();
@@ -26,10 +22,10 @@ export default function ReduxDemo() {
   const currentLanguage = useAppSelector(selectCurrentLanguage);
   const notifications = useAppSelector(selectNotifications);
   
-  // Auth State
-  const user = useAppSelector(selectUser);
-  const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  const userPreferences = useAppSelector(selectUserPreferences);
+  // Auth State - now handled by SupabaseAuthContext
+  const user = null;
+  const isAuthenticated = false;
+  const userPreferences = { theme: 'dark' };
 
   const handleAddNotification = () => {
     dispatch(addNotification({

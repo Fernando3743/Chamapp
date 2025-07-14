@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 
-const AnimatedCounter = ({ end, suffix, duration = 2000, isVisible }) => {
+const AnimatedCounter = React.memo(({ end, suffix, duration = 2000, isVisible }) => {
   const [count, setCount] = useState(0);
   
   useEffect(() => {
@@ -29,7 +29,9 @@ const AnimatedCounter = ({ end, suffix, duration = 2000, isVisible }) => {
       {count}{suffix}
     </div>
   );
-};
+});
+
+AnimatedCounter.displayName = 'AnimatedCounter';
 
 const Stats = () => {
   const [isVisible, setIsVisible] = useState(false);

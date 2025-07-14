@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSupabaseAuth } from '../contexts/SupabaseAuthContext';
 import AnimatedBackground from '../components/AnimatedBackground';
@@ -101,9 +101,12 @@ export default function WelcomePage() {
     });
   }, []);
 
+  // Temporarily forward declare to fix circular dependency
+  const completeOnboardingRef = useRef(null);
+  
   const skipOnboarding = useCallback(() => {
     if (window.confirm('Are you sure you want to skip the setup? You can always complete it later.')) {
-      completeOnboarding();
+      completeOnboardingRef.current?.();
     }
   }, []);
 
@@ -140,6 +143,11 @@ export default function WelcomePage() {
       }, 1000);
     }, 1000);
   }, [createConfetti, router]);
+
+  // Set the ref after defining the function
+  useEffect(() => {
+    completeOnboardingRef.current = completeOnboarding;
+  }, [completeOnboarding]);
 
   // Keyboard navigation
   useEffect(() => {
@@ -206,7 +214,7 @@ export default function WelcomePage() {
             <h1 className="welcome-title">Welcome to BusinessHub</h1>
             <p className="welcome-subtitle">
               Your all-in-one platform for managing and growing your business.<br />
-              Let's get you set up in just a few steps.
+              Let&apos;s get you set up in just a few steps.
             </p>
             <div className="welcome-action-buttons">
               <button className="welcome-btn-primary" onClick={nextStep}>
@@ -250,7 +258,7 @@ export default function WelcomePage() {
           {/* Step 3: Feature Overview */}
           <div className={`welcome-step ${currentStep === 3 ? 'active' : ''}`}>
             <h1 className="welcome-title">Everything you need to succeed</h1>
-            <p className="welcome-subtitle">Here's what BusinessHub offers for your business</p>
+            <p className="welcome-subtitle">Here&apos;s what BusinessHub offers for your business</p>
             
             <div className="welcome-features-showcase">
               {features.map((feature, index) => (

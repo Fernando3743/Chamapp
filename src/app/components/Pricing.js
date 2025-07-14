@@ -1,10 +1,11 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 
-const Pricing = () => {
+const Pricing = React.memo(() => {
   const { t } = usePageTranslations('home');
 
   const plans = [
@@ -96,6 +97,8 @@ const Pricing = () => {
       </div>
     </section>
   );
-};
+});
+
+Pricing.displayName = 'Pricing';
 
 export default Pricing;

@@ -1,9 +1,10 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 
-const Footer = () => {
+const Footer = React.memo(() => {
   const { t } = usePageTranslations('home');
 
   const footerLinks = {
@@ -114,6 +115,8 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
+});
+
+Footer.displayName = 'Footer';
 
 export default Footer;

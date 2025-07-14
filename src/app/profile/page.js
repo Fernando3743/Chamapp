@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
-import { useAuth } from '../contexts/AuthContext';
+import { useSupabaseAuth } from '../contexts/SupabaseAuthContext';
+import { profileFormSanitizer } from '../../lib/sanitizer';
 import toast from 'react-hot-toast';
 import { 
   User, 
@@ -29,7 +30,7 @@ import {
 
 export default function ProfilePage() {
   const { t } = usePageTranslations('profile');
-  const { user, userProfile, updateProfile, loading: authLoading } = useAuth();
+  const { user, userProfile, updateProfile, loading: authLoading } = useSupabaseAuth();
   const router = useRouter();
   
   const [isEditing, setIsEditing] = useState(false);
@@ -153,11 +154,14 @@ export default function ProfilePage() {
     }
 
     try {
+      // Sanitize form data before submission
+      const sanitizedData = profileFormSanitizer(formData);
+      
       const updates = {
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        phone: formData.phone || null,
-        date_of_birth: formData.dateOfBirth || null
+        first_name: sanitizedData.firstName,
+        last_name: sanitizedData.lastName,
+        phone: sanitizedData.phone || null,
+        date_of_birth: formData.dateOfBirth || null // Date doesn't need sanitization
       };
 
       const { error } = await updateProfile(updates);

@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Search, Bell, MessageSquare } from 'lucide-react';
 
-export default function TopBar({ user }) {
+const TopBar = React.memo(({ user }) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const getInitials = (user) => {
@@ -56,4 +56,8 @@ export default function TopBar({ user }) {
       </div>
     </div>
   );
-}
+});
+
+TopBar.displayName = 'TopBar';
+
+export default TopBar;

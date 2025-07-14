@@ -5,7 +5,6 @@ import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useSupabaseAuth } from '../contexts/SupabaseAuthContext';
-import { useAuth } from '../contexts/AuthContext';
 import { useClickOutside, useMountedPortal } from '../hooks';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { 
@@ -65,7 +64,6 @@ const LoginDropdown = memo(function LoginDropdown() {
   const [isLoginLoading, setIsLoginLoading] = useState(false);
   
   const dropdownRef = useRef(null);
-  const { loading: authLoading } = useAuth();
   const router = useRouter();
   const isMounted = useMountedPortal();
 
@@ -217,9 +215,9 @@ const LoginDropdown = memo(function LoginDropdown() {
             <button 
               type="submit" 
               className="login-dropdown-submit"
-              disabled={isLoginLoading || authLoading}
+              disabled={isLoginLoading || supabaseLoading}
             >
-              {(isLoginLoading || authLoading) ? (
+              {(isLoginLoading || supabaseLoading) ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
                   Signing in...
@@ -258,7 +256,7 @@ const LoginDropdown = memo(function LoginDropdown() {
           </form>
         </div>
     );
-  }, [isOpen, isMounted, localErrors, formData, showPassword, isLoginLoading, authLoading, handleSubmit, handleInputChange, getInputClassName]);
+  }, [isOpen, isMounted, localErrors, formData, showPassword, isLoginLoading, supabaseLoading, handleSubmit, handleInputChange, getInputClassName]);
 
   return (
     <div className="login-dropdown-container">

@@ -1,12 +1,10 @@
 // Redux Store Configuration
 import { configureStore } from '@reduxjs/toolkit';
 import uiSlice from './slices/uiSlice';
-import authSlice from './slices/authSlice';
 
 export const store = configureStore({
   reducer: {
     ui: uiSlice,
-    auth: authSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

@@ -1,9 +1,10 @@
 'use client';
 
+import React from 'react';
 import { Zap, Globe, Users, BarChart3, Shield, Smartphone } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 
-const Features = () => {
+const Features = React.memo(() => {
   const { t } = usePageTranslations('home');
 
   const features = [
@@ -63,6 +64,8 @@ const Features = () => {
       </div>
     </section>
   );
-};
+});
+
+Features.displayName = 'Features';
 
 export default Features;

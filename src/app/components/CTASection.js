@@ -1,9 +1,10 @@
 'use client';
 
+import React from 'react';
 import Link from 'next/link';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 
-const CTASection = () => {
+const CTASection = React.memo(() => {
   const { t } = usePageTranslations('home');
 
   return (
@@ -26,6 +27,8 @@ const CTASection = () => {
       </div>
     </section>
   );
-};
+});
+
+CTASection.displayName = 'CTASection';
 
 export default CTASection;

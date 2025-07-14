@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../contexts/AuthContext';
+import { useSupabaseAuth } from '../contexts/SupabaseAuthContext';
 import toast from 'react-hot-toast';
+import { authFormSanitizer } from '../../lib/sanitizer';
 import { 
   ArrowLeft,
   Eye,
@@ -13,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export default function RegisterPage() {
-  const { signUp, loading: authLoading } = useAuth();
+  const { signUp, loading: authLoading } = useSupabaseAuth();
   const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: '',
@@ -119,11 +120,14 @@ export default function RegisterPage() {
     }
     
     try {
+      // Sanitize form data before submission
+      const sanitizedData = authFormSanitizer(formData);
+      
       const { data, error } = await signUp(
-        formData.email,
-        formData.password,
-        formData.firstName,
-        formData.lastName
+        sanitizedData.email,
+        formData.password, // Don't sanitize password
+        sanitizedData.firstName,
+        sanitizedData.lastName
       );
       
       if (data && !error) {

@@ -1,9 +1,10 @@
 'use client';
 
+import React from 'react';
 import { Home, Scissors, Utensils, Dumbbell, Heart, Briefcase } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 
-const BusinessTypes = () => {
+const BusinessTypes = React.memo(() => {
   const { t } = usePageTranslations('home');
 
   const businessTypes = [
@@ -105,6 +106,8 @@ const BusinessTypes = () => {
       </div>
     </section>
   );
-};
+});
+
+BusinessTypes.displayName = 'BusinessTypes';
 
 export default BusinessTypes;

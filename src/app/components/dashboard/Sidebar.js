@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useSupabaseAuth } from '../../contexts/SupabaseAuthContext';
 import { 
@@ -41,7 +42,7 @@ const navItems = [
   }
 ];
 
-export default function Sidebar({ activePage, setActivePage, isOpen, onClose }) {
+const Sidebar = React.memo(({ activePage, setActivePage, isOpen, onClose }) => {
   const router = useRouter();
   const { signOut } = useSupabaseAuth();
 
@@ -114,4 +115,16 @@ export default function Sidebar({ activePage, setActivePage, isOpen, onClose }) 
       </aside>
     </>
   );
-}
+}, (prevProps, nextProps) => {
+  // Return true if props are equal (skip re-render)
+  return (
+    prevProps.activePage === nextProps.activePage &&
+    prevProps.isOpen === nextProps.isOpen &&
+    prevProps.setActivePage === nextProps.setActivePage &&
+    prevProps.onClose === nextProps.onClose
+  );
+});
+
+Sidebar.displayName = 'Sidebar';
+
+export default Sidebar;

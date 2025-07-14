@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
 
-const FAQ = () => {
+const FAQ = React.memo(() => {
   const { t } = usePageTranslations('home');
   const [activeIndex, setActiveIndex] = useState(null);
 
@@ -76,6 +76,8 @@ const FAQ = () => {
       </div>
     </section>
   );
-};
+});
+
+FAQ.displayName = 'FAQ';
 
 export default FAQ;

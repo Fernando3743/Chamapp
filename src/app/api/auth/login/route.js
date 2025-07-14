@@ -1,9 +1,22 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '../../../../lib/supabase';
+import { csrfProtection } from '../../../../lib/csrf';
+import { authRateLimiter, rateLimitMiddleware } from '../../../../lib/rateLimiter';
+import { sanitizeEmail } from '../../../../lib/sanitizer';
 
 export async function POST(request) {
+  // Check rate limit
+  const rateLimitCheck = await rateLimitMiddleware(request, authRateLimiter);
+  if (rateLimitCheck) return rateLimitCheck;
+
+  // Check CSRF token
+  const csrfCheck = await csrfProtection(request);
+  if (csrfCheck) return csrfCheck;
+
   try {
-    const { email, password } = await request.json();
+    const body = await request.json();
+    const email = sanitizeEmail(body.email || '');
+    const password = body.password; // Don't sanitize password
 
     // Validate required fields
     if (!email || !password) {

@@ -1,19 +1,18 @@
 import { NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
-import bcrypt from 'bcryptjs';
-
-// Validate environment variables
-if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-  throw new Error('Missing required environment variables');
-}
-
-// Create service role client for server-side operations
-const supabaseAdmin = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
+import { supabase } from '../../../../lib/supabase';
+import { csrfProtection } from '../../../../lib/csrf';
+import { authRateLimiter, rateLimitMiddleware } from '../../../../lib/rateLimiter';
+import { sanitizeEmail, sanitizeName, sanitizePhone } from '../../../../lib/sanitizer';
 
 export async function POST(request) {
+  // Check rate limit
+  const rateLimitCheck = await rateLimitMiddleware(request, authRateLimiter);
+  if (rateLimitCheck) return rateLimitCheck;
+
+  // Check CSRF token
+  const csrfCheck = await csrfProtection(request);
+  if (csrfCheck) return csrfCheck;
+
   try {
     const body = await request.json();
     
@@ -29,109 +28,68 @@ export async function POST(request) {
       }
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(body.email)) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid email format' },
-        { status: 400 }
-      );
-    }
+    // Sanitize inputs
+    const firstName = sanitizeName(body.firstName);
+    const lastName = sanitizeName(body.lastName);
+    const email = sanitizeEmail(body.email);
+    const password = body.password; // Don't sanitize password
+    const confirmPassword = body.confirmPassword;
+    const phone = body.phone ? sanitizePhone(body.phone) : null;
+    const dateOfBirth = body.dateOfBirth || null;
 
-    // Validate password length
-    if (body.password.length < 8) {
-      return NextResponse.json(
-        { success: false, error: 'Password must be at least 8 characters long' },
-        { status: 400 }
-      );
-    }
-
-    // Check if passwords match
-    if (body.password !== body.confirmPassword) {
+    // Validate password match
+    if (password !== confirmPassword) {
       return NextResponse.json(
         { success: false, error: 'Passwords do not match' },
         { status: 400 }
       );
     }
 
-    // Check if user already exists
-    const { data: existingUser, error: checkError } = await supabaseAdmin
-      .from('user')
-      .select('id')
-      .eq('email', body.email)
-      .maybeSingle();
-    
-    if (checkError) {
-      console.error('Database connection error:', checkError);
-      return NextResponse.json(
-        { success: false, error: 'Database connection failed' },
-        { status: 500 }
-      );
-    }
-
-    if (existingUser) {
-      return NextResponse.json(
-        { success: false, error: 'User with this email already exists' },
-        { status: 400 }
-      );
-    }
-
-    // Hash password
-    const passwordHash = await bcrypt.hash(body.password, 12);
-
-    // Insert user into database
-    const { data: user, error: userError } = await supabaseAdmin
-      .from('user')
-      .insert([{
-        first_name: body.firstName,
-        last_name: body.lastName,
-        email: body.email,
-        password_hash: passwordHash,
-        phone: body.phone || null,
-        date_of_birth: body.dateOfBirth || null,
-        email_verified: true
-      }])
-      .select()
-      .single();
-
-    if (userError) {
-      console.error('User insertion error:', userError);
-      return NextResponse.json(
-        { success: false, error: `Failed to create user account: ${userError.message}` },
-        { status: 500 }
-      );
-    }
-
-    // Create auth user with Supabase Auth
-    const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.createUser({
-      email: body.email,
-      password: body.password,
-      email_confirm: true, // Auto-confirm email for local development
-      user_metadata: {
-        first_name: body.firstName,
-        last_name: body.lastName,
-        custom_user_id: user.id
+    // Create user with Supabase Auth
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+          full_name: `${firstName} ${lastName}`,
+          phone: phone || null,
+          date_of_birth: dateOfBirth || null,
+        },
+        emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/auth/callback`,
       }
     });
 
-    if (authError) {
-      // Rollback user creation if auth fails
-      await supabaseAdmin.from('user').delete().eq('id', user.id);
-      console.error('Auth user creation error:', authError);
+    if (error) {
+      console.error('Registration error:', error);
+      
+      // Handle specific Supabase errors
+      if (error.message.includes('already registered')) {
+        return NextResponse.json(
+          { success: false, error: 'User with this email already exists' },
+          { status: 400 }
+        );
+      }
+      
       return NextResponse.json(
-        { success: false, error: authError.message },
+        { success: false, error: error.message },
         { status: 400 }
       );
+    }
+
+    // For local development, auto-confirm email
+    if (process.env.NODE_ENV === 'development' && data.user) {
+      // In production, users would need to confirm their email
+      console.log('Development mode: User auto-confirmed');
     }
 
     return NextResponse.json({
       success: true,
       data: {
-        userId: user.id,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        email: user.email,
-        authUser: authUser.user
+        user: data.user,
+        session: data.session,
+        message: data.session ? 'Registration successful' : 'Please check your email to confirm your account'
       }
     }, { status: 201 });
 
@@ -146,7 +104,7 @@ export async function POST(request) {
 
 export async function GET() {
   return NextResponse.json(
-    { message: 'User registration API endpoint. Use POST to register a user.' },
+    { message: 'Method not allowed' },
     { status: 405 }
   );
 }
