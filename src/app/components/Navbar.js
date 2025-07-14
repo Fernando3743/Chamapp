@@ -8,6 +8,7 @@ import LoginDropdown from "./LoginDropdown";
 import ErrorBoundary from "./ErrorBoundary";
 import { usePageTranslations } from "../../hooks/usePageTranslations";
 import { useMountedPortal, useEscapeKey, useBodyScrollLock } from "../hooks";
+import { useSupabaseAuth } from "../contexts/SupabaseAuthContext";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { 
   selectMobileMenuOpen, 
@@ -29,6 +30,7 @@ import {
 const Navbar = memo(function Navbar() {
   const dispatch = useAppDispatch();
   const mobileMenuOpen = useAppSelector(selectMobileMenuOpen);
+  const { user, isAuthenticated, loading } = useSupabaseAuth();
   const { t } = usePageTranslations("home");
   const mobileMenuToggleRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -105,15 +107,35 @@ const Navbar = memo(function Navbar() {
 
         <div className="header-nav-right">
           <LanguageSelector />
-          <LoginDropdown />
-          <Link
-            href="/register"
-            className="cta-button primary-cta"
-            style={{ position: "relative" }}
-          >
-            {t("startYourBusiness") || t("getStarted")}
-            <span className="notification-badge">{t("new")}</span>
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <Link
+                href="/dashboard"
+                className="cta-button"
+              >
+                Dashboard
+              </Link>
+              <div className="user-menu">
+                <div className="user-avatar">
+                  {user?.user_metadata?.name?.charAt(0).toUpperCase() || 
+                   user?.email?.charAt(0).toUpperCase() || 
+                   'U'}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              <LoginDropdown />
+              <Link
+                href="/register"
+                className="cta-button primary-cta"
+                style={{ position: "relative" }}
+              >
+                {t("startYourBusiness") || t("getStarted")}
+                <span className="notification-badge">{t("new")}</span>
+              </Link>
+            </>
+          )}
 
           <button
             ref={mobileMenuToggleRef}
@@ -211,19 +233,30 @@ const Navbar = memo(function Navbar() {
               {/* Account Section */}
               <div className="mobile-sidebar-nav-section">
                 <div className="mobile-sidebar-nav-section-title">Account</div>
-                <Link href="/signin" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
-                  <span className="mobile-sidebar-nav-icon">
-                    <LogInIcon />
-                  </span>
-                  <span>{t("signIn")}</span>
-                </Link>
-                <Link href="/register" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
-                  <span className="mobile-sidebar-nav-icon">
-                    <UserPlusIcon />
-                  </span>
-                  <span>{t("startYourBusiness") || t("getStarted")}</span>
-                  <span className="mobile-sidebar-nav-badge">{t("new")}</span>
-                </Link>
+                {isAuthenticated ? (
+                  <Link href="/dashboard" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
+                    <span className="mobile-sidebar-nav-icon">
+                      <HomeIcon />
+                    </span>
+                    <span>Dashboard</span>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/signin" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
+                      <span className="mobile-sidebar-nav-icon">
+                        <LogInIcon />
+                      </span>
+                      <span>{t("signIn")}</span>
+                    </Link>
+                    <Link href="/register" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
+                      <span className="mobile-sidebar-nav-icon">
+                        <UserPlusIcon />
+                      </span>
+                      <span>{t("startYourBusiness") || t("getStarted")}</span>
+                      <span className="mobile-sidebar-nav-badge">{t("new")}</span>
+                    </Link>
+                  </>
+                )}
               </div>
 
               {/* Settings Section */}
@@ -246,16 +279,26 @@ const Navbar = memo(function Navbar() {
             </nav>
 
             {/* User Profile */}
-            <div className="mobile-sidebar-user-profile">
-              <div className="mobile-sidebar-profile-info" onClick={handleCloseMobileMenu}>
-                <div className="mobile-sidebar-profile-avatar">JD</div>
-                <div className="mobile-sidebar-profile-details">
-                  <div className="mobile-sidebar-profile-name">John Doe</div>
-                  <div className="mobile-sidebar-profile-role">Admin</div>
+            {isAuthenticated && user && (
+              <div className="mobile-sidebar-user-profile">
+                <div className="mobile-sidebar-profile-info" onClick={handleCloseMobileMenu}>
+                  <div className="mobile-sidebar-profile-avatar">
+                    {user?.user_metadata?.name?.charAt(0).toUpperCase() || 
+                     user?.email?.charAt(0).toUpperCase() || 
+                     'U'}
+                  </div>
+                  <div className="mobile-sidebar-profile-details">
+                    <div className="mobile-sidebar-profile-name">
+                      {user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
+                    </div>
+                    <div className="mobile-sidebar-profile-role">
+                      {user?.user_metadata?.role || 'Member'}
+                    </div>
+                  </div>
+                  <div className="mobile-sidebar-profile-dropdown">▼</div>
                 </div>
-                <div className="mobile-sidebar-profile-dropdown">▼</div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         </ErrorBoundary>,

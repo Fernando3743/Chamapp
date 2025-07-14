@@ -160,9 +160,16 @@ export default function SignInPage() {
         localStorage.removeItem('rememberedEmail');
       }
       
-      // Redirect to dashboard or home page
+      // Check if user has completed onboarding
+      const hasOnboarded = localStorage.getItem('user_onboarded');
+      
+      // Redirect to welcome page for first-time users, dashboard for returning users
       setTimeout(() => {
-        router.push('/dashboard');
+        if (!hasOnboarded) {
+          router.push('/welcome');
+        } else {
+          router.push('/dashboard');
+        }
       }, 500);
     } catch (error) {
       // Error is handled by Redux slice
@@ -225,9 +232,9 @@ export default function SignInPage() {
             </p>
           </div>
 
-          {/* Demo Notice */}
+          {/* Info Notice */}
           <div className="signin-demo-notice">
-            Demo: Use email "demo@businesshub.com" and password "Demo123!"
+            Sign in with your registered account credentials
           </div>
 
           {/* General Error Display */}

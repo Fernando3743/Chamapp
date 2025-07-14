@@ -16,13 +16,17 @@ export const loginUser = createAsyncThunk(
         body: JSON.stringify({ email, password }),
       });
       
+      const data = await response.json();
+      
       if (!response.ok) {
-        const error = await response.json();
-        return rejectWithValue(error.message || 'Login failed');
+        return rejectWithValue(data.message || 'Login failed');
       }
       
-      const userData = await response.json();
-      return userData;
+      if (!data.success) {
+        return rejectWithValue(data.message || 'Login failed');
+      }
+      
+      return data;
     } catch (error) {
       return rejectWithValue(error.message || 'Network error occurred');
     }
@@ -38,12 +42,17 @@ export const logoutUser = createAsyncThunk(
         method: 'POST',
       });
       
+      const data = await response.json();
+      
       if (!response.ok) {
-        const error = await response.json();
-        return rejectWithValue(error.message || 'Logout failed');
+        return rejectWithValue(data.message || 'Logout failed');
       }
       
-      return true;
+      if (!data.success) {
+        return rejectWithValue(data.message || 'Logout failed');
+      }
+      
+      return data;
     } catch (error) {
       return rejectWithValue(error.message || 'Network error occurred');
     }
@@ -131,9 +140,13 @@ const authSlice = createSlice({
         state.isLoginLoading = false;
         state.user = action.payload.user;
         state.isAuthenticated = true;
-        state.sessionExpiry = action.payload.sessionExpiry;
+        state.sessionExpiry = action.payload.session?.expires_at || null;
         state.lastActivity = Date.now();
         state.loginError = null;
+        // Store the access token if needed
+        if (action.payload.token) {
+          state.accessToken = action.payload.token;
+        }
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoginLoading = false;

@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useMemo, memo, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useSupabaseAuth } from '../contexts/SupabaseAuthContext';
 import { useAuth } from '../contexts/AuthContext';
 import { useClickOutside, useMountedPortal } from '../hooks';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
@@ -13,12 +14,6 @@ import {
   closeLoginDropdown,
   toggleLoginDropdown
 } from '../store/slices/uiSlice';
-import { 
-  loginUser,
-  selectIsLoginLoading,
-  selectLoginError,
-  clearError
-} from '../store/slices/authSlice';
 import { GoogleIcon, FacebookIcon } from './icons';
 import toast from 'react-hot-toast';
 import { 
@@ -59,8 +54,7 @@ const getSecureErrorMessage = (error) => {
 const LoginDropdown = memo(function LoginDropdown() {
   const dispatch = useAppDispatch();
   const isOpen = useAppSelector(selectLoginDropdownOpen);
-  const isLoginLoading = useAppSelector(selectIsLoginLoading);
-  const loginError = useAppSelector(selectLoginError);
+  const { signIn, loading: supabaseLoading } = useSupabaseAuth();
   
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -68,6 +62,7 @@ const LoginDropdown = memo(function LoginDropdown() {
     password: ''
   });
   const [localErrors, setLocalErrors] = useState({});
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
   
   const dropdownRef = useRef(null);
   const { loading: authLoading } = useAuth();
@@ -85,11 +80,7 @@ const LoginDropdown = memo(function LoginDropdown() {
     if (localErrors[name]) {
       setLocalErrors(prev => ({ ...prev, [name]: '' }));
     }
-    // Clear Redux login error when user starts typing
-    if (loginError) {
-      dispatch(clearError());
-    }
-  }, [localErrors, loginError, dispatch]);
+  }, [localErrors]);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
@@ -105,22 +96,37 @@ const LoginDropdown = memo(function LoginDropdown() {
       return;
     }
     
+    setIsLoginLoading(true);
+    
     try {
-      const result = await dispatch(loginUser({ 
-        email: formData.email, 
-        password: formData.password 
-      })).unwrap();
-      
-      // Success
-      toast.success('Login successful!', { duration: 3000 });
-      dispatch(closeLoginDropdown());
-      setFormData({ email: '', password: '' });
-      router.push('/dashboard');
+      const { data, error } = await signIn(formData.email, formData.password);
+
+      if (error) {
+        toast.error(error.message || 'Login failed', { duration: 6000 });
+        setLocalErrors({ general: error.message });
+      } else {
+        // Success
+        toast.success('Login successful!', { duration: 3000 });
+        dispatch(closeLoginDropdown());
+        setFormData({ email: '', password: '' });
+        
+        // Check if user has completed onboarding
+        const hasOnboarded = localStorage.getItem('user_onboarded');
+        
+        // Redirect to welcome page for first-time users, dashboard for returning users
+        if (!hasOnboarded) {
+          router.push('/welcome');
+        } else {
+          router.push('/dashboard');
+        }
+      }
     } catch (error) {
-      // Error is handled by Redux slice
-      toast.error(error || 'Login failed', { duration: 6000 });
+      console.error('Login error:', error);
+      toast.error('Login failed', { duration: 6000 });
+    } finally {
+      setIsLoginLoading(false);
     }
-  }, [formData.email, formData.password, dispatch, router]);
+  }, [formData.email, formData.password, signIn, dispatch, router]);
 
   const toggleDropdown = useCallback(() => {
     dispatch(toggleLoginDropdown());
@@ -128,7 +134,6 @@ const LoginDropdown = memo(function LoginDropdown() {
     if (!isOpen) {
       setFormData({ email: '', password: '' });
       setLocalErrors({});
-      dispatch(clearError());
     }
   }, [isOpen, dispatch]);
 
@@ -148,9 +153,9 @@ const LoginDropdown = memo(function LoginDropdown() {
             <p>Sign in to your account</p>
           </div>
 
-          {(loginError || localErrors.general) && (
+          {localErrors.general && (
             <div className="login-dropdown-error">
-              {loginError || localErrors.general}
+              {localErrors.general}
             </div>
           )}
 
@@ -253,7 +258,7 @@ const LoginDropdown = memo(function LoginDropdown() {
           </form>
         </div>
     );
-  }, [isOpen, isMounted, localErrors, loginError, formData, showPassword, isLoginLoading, authLoading, handleSubmit, handleInputChange, getInputClassName]);
+  }, [isOpen, isMounted, localErrors, formData, showPassword, isLoginLoading, authLoading, handleSubmit, handleInputChange, getInputClassName]);
 
   return (
     <div className="login-dropdown-container">

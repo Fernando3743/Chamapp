@@ -129,7 +129,7 @@ export default function RegisterPage() {
       if (data && !error) {
         toast.success('Registration successful! Redirecting...', { duration: 3000 });
         setTimeout(() => {
-          router.push('/login');
+          router.push('/signin');
         }, 1000);
       } else {
         const errorMessage = error?.message || 'Registration failed. Please try again.';
@@ -183,7 +183,7 @@ export default function RegisterPage() {
           <div className="register-card">
             <div className="form-header">
               <h2>Create your account</h2>
-              <p>Already have an account? <Link href="/login">Sign in</Link></p>
+              <p>Already have an account? <Link href="/signin">Sign in</Link></p>
             </div>
 
             {submitError && (

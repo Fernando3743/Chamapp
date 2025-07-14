@@ -36,11 +36,8 @@ const nextConfig = {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   
-  // Experimental features
-  experimental: {
-    // Enable strict mode for better development experience
-    strictMode: true,
-  },
+  // Enable strict mode for better development experience
+  reactStrictMode: true,
   
   // Image optimization
   images: {
