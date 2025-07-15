@@ -1,0 +1,103 @@
+/* FAQ Section */
+.faq {
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  position: relative;
+  z-index: var(--z-content);
+}
+
+/* FAQ Accordion */
+.faqContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto var(--spacing-4xl);
+}
+
+.sectionHeader h2 {
+  font-size: clamp(var(--font-size-4xl), 4vw, var(--font-size-5xl));
+  margin-bottom: var(--spacing-md);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.sectionHeader p {
+  font-size: var(--font-size-lg);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.gradientText {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.faqItem {
+  margin-bottom: var(--spacing-md);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.faqQuestion {
+  padding: 25px var(--spacing-lg);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  transition: all var(--duration-normal) ease;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  text-align: left;
+}
+
+.faqQuestion:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.faqQuestion h3 {
+  margin: 0;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+.faqAnswer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--duration-normal) ease;
+}
+
+.faqAnswerContent {
+  padding: 0 var(--spacing-lg) 25px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.faqItem.active .faqAnswer {
+  max-height: 300px;
+}
+
+/* Icon styles for Plus component */
+.faqIcon {
+  width: 24px;
+  height: 24px;
+  color: #9ca3af; /* text-gray-400 */
+  transition: transform 300ms;
+  flex-shrink: 0;
+}
+
+.faqItem.active .faqIcon {
+  transform: rotate(45deg);
+}

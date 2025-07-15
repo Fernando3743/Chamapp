@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
+import styles from '../styles/components/FAQ.module.css';
 
 const FAQ = React.memo(() => {
   const { t } = usePageTranslations('home');
@@ -36,11 +37,11 @@ const FAQ = React.memo(() => {
   };
 
   return (
-    <section className="faq" id="faq">
-      <div className="faq-container">
-        <div className="section-header">
+    <section className={styles.faq} id="faq">
+      <div className={styles.faqContainer}>
+        <div className={styles.sectionHeader}>
           <h2>
-            {t('frequentlyAsked')} <span className="gradient-text">{t('questions')}</span>
+            {t('frequentlyAsked')} <span className={styles.gradientText}>{t('questions')}</span>
           </h2>
           <p>
             {t('everythingAboutChameleonApp')}
@@ -51,22 +52,22 @@ const FAQ = React.memo(() => {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className={`faq-item ${activeIndex === index ? 'active' : ''}`}
+              className={`${styles.faqItem} ${activeIndex === index ? styles.active : ''}`}
             >
               <button
-                className="faq-question"
+                className={styles.faqQuestion}
                 onClick={() => toggleFAQ(index)}
               >
                 <h3>{faq.question}</h3>
                 <Plus
-                  className={`w-6 h-6 text-gray-400 transition-transform duration-300 flex-shrink-0 ${
-                    activeIndex === index ? 'rotate-45' : ''
+                  className={`${styles.faqIcon} ${
+                    activeIndex === index ? styles.active : ''
                   }`}
                 />
               </button>
               
-              <div className="faq-answer">
-                <div className="faq-answer-content">
+              <div className={styles.faqAnswer}>
+                <div className={styles.faqAnswerContent}>
                   <p>{faq.answer}</p>
                 </div>
               </div>

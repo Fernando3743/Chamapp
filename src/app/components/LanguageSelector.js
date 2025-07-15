@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { getTranslation } from '../../lib/translations';
+import styles from '../styles/components/LanguageSelector.module.css';
 
 const LanguageSelector = React.memo(() => {
   const { language, changeLanguage } = useLanguage();
@@ -38,28 +39,28 @@ const LanguageSelector = React.memo(() => {
   }, []);
 
   return (
-    <div className="language-selector" ref={dropdownRef}>
+    <div className={styles.languageSelector} ref={dropdownRef}>
       <button
-        className="language-toggle"
+        className={styles.languageToggle}
         onClick={() => setIsOpen(!isOpen)}
         aria-label={t('selectLanguage')}
         aria-expanded={isOpen}
       >
-        <span className="language-flag">{currentLanguage?.flag}</span>
-        <span className="language-code">{language.toUpperCase()}</span>
-        <span className={`language-arrow ${isOpen ? 'open' : ''}`}>▼</span>
+        <span className={styles.languageFlag}>{currentLanguage?.flag}</span>
+        <span className={styles.languageCode}>{language.toUpperCase()}</span>
+        <span className={`${styles.languageArrow} ${isOpen ? styles.open : ''}`}>▼</span>
       </button>
 
       {isOpen && (
-        <div className="language-dropdown">
+        <div className={styles.languageDropdown}>
           {languages.map((lang) => (
             <button
               key={lang.code}
-              className={`language-option ${language === lang.code ? 'active' : ''}`}
+              className={`${styles.languageOption} ${language === lang.code ? styles.active : ''}`}
               onClick={() => handleLanguageChange(lang.code)}
             >
-              <span className="language-flag">{lang.flag}</span>
-              <span className="language-name">{lang.name}</span>
+              <span className={styles.languageFlag}>{lang.flag}</span>
+              <span className={styles.languageName}>{lang.name}</span>
             </button>
           ))}
         </div>

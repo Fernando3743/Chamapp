@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
+import styles from '../styles/components/Pricing.module.css';
 
 const Pricing = React.memo(() => {
   const { t } = usePageTranslations('home');
@@ -58,29 +59,29 @@ const Pricing = React.memo(() => {
   ];
 
   return (
-    <section className="pricing" id="pricing">
-      <div className="section-header">
+    <section className={styles.pricing} id="pricing">
+      <div className={styles.sectionHeader}>
         <h2>
-          {t('simpleTransparentPricing')} <span className="gradient-text">{t('pricingWord')}</span>
+          {t('simpleTransparentPricing')} <span className={styles.gradientText}>{t('pricingWord')}</span>
         </h2>
         <p>
           {t('choosePlanForBusiness')}
         </p>
       </div>
 
-      <div className="pricing-grid">
+      <div className={styles.pricingGrid}>
         {plans.map((plan, index) => (
           <div
             key={index}
-            className={`pricing-card ${plan.featured ? 'featured' : ''}`}
+            className={`${styles.pricingCard} ${plan.featured ? styles.featured : ''}`}
           >
-            <div className="plan-name">{plan.name}</div>
-            <div className="plan-price">
+            <div className={styles.planName}>{plan.name}</div>
+            <div className={styles.planPrice}>
               {plan.price}<span>{plan.period}</span>
             </div>
-            <div className="plan-description">{plan.description}</div>
+            <div className={styles.planDescription}>{plan.description}</div>
 
-            <ul className="plan-features">
+            <ul className={styles.planFeatures}>
               {plan.features.map((feature, featureIndex) => (
                 <li key={featureIndex}>{feature}</li>
               ))}
@@ -88,7 +89,7 @@ const Pricing = React.memo(() => {
 
             <Link
               href="/register"
-              className={plan.featured ? 'cta-button primary-cta' : 'cta-button'}
+              className={plan.featured ? `${styles.ctaButton} ${styles.primaryCta}` : styles.ctaButton}
             >
               {plan.name === t('enterprise') ? t('contactSales') : t('getStarted')}
             </Link>

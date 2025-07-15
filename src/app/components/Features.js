@@ -3,6 +3,7 @@
 import React from 'react';
 import { Zap, Globe, Users, BarChart3, Shield, Smartphone } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
+import styles from '../styles/components/Features.module.css';
 
 const Features = React.memo(() => {
   const { t } = usePageTranslations('home');
@@ -41,20 +42,20 @@ const Features = React.memo(() => {
   ];
 
   return (
-    <section className="features" id="features">
-      <div className="section-header">
+    <section className={styles.features} id="features">
+      <div className={styles.sectionHeader}>
         <h2>
-          {t('everythingYouNeed')} <span className="gradient-text">{t('nothingYouDont')}</span>
+          {t('everythingYouNeed')} <span className={styles.gradientText}>{t('nothingYouDont')}</span>
         </h2>
         <p>
           {t('powerfulFeatures')}
         </p>
       </div>
       
-      <div className="features-grid">
+      <div className={styles.featuresGrid}>
         {features.map((feature, index) => (
-          <div key={index} className="feature-card glass-card">
-            <div className="feature-icon">
+          <div key={index} className={styles.featureCard}>
+            <div className={styles.featureIcon}>
               {feature.icon}
             </div>
             <h3>{feature.title}</h3>

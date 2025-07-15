@@ -1,0 +1,132 @@
+/* BusinessTypes Component CSS Module */
+
+.businessTypes {
+  padding: var(--spacing-4xl) var(--spacing-2xl);
+  position: relative;
+  z-index: var(--z-content);
+}
+
+.sectionHeader {
+  max-width: 800px;
+  margin: 0 auto var(--spacing-3xl);
+  text-align: center;
+}
+
+.sectionHeader h2 {
+  font-size: clamp(var(--font-size-4xl), 5vw, var(--font-size-5xl));
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  line-height: 1.2;
+}
+
+.sectionHeader p {
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.businessShowcase {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-lg);
+  margin-top: var(--spacing-4xl);
+}
+
+.businessCard {
+  padding: var(--spacing-lg);
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  transition: all var(--duration-normal) ease;
+}
+
+.businessCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+}
+
+.businessCardIcon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto var(--spacing-md);
+  background: var(--primary-gradient);
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all var(--duration-normal) ease;
+}
+
+.businessCard:hover .businessCardIcon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.businessCard h3 {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+}
+
+.businessCard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.businessCard li {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  padding: var(--spacing-xs) 0;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+}
+
+.businessCard li::before {
+  content: "✓";
+  color: var(--success-color);
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* Gradient Text */
+.gradientText {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .businessTypes {
+    padding: var(--spacing-3xl) var(--spacing-md);
+  }
+
+  .businessShowcase {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .businessCard {
+    padding: var(--spacing-md);
+  }
+
+  .sectionHeader h2 {
+    font-size: var(--font-size-3xl);
+  }
+
+  .sectionHeader p {
+    font-size: var(--font-size-lg);
+  }
+}

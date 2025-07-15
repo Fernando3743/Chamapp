@@ -1,13 +1,13 @@
 /* Login Dropdown Styles - Glassmorphism Design */
 
 /* Container */
-.login-dropdown-container {
+.loginDropdownContainer {
   position: relative;
   display: inline-block;
 }
 
 /* Trigger Button */
-.login-dropdown-trigger {
+.loginDropdownTrigger {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,19 +25,19 @@
   text-decoration: none;
 }
 
-.login-dropdown-trigger:hover {
+.loginDropdownTrigger:hover {
   background: rgba(255, 255, 255, 0.15);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
 }
 
-.login-dropdown-trigger.active {
+.loginDropdownTrigger.active {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(102, 126, 234, 0.5);
 }
 
 /* Dropdown Menu */
-.login-dropdown-menu {
+.loginDropdownMenu {
   position: fixed;
   top: 80px;
   right: 20px;
@@ -52,7 +52,7 @@
 }
 
 /* Arrow pointing to sign in button */
-.login-dropdown-menu::before {
+.loginDropdownMenu::before {
   content: '';
   position: absolute;
   top: -10px;
@@ -66,7 +66,7 @@
 }
 
 /* Arrow border for glassmorphism effect */
-.login-dropdown-menu::after {
+.loginDropdownMenu::after {
   content: '';
   position: absolute;
   top: -11px;
@@ -91,25 +91,25 @@
 }
 
 /* Header */
-.login-dropdown-header {
+.loginDropdownHeader {
   text-align: center;
   margin-bottom: 25px;
 }
 
-.login-dropdown-header h3 {
+.loginDropdownHeader h3 {
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 5px;
   color: var(--text-primary);
 }
 
-.login-dropdown-header p {
+.loginDropdownHeader p {
   font-size: 14px;
   color: var(--text-secondary);
 }
 
 /* Error Message */
-.login-dropdown-error {
+.loginDropdownError {
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 8px;
@@ -121,27 +121,27 @@
 }
 
 /* Form */
-.login-dropdown-form {
+.loginDropdownForm {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
 /* Form Groups */
-.login-form-group {
+.loginFormGroup {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.login-form-group label {
+.loginFormGroup label {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-secondary);
 }
 
 /* Inputs */
-.login-dropdown-input {
+.loginDropdownInput {
   width: 100%;
   padding: 12px 16px;
   background: rgba(255, 255, 255, 0.05);
@@ -153,27 +153,27 @@
   font-family: inherit;
 }
 
-.login-dropdown-input:focus {
+.loginDropdownInput:focus {
   outline: none;
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(102, 126, 234, 0.5);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
-.login-dropdown-input::placeholder {
+.loginDropdownInput::placeholder {
   color: rgba(255, 255, 255, 0.4);
 }
 
-.login-dropdown-input.error {
+.loginDropdownInput.error {
   border-color: rgba(239, 68, 68, 0.5);
 }
 
 /* Password Input Wrapper */
-.login-password-wrapper {
+.loginPasswordWrapper {
   position: relative;
 }
 
-.login-password-toggle {
+.loginPasswordToggle {
   position: absolute;
   right: 12px;
   top: 50%;
@@ -186,19 +186,19 @@
   transition: all 0.3s ease;
 }
 
-.login-password-toggle:hover {
+.loginPasswordToggle:hover {
   color: var(--text-primary);
 }
 
 /* Field Errors */
-.login-field-error {
+.loginFieldError {
   font-size: 12px;
   color: #ef4444;
   margin-top: 4px;
 }
 
 /* Form Options */
-.login-form-options {
+.loginFormOptions {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -206,7 +206,7 @@
 }
 
 /* Checkbox */
-.login-checkbox {
+.loginCheckbox {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -216,7 +216,7 @@
   margin: 0;
 }
 
-.login-checkbox input[type="checkbox"] {
+.loginCheckbox input[type="checkbox"] {
   opacity: 0;
   position: absolute;
   width: 16px;
@@ -225,7 +225,7 @@
   margin: 0;
 }
 
-.login-checkmark {
+.loginCheckmark {
   position: relative;
   width: 16px;
   height: 16px;
@@ -236,12 +236,12 @@
   flex-shrink: 0;
 }
 
-.login-checkbox input[type="checkbox"]:checked ~ .login-checkmark {
+.loginCheckbox input[type="checkbox"]:checked ~ .loginCheckmark {
   background: var(--primary-gradient);
   border-color: transparent;
 }
 
-.login-checkbox input[type="checkbox"]:checked ~ .login-checkmark::after {
+.loginCheckbox input[type="checkbox"]:checked ~ .loginCheckmark::after {
   content: '✓';
   position: absolute;
   top: 50%;
@@ -253,20 +253,20 @@
 }
 
 /* Forgot Password Link */
-.login-forgot-link {
+.loginForgotLink {
   font-size: 14px;
   color: #667eea;
   text-decoration: none;
   transition: all 0.3s ease;
 }
 
-.login-forgot-link:hover {
+.loginForgotLink:hover {
   color: #764ba2;
   text-decoration: underline;
 }
 
 /* Submit Button */
-.login-dropdown-submit {
+.loginDropdownSubmit {
   width: 100%;
   padding: 12px 20px;
   background: var(--primary-gradient);
@@ -284,25 +284,25 @@
   margin-top: 5px;
 }
 
-.login-dropdown-submit:hover:not(:disabled) {
+.loginDropdownSubmit:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
 
-.login-dropdown-submit:disabled {
+.loginDropdownSubmit:disabled {
   opacity: 0.7;
   cursor: not-allowed;
   transform: none;
 }
 
 /* Divider */
-.login-dropdown-divider {
+.loginDropdownDivider {
   position: relative;
   text-align: center;
   margin: 15px 0;
 }
 
-.login-dropdown-divider::before {
+.loginDropdownDivider::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -312,7 +312,7 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-.login-dropdown-divider span {
+.loginDropdownDivider span {
   position: relative;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur-heavy));
@@ -323,13 +323,13 @@
 }
 
 /* Social Buttons */
-.login-social-buttons {
+.loginSocialButtons {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
-.login-social-btn {
+.loginSocialBtn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -345,42 +345,42 @@
   transition: all 0.3s ease;
 }
 
-.login-social-btn:hover {
+.loginSocialBtn:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateY(-1px);
 }
 
 /* Footer */
-.login-dropdown-footer {
+.loginDropdownFooter {
   text-align: center;
   margin-top: 15px;
 }
 
-.login-dropdown-footer p {
+.loginDropdownFooter p {
   font-size: 14px;
   color: var(--text-secondary);
   margin: 0;
 }
 
-.login-dropdown-footer a {
+.loginDropdownFooter a {
   color: #667eea;
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
-.login-dropdown-footer a:hover {
+.loginDropdownFooter a:hover {
   color: #764ba2;
   text-decoration: underline;
 }
 
 /* Mobile - Full width dropdown */
 @media (max-width: 600px) {
-  .login-dropdown-container {
+  .loginDropdownContainer {
     display: inline-block;
   }
   
-  .login-dropdown-menu {
+  .loginDropdownMenu {
     top: 70px !important;
     left: 10px !important;
     right: 10px !important;
@@ -390,7 +390,7 @@
     animation: dropdownSlideIn 0.3s ease !important;
   }
   
-  .login-dropdown-trigger {
+  .loginDropdownTrigger {
     padding: 10px 16px;
     font-size: 13px;
   }
@@ -398,11 +398,11 @@
 
 /* Tablet - Right-aligned dropdown menu */
 @media (min-width: 601px) and (max-width: 1280px) {
-  .login-dropdown-container {
+  .loginDropdownContainer {
     display: inline-block;
   }
   
-  .login-dropdown-menu {
+  .loginDropdownMenu {
     top: 70px;
     right: 20px;
     left: auto;
@@ -417,7 +417,32 @@
 
 /* Desktop - Show dropdown */
 @media (min-width: 1281px) {
-  .login-dropdown-container {
+  .loginDropdownContainer {
     display: inline-block;
   }
+}
+
+/* CTA Button from globals */
+.ctaButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15) ;
+  backdrop-filter: blur(var(--glass-blur-heavy));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.ctaButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
 }

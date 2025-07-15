@@ -21,6 +21,7 @@ import {
   Loader2,
   Lock
 } from 'lucide-react';
+import styles from '../styles/components/LoginDropdown.module.css';
 
 // Secure error message mapping to prevent XSS
 const ERROR_MESSAGES = {
@@ -136,8 +137,8 @@ const LoginDropdown = memo(function LoginDropdown() {
   }, [isOpen, dispatch]);
 
   const getInputClassName = useCallback((fieldName) => {
-    let className = 'login-dropdown-input';
-    if (localErrors[fieldName]) className += ' error';
+    let className = styles.loginDropdownInput;
+    if (localErrors[fieldName]) className += ` ${styles.error}`;
     return className;
   }, [localErrors]);
 
@@ -145,20 +146,20 @@ const LoginDropdown = memo(function LoginDropdown() {
     if (!isOpen || !isMounted) return null;
     
     return (
-    <div className="login-dropdown-menu" ref={dropdownRef}>
-          <div className="login-dropdown-header">
+    <div className={styles.loginDropdownMenu} ref={dropdownRef}>
+          <div className={styles.loginDropdownHeader}>
             <h3>Welcome back</h3>
             <p>Sign in to your account</p>
           </div>
 
           {localErrors.general && (
-            <div className="login-dropdown-error">
+            <div className={styles.loginDropdownError}>
               {localErrors.general}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="login-dropdown-form">
-            <div className="login-form-group">
+          <form onSubmit={handleSubmit} className={styles.loginDropdownForm}>
+            <div className={styles.loginFormGroup}>
               <label htmlFor="dropdown-email">Email</label>
               <input
                 type="email"
@@ -171,13 +172,13 @@ const LoginDropdown = memo(function LoginDropdown() {
                 required
               />
               {localErrors.email && (
-                <div className="login-field-error">{localErrors.email}</div>
+                <div className={styles.loginFieldError}>{localErrors.email}</div>
               )}
             </div>
 
-            <div className="login-form-group">
+            <div className={styles.loginFormGroup}>
               <label htmlFor="dropdown-password">Password</label>
-              <div className="login-password-wrapper">
+              <div className={styles.loginPasswordWrapper}>
                 <input
                   type={showPassword ? "text" : "password"}
                   id="dropdown-password"
@@ -190,31 +191,31 @@ const LoginDropdown = memo(function LoginDropdown() {
                 />
                 <button
                   type="button"
-                  className="login-password-toggle"
+                  className={styles.loginPasswordToggle}
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
               {localErrors.password && (
-                <div className="login-field-error">{localErrors.password}</div>
+                <div className={styles.loginFieldError}>{localErrors.password}</div>
               )}
             </div>
 
-            <div className="login-form-options">
-              <label className="login-checkbox">
+            <div className={styles.loginFormOptions}>
+              <label className={styles.loginCheckbox}>
                 <input type="checkbox" />
-                <span className="login-checkmark"></span>
+                <span className={styles.loginCheckmark}></span>
                 Remember me
               </label>
-              <Link href="/forgot-password" className="login-forgot-link">
+              <Link href="/forgot-password" className={styles.loginForgotLink}>
                 Forgot password?
               </Link>
             </div>
 
             <button 
               type="submit" 
-              className="login-dropdown-submit"
+              className={styles.loginDropdownSubmit}
               disabled={isLoginLoading || supabaseLoading}
             >
               {(isLoginLoading || supabaseLoading) ? (
@@ -230,22 +231,22 @@ const LoginDropdown = memo(function LoginDropdown() {
               )}
             </button>
 
-            <div className="login-dropdown-divider">
+            <div className={styles.loginDropdownDivider}>
               <span>or</span>
             </div>
 
-            <div className="login-social-buttons">
-              <button type="button" className="login-social-btn">
+            <div className={styles.loginSocialButtons}>
+              <button type="button" className={styles.loginSocialBtn}>
                 <GoogleIcon />
                 Google
               </button>
-              <button type="button" className="login-social-btn">
+              <button type="button" className={styles.loginSocialBtn}>
                 <FacebookIcon />
                 Facebook
               </button>
             </div>
 
-            <div className="login-dropdown-footer">
+            <div className={styles.loginDropdownFooter}>
               <p>
                 Don&apos;t have an account?{' '}
                 <Link href="/register" onClick={() => setIsOpen(false)}>
@@ -259,9 +260,9 @@ const LoginDropdown = memo(function LoginDropdown() {
   }, [isOpen, isMounted, localErrors, formData, showPassword, isLoginLoading, supabaseLoading, handleSubmit, handleInputChange, getInputClassName]);
 
   return (
-    <div className="login-dropdown-container">
+    <div className={styles.loginDropdownContainer}>
       <button 
-        className={`cta-button login-dropdown-trigger ${isOpen ? 'active' : ''}`}
+        className={`${styles.ctaButton} ${styles.loginDropdownTrigger} ${isOpen ? styles.active : ''}`}
         onClick={toggleDropdown}
       >
         Sign In

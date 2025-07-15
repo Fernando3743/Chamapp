@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import styles from '../styles/components/ErrorBoundary.module.css';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -39,14 +40,14 @@ class ErrorBoundary extends React.Component {
 
       // Default fallback UI
       return (
-        <div className="error-boundary">
-          <div className="error-boundary-content">
+        <div className={styles.errorBoundary}>
+          <div className={styles.errorBoundaryContent}>
             <h2>Something went wrong</h2>
             <p>We apologize for the inconvenience. Please try refreshing the page.</p>
             {process.env.NODE_ENV === 'development' && (
-              <details style={{ whiteSpace: 'pre-wrap', marginTop: '1rem' }}>
-                <summary>Error Details (Development Only)</summary>
-                <div style={{ padding: '1rem', background: '#f5f5f5', borderRadius: '4px', marginTop: '0.5rem' }}>
+              <details className={styles.errorDetails}>
+                <summary className={styles.errorDetailsSummary}>Error Details (Development Only)</summary>
+                <div className={styles.errorDetailsContent}>
                   <strong>Error:</strong> {this.state.error && this.state.error.toString()}
                   <br />
                   <strong>Stack trace:</strong> {this.state.errorInfo.componentStack}
@@ -54,7 +55,7 @@ class ErrorBoundary extends React.Component {
               </details>
             )}
             <button 
-              className="error-boundary-retry"
+              className={styles.errorBoundaryRetry}
               onClick={() => window.location.reload()}
             >
               Refresh Page

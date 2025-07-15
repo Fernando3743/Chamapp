@@ -3,13 +3,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
+import styles from '../styles/components/CTASection.module.css';
 
 const CTASection = React.memo(() => {
   const { t } = usePageTranslations('home');
 
   return (
-    <section className="cta-section">
-      <div className="cta-content">
+    <section className={styles.ctaSection}>
+      <div className={styles.ctaContent}>
         <h2>
           {t('readyToTransform')}
         </h2>
@@ -17,11 +18,11 @@ const CTASection = React.memo(() => {
           {t('joinThousands')}
         </p>
         
-        <Link href="/register" className="cta-button primary-cta">
+        <Link href="/register" className={`${styles.ctaButton} ${styles.primaryCta}`}>
           {t('startFreeTrial')}
         </Link>
         
-        <p style={{ marginTop: '24px', fontSize: '14px', color: 'var(--text-secondary)' }}>
+        <p className={styles.disclaimer}>
           {t('noCreditCard')} • {t('cancelAnytime')}
         </p>
       </div>

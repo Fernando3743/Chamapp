@@ -1,13 +1,14 @@
 "use client";
 
-import { useRef, useCallback, useEffect, memo } from "react";
+import { useRef, useCallback, useEffect, memo, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import LanguageSelector from "./LanguageSelector";
 import LoginDropdown from "./LoginDropdown";
 import ErrorBoundary from "./ErrorBoundary";
 import { usePageTranslations } from "../../hooks/usePageTranslations";
-import { useMountedPortal, useEscapeKey, useBodyScrollLock } from "../hooks";
+import { useMountedPortal, useEscapeKey, useBodyScrollLock, useClickOutside } from "../hooks";
 import { useSupabaseAuth } from "../contexts/SupabaseAuthContext";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { 
@@ -26,21 +27,31 @@ import {
   SettingsIcon, 
   BellIcon 
 } from "./icons";
+import styles from '../styles/components/Navbar.module.css';
 
 const Navbar = memo(function Navbar() {
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const mobileMenuOpen = useAppSelector(selectMobileMenuOpen);
-  const { user, isAuthenticated, loading } = useSupabaseAuth();
+  const { user, isAuthenticated, loading, signOut } = useSupabaseAuth();
   const { t } = usePageTranslations("home");
   const mobileMenuToggleRef = useRef(null);
   const mobileMenuRef = useRef(null);
+  const profileMenuRef = useRef(null);
   const isMounted = useMountedPortal();
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
 
   // Close mobile menu on escape key
   useEscapeKey(useCallback(() => dispatch(closeMobileMenu()), [dispatch]), mobileMenuOpen);
   
+  // Close profile menu on escape key
+  useEscapeKey(useCallback(() => setProfileMenuOpen(false), []), profileMenuOpen);
+  
   // Lock body scroll when mobile menu is open
   useBodyScrollLock(mobileMenuOpen);
+  
+  // Close profile menu when clicking outside
+  useClickOutside(profileMenuRef, () => setProfileMenuOpen(false));
 
   // Focus management for accessibility
   useEffect(() => {
@@ -77,16 +88,26 @@ const Navbar = memo(function Navbar() {
     dispatch(toggleMobileMenu());
   }, [dispatch]);
 
+  const handleProfileClick = useCallback(() => {
+    setProfileMenuOpen(!profileMenuOpen);
+  }, [profileMenuOpen]);
+
+  const handleSignOut = useCallback(async () => {
+    setProfileMenuOpen(false);
+    await signOut();
+    router.push('/');
+  }, [signOut, router]);
+
   return (
-    <nav className="header-nav">
-      <div className="header-nav-container">
-        <div className="header-nav-left">
-          <Link href="/" className="header-logo">
+    <nav className={styles.headerNav}>
+      <div className={styles.headerNavContainer}>
+        <div className={styles.headerNavLeft}>
+          <Link href="/" className={styles.headerLogo}>
             BusinessHub
           </Link>
 
           {/* Desktop nav links - hidden on mobile */}
-          <div className="header-nav-links header-desktop-only">
+          <div className={`${styles.headerNavLinks} ${styles.headerDesktopOnly}`}>
             <a href="#features" onClick={handleSmoothScroll}>
               {t("featuresTitle")}
             </a>
@@ -105,22 +126,75 @@ const Navbar = memo(function Navbar() {
           </div>
         </div>
 
-        <div className="header-nav-right">
+        <div className={styles.headerNavRight}>
           <LanguageSelector />
           {isAuthenticated ? (
             <>
               <Link
                 href="/dashboard"
-                className="cta-button"
+                className={styles.ctaButton}
               >
                 Dashboard
               </Link>
-              <div className="user-menu">
-                <div className="user-avatar">
+              <div className={styles.userMenu} ref={profileMenuRef}>
+                <div 
+                  className={styles.userAvatar}
+                  onClick={handleProfileClick}
+                  role="button"
+                  tabIndex={0}
+                  aria-label="User profile menu"
+                  aria-expanded={profileMenuOpen}
+                >
                   {user?.user_metadata?.name?.charAt(0).toUpperCase() || 
                    user?.email?.charAt(0).toUpperCase() || 
                    'U'}
                 </div>
+                
+                {/* Profile Dropdown Menu */}
+                {profileMenuOpen && (
+                  <div className={styles.profileDropdown}>
+                    <div className={styles.profileDropdownHeader}>
+                      <div className={styles.profileDropdownAvatar}>
+                        {user?.user_metadata?.name?.charAt(0).toUpperCase() || 
+                         user?.email?.charAt(0).toUpperCase() || 
+                         'U'}
+                      </div>
+                      <div className={styles.profileDropdownInfo}>
+                        <div className={styles.profileDropdownName}>
+                          {user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
+                        </div>
+                        <div className={styles.profileDropdownEmail}>
+                          {user?.email}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.profileDropdownDivider}></div>
+                    <Link 
+                      href="/dashboard" 
+                      className={styles.profileDropdownItem}
+                      onClick={() => setProfileMenuOpen(false)}
+                    >
+                      <HomeIcon className={styles.profileDropdownIcon} />
+                      <span>Dashboard</span>
+                    </Link>
+                    <Link 
+                      href="/profile" 
+                      className={styles.profileDropdownItem}
+                      onClick={() => setProfileMenuOpen(false)}
+                    >
+                      <SettingsIcon className={styles.profileDropdownIcon} />
+                      <span>Profile Settings</span>
+                    </Link>
+                    <div className={styles.profileDropdownDivider}></div>
+                    <button 
+                      className={styles.profileDropdownItem}
+                      onClick={handleSignOut}
+                    >
+                      <LogInIcon className={styles.profileDropdownIcon} />
+                      <span>Sign Out</span>
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           ) : (
@@ -128,18 +202,18 @@ const Navbar = memo(function Navbar() {
               <LoginDropdown />
               <Link
                 href="/register"
-                className="cta-button primary-cta"
+                className={`${styles.ctaButton} ${styles.ctaButtonPrimary}`}
                 style={{ position: "relative" }}
               >
                 {t("startYourBusiness") || t("getStarted")}
-                <span className="notification-badge">{t("new")}</span>
+                <span className={styles.notificationBadge}>{t("new")}</span>
               </Link>
             </>
           )}
 
           <button
             ref={mobileMenuToggleRef}
-            className={`header-mobile-menu-toggle ${mobileMenuOpen ? "active" : ""}`}
+            className={`${styles.headerMobileMenuToggle} ${mobileMenuOpen ? styles.active : ""}`}
             onClick={handleToggleMobileMenu}
             aria-label="Toggle mobile menu"
             aria-expanded={mobileMenuOpen}
@@ -156,8 +230,8 @@ const Navbar = memo(function Navbar() {
       {isMounted && mobileMenuOpen && createPortal(
         <ErrorBoundary 
           fallback={
-            <div className="error-boundary compact">
-              <div className="error-boundary-content">
+            <div className={`${styles.errorBoundary} ${styles.compact}`}>
+              <div className={styles.errorBoundaryContent}>
                 <h2>Menu Unavailable</h2>
                 <p>Please refresh the page to restore navigation.</p>
               </div>
@@ -165,7 +239,7 @@ const Navbar = memo(function Navbar() {
           }
         >
         <div 
-          className="mobile-sidebar-overlay" 
+          className={styles.mobileSidebarOverlay} 
           onClick={handleCloseMobileMenu}
           role="dialog"
           aria-modal="true"
@@ -173,18 +247,18 @@ const Navbar = memo(function Navbar() {
         >
           <div 
             ref={mobileMenuRef}
-            className="mobile-sidebar-menu" 
+            className={styles.mobileSidebarMenu} 
             onClick={(e) => e.stopPropagation()}
             id="mobile-sidebar-menu"
             role="navigation"
             aria-label="Mobile navigation menu"
           >
             {/* Logo Section */}
-            <div className="mobile-sidebar-logo">
-              <div className="mobile-sidebar-logo-icon">B</div>
-              <div className="mobile-sidebar-logo-text">BusinessHub</div>
+            <div className={styles.mobileSidebarLogo}>
+              <div className={styles.mobileSidebarLogoIcon}>B</div>
+              <div className={styles.mobileSidebarLogoText}>BusinessHub</div>
               <button 
-                className="mobile-sidebar-close"
+                className={styles.mobileSidebarClose}
                 onClick={handleCloseMobileMenu}
                 aria-label="Close mobile menu"
                 type="button"
@@ -194,36 +268,36 @@ const Navbar = memo(function Navbar() {
             </div>
 
             {/* Navigation Menu */}
-            <nav className="mobile-sidebar-nav-menu">
+            <nav className={styles.mobileSidebarNavMenu}>
               {/* Navigation Section */}
-              <div className="mobile-sidebar-nav-section">
-                <div className="mobile-sidebar-nav-section-title">Navigation</div>
-                <a href="#features" className="mobile-sidebar-nav-item active" onClick={handleSmoothScroll}>
-                  <span className="mobile-sidebar-nav-icon">
+              <div className={styles.mobileSidebarNavSection}>
+                <div className={styles.mobileSidebarNavSectionTitle}>Navigation</div>
+                <a href="#features" className={`${styles.mobileSidebarNavItem} ${styles.active}`} onClick={handleSmoothScroll}>
+                  <span className={styles.mobileSidebarNavIcon}>
                     <HomeIcon />
                   </span>
                   <span>{t("featuresTitle")}</span>
                 </a>
-                <a href="#solutions" className="mobile-sidebar-nav-item" onClick={handleSmoothScroll}>
-                  <span className="mobile-sidebar-nav-icon">
+                <a href="#solutions" className={styles.mobileSidebarNavItem} onClick={handleSmoothScroll}>
+                  <span className={styles.mobileSidebarNavIcon}>
                     <AnalyticsIcon />
                   </span>
                   <span>{t("solutions")}</span>
                 </a>
-                <a href="#pricing" className="mobile-sidebar-nav-item" onClick={handleSmoothScroll}>
-                  <span className="mobile-sidebar-nav-icon">
+                <a href="#pricing" className={styles.mobileSidebarNavItem} onClick={handleSmoothScroll}>
+                  <span className={styles.mobileSidebarNavIcon}>
                     <CalendarIcon />
                   </span>
                   <span>{t("pricing")}</span>
                 </a>
-                <a href="#testimonials" className="mobile-sidebar-nav-item" onClick={handleSmoothScroll}>
-                  <span className="mobile-sidebar-nav-icon">
+                <a href="#testimonials" className={styles.mobileSidebarNavItem} onClick={handleSmoothScroll}>
+                  <span className={styles.mobileSidebarNavIcon}>
                     <UsersIcon />
                   </span>
                   <span>{t("testimonials")}</span>
                 </a>
-                <a href="#faq" className="mobile-sidebar-nav-item" onClick={handleSmoothScroll}>
-                  <span className="mobile-sidebar-nav-icon">
+                <a href="#faq" className={styles.mobileSidebarNavItem} onClick={handleSmoothScroll}>
+                  <span className={styles.mobileSidebarNavIcon}>
                     <HelpCircleIcon />
                   </span>
                   <span>{t("faq")}</span>
@@ -231,71 +305,71 @@ const Navbar = memo(function Navbar() {
               </div>
 
               {/* Account Section */}
-              <div className="mobile-sidebar-nav-section">
-                <div className="mobile-sidebar-nav-section-title">Account</div>
+              <div className={styles.mobileSidebarNavSection}>
+                <div className={styles.mobileSidebarNavSectionTitle}>Account</div>
                 {isAuthenticated ? (
-                  <Link href="/dashboard" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
-                    <span className="mobile-sidebar-nav-icon">
+                  <Link href="/dashboard" className={styles.mobileSidebarNavItem} onClick={handleCloseMobileMenu}>
+                    <span className={styles.mobileSidebarNavIcon}>
                       <HomeIcon />
                     </span>
                     <span>Dashboard</span>
                   </Link>
                 ) : (
                   <>
-                    <Link href="/signin" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
-                      <span className="mobile-sidebar-nav-icon">
+                    <Link href="/signin" className={styles.mobileSidebarNavItem} onClick={handleCloseMobileMenu}>
+                      <span className={styles.mobileSidebarNavIcon}>
                         <LogInIcon />
                       </span>
                       <span>{t("signIn")}</span>
                     </Link>
-                    <Link href="/register" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
-                      <span className="mobile-sidebar-nav-icon">
+                    <Link href="/register" className={styles.mobileSidebarNavItem} onClick={handleCloseMobileMenu}>
+                      <span className={styles.mobileSidebarNavIcon}>
                         <UserPlusIcon />
                       </span>
                       <span>{t("startYourBusiness") || t("getStarted")}</span>
-                      <span className="mobile-sidebar-nav-badge">{t("new")}</span>
+                      <span className={styles.mobileSidebarNavBadge}>{t("new")}</span>
                     </Link>
                   </>
                 )}
               </div>
 
               {/* Settings Section */}
-              <div className="mobile-sidebar-nav-section">
-                <div className="mobile-sidebar-nav-section-title">Settings</div>
-                <a href="#" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
-                  <span className="mobile-sidebar-nav-icon">
+              <div className={styles.mobileSidebarNavSection}>
+                <div className={styles.mobileSidebarNavSectionTitle}>Settings</div>
+                <a href="#" className={styles.mobileSidebarNavItem} onClick={handleCloseMobileMenu}>
+                  <span className={styles.mobileSidebarNavIcon}>
                     <SettingsIcon />
                   </span>
                   <span>Settings</span>
                 </a>
-                <a href="#" className="mobile-sidebar-nav-item" onClick={handleCloseMobileMenu}>
-                  <span className="mobile-sidebar-nav-icon">
+                <a href="#" className={styles.mobileSidebarNavItem} onClick={handleCloseMobileMenu}>
+                  <span className={styles.mobileSidebarNavIcon}>
                     <BellIcon />
                   </span>
                   <span>Notifications</span>
-                  <span className="mobile-sidebar-nav-badge">3</span>
+                  <span className={styles.mobileSidebarNavBadge}>3</span>
                 </a>
               </div>
             </nav>
 
             {/* User Profile */}
             {isAuthenticated && user && (
-              <div className="mobile-sidebar-user-profile">
-                <div className="mobile-sidebar-profile-info" onClick={handleCloseMobileMenu}>
-                  <div className="mobile-sidebar-profile-avatar">
+              <div className={styles.mobileSidebarUserProfile}>
+                <div className={styles.mobileSidebarProfileInfo} onClick={handleCloseMobileMenu}>
+                  <div className={styles.mobileSidebarProfileAvatar}>
                     {user?.user_metadata?.name?.charAt(0).toUpperCase() || 
                      user?.email?.charAt(0).toUpperCase() || 
                      'U'}
                   </div>
-                  <div className="mobile-sidebar-profile-details">
-                    <div className="mobile-sidebar-profile-name">
+                  <div className={styles.mobileSidebarProfileDetails}>
+                    <div className={styles.mobileSidebarProfileName}>
                       {user?.user_metadata?.name || user?.email?.split('@')[0] || 'User'}
                     </div>
-                    <div className="mobile-sidebar-profile-role">
+                    <div className={styles.mobileSidebarProfileRole}>
                       {user?.user_metadata?.role || 'Member'}
                     </div>
                   </div>
-                  <div className="mobile-sidebar-profile-dropdown">▼</div>
+                  <div className={styles.mobileSidebarProfileDropdown}>▼</div>
                 </div>
               </div>
             )}

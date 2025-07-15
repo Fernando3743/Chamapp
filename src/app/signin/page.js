@@ -16,6 +16,7 @@ import {
   Lock,
   AlertCircle
 } from 'lucide-react';
+import styles from './page.module.css';
 
 // Secure error message mapping to prevent XSS
 const ERROR_MESSAGES = {
@@ -170,11 +171,11 @@ export default function SignInPage() {
   }, [formData, validateForm, signIn, router]);
 
   const getInputClassName = useCallback((fieldName) => {
-    let className = 'signin-form-control';
+    let className = styles.signinFormControl;
     if (localErrors[fieldName]) {
-      className += ' error';
+      className += ' ' + styles.error;
     } else if (formData[fieldName] && formData[fieldName].trim()) {
-      className += ' success';
+      className += ' ' + styles.success;
     }
     return className;
   }, [localErrors, formData]);
@@ -184,7 +185,7 @@ export default function SignInPage() {
     if (!error) return null;
     
     return (
-      <div className="signin-error-message">
+      <div className={styles.signinErrorMessage}>
         {error}
       </div>
     );
@@ -195,25 +196,25 @@ export default function SignInPage() {
   }, []);
 
   return (
-    <div className="signin-page">
+    <div className={styles.signinPage}>
       <AnimatedBackground />
       
       {/* Back to Home */}
-      <Link href="/" className="signin-back-home">
+      <Link href="/" className={styles.signinBackHome}>
         <ArrowLeft />
         Back to Home
       </Link>
 
-      <div className="signin-container">
+      <div className={styles.signinContainer}>
         {/* Logo */}
-        <div className="signin-logo">
+        <div className={styles.signinLogo}>
           <h1>BusinessHub</h1>
           <p>Welcome back!</p>
         </div>
 
         {/* Sign In Card */}
-        <div className={`signin-card ${shake ? 'signin-shake' : ''}`}>
-          <div className="signin-form-header">
+        <div className={`${styles.signinCard} ${shake ? styles.signinShake : ''}`}>
+          <div className={styles.signinFormHeader}>
             <h2>Sign in to your account</h2>
             <p>
               Don&apos;t have an account?{' '}
@@ -222,21 +223,21 @@ export default function SignInPage() {
           </div>
 
           {/* Info Notice */}
-          <div className="signin-demo-notice">
+          <div className={styles.signinDemoNotice}>
             Sign in with your registered account credentials
           </div>
 
           {/* General Error Display */}
           {authError && (
-            <div className="signin-general-error">
-              <AlertCircle className="w-5 h-5" />
+            <div className={styles.signinGeneralError}>
+              <AlertCircle className={`${styles.w5} ${styles.h5}`} />
               {getSecureErrorMessage(authError)}
             </div>
           )}
 
           <form onSubmit={handleSubmit}>
             {/* Email */}
-            <div className="signin-form-group">
+            <div className={styles.signinFormGroup}>
               <label htmlFor="signin-email">Email Address</label>
               <input
                 type="email"
@@ -252,9 +253,9 @@ export default function SignInPage() {
             </div>
 
             {/* Password */}
-            <div className="signin-form-group">
+            <div className={styles.signinFormGroup}>
               <label htmlFor="signin-password">Password</label>
-              <div className="signin-password-input-wrapper">
+              <div className={styles.signinPasswordInputWrapper}>
                 <input
                   type={showPassword ? 'text' : 'password'}
                   id="signin-password"
@@ -267,19 +268,19 @@ export default function SignInPage() {
                 />
                 <button
                   type="button"
-                  className="signin-password-toggle"
+                  className={styles.signinPasswordToggle}
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? <EyeOff className={`${styles.w5} ${styles.h5}`} /> : <Eye className={`${styles.w5} ${styles.h5}`} />}
                 </button>
               </div>
               {renderFieldError('password')}
             </div>
 
             {/* Remember Me & Forgot Password */}
-            <div className="signin-form-options">
-              <div className="signin-checkbox-group">
-                <div className="signin-checkbox-wrapper">
+            <div className={styles.signinFormOptions}>
+              <div className={styles.signinCheckboxGroup}>
+                <div className={styles.signinCheckboxWrapper}>
                   <input
                     type="checkbox"
                     id="signin-remember"
@@ -287,11 +288,11 @@ export default function SignInPage() {
                     checked={formData.rememberMe}
                     onChange={handleInputChange}
                   />
-                  <div className="signin-checkbox-custom"></div>
+                  <div className={styles.signinCheckboxCustom}></div>
                 </div>
                 <label htmlFor="signin-remember">Remember me</label>
               </div>
-              <Link href="/forgot-password" className="signin-forgot-link">
+              <Link href="/forgot-password" className={styles.signinForgotLink}>
                 Forgot password?
               </Link>
             </div>
@@ -299,32 +300,32 @@ export default function SignInPage() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="signin-submit-btn"
+              className={styles.signinSubmitBtn}
               disabled={isLoginLoading}
             >
               {isLoginLoading ? (
                 <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <Loader2 className={`${styles.w5} ${styles.h5} ${styles.animateSpin}`} />
                   Signing in...
                 </>
               ) : (
                 <>
-                  <Lock className="w-5 h-5" />
+                  <Lock className={`${styles.w5} ${styles.h5}`} />
                   Sign In
                 </>
               )}
             </button>
 
             {/* Divider */}
-            <div className="signin-divider">
+            <div className={styles.signinDivider}>
               <span>Or continue with</span>
             </div>
 
             {/* Social Login */}
-            <div className="signin-social-login">
+            <div className={styles.signinSocialLogin}>
               <button
                 type="button"
-                className="signin-social-btn"
+                className={styles.signinSocialBtn}
                 onClick={() => handleSocialLogin('Google')}
               >
                 <GoogleIcon />
@@ -332,7 +333,7 @@ export default function SignInPage() {
               </button>
               <button
                 type="button"
-                className="signin-social-btn"
+                className={styles.signinSocialBtn}
                 onClick={() => handleSocialLogin('Facebook')}
               >
                 <FacebookIcon />
@@ -341,7 +342,7 @@ export default function SignInPage() {
             </div>
 
             {/* Footer */}
-            <div className="signin-form-footer">
+            <div className={styles.signinFormFooter}>
               Need help? <Link href="/contact">Contact Support</Link>
             </div>
           </form>

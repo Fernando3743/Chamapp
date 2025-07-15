@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
+import styles from '../styles/components/Footer.module.css';
 
 const Footer = React.memo(() => {
   const { t } = usePageTranslations('home');
@@ -39,23 +40,23 @@ const Footer = React.memo(() => {
   ];
 
   return (
-    <footer>
-      <div className="footer-content">
+    <footer className={styles.footer}>
+      <div className={styles.footerContent}>
         {/* Brand Column */}
-        <div className="footer-brand">
+        <div className={styles.footerBrand}>
           <h3>
             BusinessHub
           </h3>
           <p>
             {t('footerDescription')}
           </p>
-          <div className="social-links">
+          <div className={styles.socialLinks}>
             {socialLinks.map((social, index) => (
               <a
                 key={index}
                 href={social.href}
                 aria-label={social.label}
-                className="social-link"
+                className={styles.socialLink}
               >
                 {social.text}
               </a>
@@ -64,7 +65,7 @@ const Footer = React.memo(() => {
         </div>
 
         {/* Product Links */}
-        <div className="footer-links">
+        <div className={styles.footerLinks}>
           <h4>{t('product')}</h4>
           <ul>
             {footerLinks.product.map((link, index) => (
@@ -78,7 +79,7 @@ const Footer = React.memo(() => {
         </div>
 
         {/* Company Links */}
-        <div className="footer-links">
+        <div className={styles.footerLinks}>
           <h4>{t('company')}</h4>
           <ul>
             {footerLinks.company.map((link, index) => (
@@ -92,7 +93,7 @@ const Footer = React.memo(() => {
         </div>
 
         {/* Support Links */}
-        <div className="footer-links">
+        <div className={styles.footerLinks}>
           <h4>{t('support')}</h4>
           <ul>
             {footerLinks.support.map((link, index) => (
@@ -108,7 +109,7 @@ const Footer = React.memo(() => {
 
 
       {/* Bottom Bar */}
-      <div className="footer-bottom">
+      <div className={styles.footerBottom}>
         <p>
           © 2025 BusinessHub. {t('allRightsReserved')} {t('madeWithLove')}
         </p>

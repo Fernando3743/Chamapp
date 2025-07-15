@@ -1,0 +1,454 @@
+/* Welcome Screen Styles - Glassmorphism Design */
+
+/* Welcome Container */
+.welcomePage {
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.welcomeContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Progress Indicator */
+.welcomeProgressBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  z-index: 100;
+}
+
+.welcomeProgressFill {
+  height: 100%;
+  background: var(--primary-gradient);
+  width: 33.33%;
+  transition: width 0.5s ease;
+}
+
+/* Skip Button */
+.welcomeSkipButton {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  text-decoration: none;
+}
+
+.welcomeSkipButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-primary);
+}
+
+/* Welcome Content */
+.welcomeContent {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+  animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Welcome Step */
+.welcomeStep {
+  display: none;
+}
+
+.welcomeStep.active {
+  display: block;
+}
+
+/* Step 1: Welcome Message */
+.welcomeLogo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 30px;
+  background: var(--primary-gradient);
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+  font-weight: 700;
+  animation: pulse 2s infinite;
+  color: white;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+  }
+}
+
+.welcomeUserGreeting {
+  font-size: 20px;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.welcomeTitle {
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 700;
+  margin-bottom: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #a8a8a8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+}
+
+.welcomeSubtitle {
+  font-size: 18px;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+/* Step 2: Business Type Selection */
+.welcomeBusinessTypesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.welcomeBusinessTypeCard {
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcomeBusinessTypeCard:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.welcomeBusinessTypeCard.selected {
+  background: var(--primary-gradient);
+  border-color: transparent;
+}
+
+.welcomeBusinessTypeCard.selected .welcomeBusinessName,
+.welcomeBusinessTypeCard.selected .welcomeBusinessDescription {
+  color: white;
+}
+
+.welcomeBusinessIcon {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.welcomeBusinessName {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.welcomeBusinessDescription {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* Step 3: Features Overview */
+.welcomeCompleteIcon {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 30px;
+  color: #10b981;
+  animation: checkmark 0.8s ease;
+}
+
+@keyframes checkmark {
+  0% {
+    transform: scale(0) rotate(-45deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(-45deg);
+  }
+  100% {
+    transform: scale(1) rotate(0);
+    opacity: 1;
+  }
+}
+
+.welcomeFeaturesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  margin: 40px 0;
+}
+
+.welcomeFeatureCard {
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  text-align: left;
+  animation: slideIn 0.6s ease;
+  animation-fill-mode: both;
+}
+
+.welcomeFeatureCard:nth-child(1) { animation-delay: 0.1s; }
+.welcomeFeatureCard:nth-child(2) { animation-delay: 0.2s; }
+.welcomeFeatureCard:nth-child(3) { animation-delay: 0.3s; }
+.welcomeFeatureCard:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.welcomeFeatureIcon {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.welcomeFeatureTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.welcomeFeatureDescription {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Action Buttons */
+.welcomeActionButtons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.welcomeBtnPrimary,
+.welcomeBtnSecondary {
+  padding: 15px 40px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  text-decoration: none;
+}
+
+.welcomeBtnPrimary {
+  background: var(--primary-gradient);
+  color: white;
+}
+
+.welcomeBtnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
+.welcomeBtnSecondary {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-primary);
+}
+
+.welcomeBtnSecondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Step Indicators */
+.welcomeStepIndicators {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.welcomeStepDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.welcomeStepDot.active {
+  width: 30px;
+  border-radius: 5px;
+  background: var(--primary-gradient);
+}
+
+/* Confetti Animation */
+.welcomeConfetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: #667eea;
+  animation: confettiFall 3s linear;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg);
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .welcomeContainer {
+    padding: 15px;
+  }
+
+  .welcomeTitle {
+    font-size: 28px;
+  }
+
+  .welcomeSubtitle {
+    font-size: 16px;
+  }
+
+  .welcomeBusinessTypesGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .welcomeFeaturesGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .welcomeActionButtons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .welcomeBtnPrimary,
+  .welcomeBtnSecondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .welcomeSkipButton {
+    top: 20px;
+    right: 20px;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+/* Loading State */
+.loadingContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom right, #1e293b, #334155);
+}
+
+.loadingContent {
+  text-align: center;
+  color: white;
+}
+
+.loadingSpinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Tailwind-like utility classes for the loading state */
+.minHScreen {
+  min-height: 100vh;
+}
+
+.flexCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bgGradient {
+  background: linear-gradient(to bottom right, #1e293b, #334155);
+}
+
+.textWhite {
+  color: white;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.animateSpin {
+  animation: spin 1s linear infinite;
+}

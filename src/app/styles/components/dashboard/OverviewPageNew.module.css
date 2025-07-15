@@ -1,0 +1,13 @@
+/* Overview Page New Styles */
+:global(.dashboard-content) {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+:global(.dashboard-header) {
+  margin-bottom: 30px;
+}
+
+/* Placeholder styles - this component appears to be minimal and uses mostly global classes */
+/* Additional styles can be added as needed when the component is fully developed */

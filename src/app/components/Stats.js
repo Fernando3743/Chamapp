@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
+import styles from '../styles/components/Stats.module.css';
 
 const AnimatedCounter = React.memo(({ end, suffix, duration = 2000, isVisible }) => {
   const [count, setCount] = useState(0);
@@ -25,7 +26,7 @@ const AnimatedCounter = React.memo(({ end, suffix, duration = 2000, isVisible })
   }, [isVisible, end, duration]);
 
   return (
-    <div className="stat-number">
+    <div className={styles.statNumber}>
       {count}{suffix}
     </div>
   );
@@ -69,12 +70,12 @@ const Stats = () => {
 
 
   return (
-    <section ref={statsRef} className="stats-section">
-      <div className="stats-container">
+    <section ref={statsRef} className={styles.statsSection}>
+      <div className={styles.statsContainer}>
         {stats.map((stat, index) => (
-          <div key={index} className="stat-item">
+          <div key={index} className={styles.statItem}>
             <AnimatedCounter end={stat.value} suffix={stat.suffix} isVisible={isVisible} />
-            <div className="stat-label">{stat.label}</div>
+            <div className={styles.statLabel}>{stat.label}</div>
           </div>
         ))}
       </div>

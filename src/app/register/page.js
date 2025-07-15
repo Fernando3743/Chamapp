@@ -12,6 +12,7 @@ import {
   EyeOff,
   Loader2
 } from 'lucide-react';
+import styles from './page.module.css';
 
 export default function RegisterPage() {
   const { signUp, loading: authLoading } = useSupabaseAuth();
@@ -151,55 +152,55 @@ export default function RegisterPage() {
   };
 
   const getInputClassName = (fieldName) => {
-    let className = 'form-control';
-    if (errors[fieldName]) className += ' error';
-    if (formData[fieldName] && !errors[fieldName] && fieldName !== 'confirmPassword') className += ' success';
-    if (fieldName === 'confirmPassword' && formData.confirmPassword && formData.password === formData.confirmPassword) className += ' success';
+    let className = styles.formControl;
+    if (errors[fieldName]) className += ' ' + styles.error;
+    if (formData[fieldName] && !errors[fieldName] && fieldName !== 'confirmPassword') className += ' ' + styles.success;
+    if (fieldName === 'confirmPassword' && formData.confirmPassword && formData.password === formData.confirmPassword) className += ' ' + styles.success;
     return className;
   };
 
   return (
     <>
       {/* Animated Background */}
-      <div className="bg-container">
-        <div className="gradient-sphere sphere-1"></div>
-        <div className="gradient-sphere sphere-2"></div>
-        <div className="gradient-sphere sphere-3"></div>
+      <div className={styles.bgContainer}>
+        <div className={`${styles.gradientSphere} ${styles.sphere1}`}></div>
+        <div className={`${styles.gradientSphere} ${styles.sphere2}`}></div>
+        <div className={`${styles.gradientSphere} ${styles.sphere3}`}></div>
       </div>
 
       {/* Main Content */}
-      <div className="register-page">
+      <div className={styles.registerPage}>
         {/* Back to Home */}
-        <Link href="/" className="back-home">
-          <ArrowLeft className="w-5 h-5" />
+        <Link href="/" className={styles.backHome}>
+          <ArrowLeft className={`${styles.w5} ${styles.h5}`} />
           Back to Home
         </Link>
 
         {/* Register Container */}
-        <div className="register-container">
+        <div className={styles.registerContainer}>
           {/* Logo */}
-          <div className="register-logo">
-            <h1 className="gradient-text">BusinessHub</h1>
+          <div className={styles.registerLogo}>
+            <h1 className={styles.gradientText}>BusinessHub</h1>
             <p>All-in-One Business Solutions</p>
           </div>
 
           {/* Register Card */}
-          <div className="register-card">
-            <div className="form-header">
+          <div className={styles.registerCard}>
+            <div className={styles.formHeader}>
               <h2>Create your account</h2>
               <p>Already have an account? <Link href="/signin">Sign in</Link></p>
             </div>
 
             {submitError && (
-              <div className="error-message show">
+              <div className={`${styles.errorMessage} ${styles.show}`}>
                 {submitError}
               </div>
             )}
 
             <form onSubmit={handleSubmit}>
               {/* Name Fields */}
-              <div className="name-row">
-                <div className="form-group">
+              <div className={styles.nameRow}>
+                <div className={styles.formGroup}>
                   <label htmlFor="firstName">First Name</label>
                   <input
                     type="text"
@@ -213,10 +214,10 @@ export default function RegisterPage() {
                     required
                   />
                   {errors.firstName && (
-                    <div className="error-message show">{errors.firstName}</div>
+                    <div className={`${styles.errorMessage} ${styles.show}`}>{errors.firstName}</div>
                   )}
                 </div>
-                <div className="form-group">
+                <div className={styles.formGroup}>
                   <label htmlFor="lastName">Last Name</label>
                   <input
                     type="text"
@@ -230,13 +231,13 @@ export default function RegisterPage() {
                     required
                   />
                   {errors.lastName && (
-                    <div className="error-message show">{errors.lastName}</div>
+                    <div className={`${styles.errorMessage} ${styles.show}`}>{errors.lastName}</div>
                   )}
                 </div>
               </div>
 
               {/* Email */}
-              <div className="form-group">
+              <div className={styles.formGroup}>
                 <label htmlFor="email">Email Address</label>
                 <input
                   type="email"
@@ -250,14 +251,14 @@ export default function RegisterPage() {
                   required
                 />
                 {errors.email && (
-                  <div className="error-message show">{errors.email}</div>
+                  <div className={`${styles.errorMessage} ${styles.show}`}>{errors.email}</div>
                 )}
               </div>
 
               {/* Password */}
-              <div className="form-group">
+              <div className={styles.formGroup}>
                 <label htmlFor="password">Password</label>
-                <div className="password-input-wrapper">
+                <div className={styles.passwordInputWrapper}>
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
@@ -271,38 +272,38 @@ export default function RegisterPage() {
                   />
                   <button
                     type="button"
-                    className="password-toggle"
+                    className={styles.passwordToggle}
                     onClick={() => togglePasswordVisibility('password')}
                   >
-                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showPassword ? <EyeOff className={`${styles.w5} ${styles.h5}`} /> : <Eye className={`${styles.w5} ${styles.h5}`} />}
                   </button>
                 </div>
-                <div className="password-strength">
+                <div className={styles.passwordStrength}>
                   {[1, 2, 3, 4].map((level) => (
                     <div
                       key={level}
-                      className={`strength-bar ${
+                      className={`${styles.strengthBar} ${
                         level <= passwordStrength
                           ? passwordStrength <= 2
-                            ? 'weak active'
+                            ? `${styles.weak} ${styles.active}`
                             : passwordStrength === 3
-                            ? 'medium active'
-                            : 'active'
+                            ? `${styles.medium} ${styles.active}`
+                            : styles.active
                           : ''
                       }`}
                     ></div>
                   ))}
                 </div>
-                <div className="strength-text">{getPasswordStrengthText()}</div>
+                <div className={styles.strengthText}>{getPasswordStrengthText()}</div>
                 {errors.password && (
-                  <div className="error-message show">{errors.password}</div>
+                  <div className={`${styles.errorMessage} ${styles.show}`}>{errors.password}</div>
                 )}
               </div>
 
               {/* Confirm Password */}
-              <div className="form-group">
+              <div className={styles.formGroup}>
                 <label htmlFor="confirmPassword">Confirm Password</label>
-                <div className="password-input-wrapper">
+                <div className={styles.passwordInputWrapper}>
                   <input
                     type={showConfirmPassword ? "text" : "password"}
                     id="confirmPassword"
@@ -316,20 +317,20 @@ export default function RegisterPage() {
                   />
                   <button
                     type="button"
-                    className="password-toggle"
+                    className={styles.passwordToggle}
                     onClick={() => togglePasswordVisibility('confirmPassword')}
                   >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showConfirmPassword ? <EyeOff className={`${styles.w5} ${styles.h5}`} /> : <Eye className={`${styles.w5} ${styles.h5}`} />}
                   </button>
                 </div>
                 {errors.confirmPassword && (
-                  <div className="error-message show">{errors.confirmPassword}</div>
+                  <div className={`${styles.errorMessage} ${styles.show}`}>{errors.confirmPassword}</div>
                 )}
               </div>
 
               {/* Terms Checkbox */}
-              <div className="checkbox-group">
-                <div className="checkbox-wrapper">
+              <div className={styles.checkboxGroup}>
+                <div className={styles.checkboxWrapper}>
                   <input
                     type="checkbox"
                     id="terms"
@@ -338,34 +339,34 @@ export default function RegisterPage() {
                     onChange={handleInputChange}
                     required
                   />
-                  <div className="checkbox-custom"></div>
+                  <div className={styles.checkboxCustom}></div>
                 </div>
                 <label htmlFor="terms">
                   I agree to the <Link href="/terms">Terms of Service</Link> and <Link href="/privacy">Privacy Policy</Link>
                 </label>
               </div>
               {errors.terms && (
-                <div className="error-message show">{errors.terms}</div>
+                <div className={`${styles.errorMessage} ${styles.show}`}>{errors.terms}</div>
               )}
 
               {/* Submit Button */}
-              <button type="submit" className="submit-btn" disabled={isLoading || authLoading}>
+              <button type="submit" className={styles.submitBtn} disabled={isLoading || authLoading}>
                 <span id="btnText" style={{ display: isLoading || authLoading ? 'none' : 'inline' }}>
                   Create Account
                 </span>
                 {(isLoading || authLoading) && (
-                  <Loader2 className="loading w-5 h-5" />
+                  <Loader2 className={`${styles.loading} ${styles.w5} ${styles.h5}`} />
                 )}
               </button>
 
               {/* Divider */}
-              <div className="divider">
+              <div className={styles.divider}>
                 <span>Or continue with</span>
               </div>
 
               {/* Social Login */}
-              <div className="social-login">
-                <button type="button" className="social-btn">
+              <div className={styles.socialLogin}>
+                <button type="button" className={styles.socialBtn}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -374,7 +375,7 @@ export default function RegisterPage() {
                   </svg>
                   Google
                 </button>
-                <button type="button" className="social-btn">
+                <button type="button" className={styles.socialBtn}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z"/>
                   </svg>
@@ -383,7 +384,7 @@ export default function RegisterPage() {
               </div>
 
               {/* Footer */}
-              <div className="form-footer">
+              <div className={styles.formFooter}>
                 By signing up, you agree to receive updates and special offers
               </div>
             </form>

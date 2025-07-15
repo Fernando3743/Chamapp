@@ -10,6 +10,7 @@ import {
   CheckCircle,
   ArrowLeft
 } from 'lucide-react';
+import styles from './page.module.css';
 
 const businessTypes = [
   { icon: '🏠', name: 'Real Estate', description: 'Property management & sales' },
@@ -61,7 +62,7 @@ export default function WelcomePage() {
   }, [isAuthenticated, loading, router]);
 
   const updateProgress = useCallback(() => {
-    const progressFill = document.querySelector('.welcome-progress-fill');
+    const progressFill = document.querySelector(`.${styles.welcomeProgressFill}`);
     if (progressFill) {
       progressFill.style.width = `${(currentStep / totalSteps) * 100}%`;
     }
@@ -116,7 +117,7 @@ export default function WelcomePage() {
     for (let i = 0; i < 50; i++) {
       setTimeout(() => {
         const confetti = document.createElement('div');
-        confetti.className = 'welcome-confetti';
+        confetti.className = styles.welcomeConfetti;
         confetti.style.left = Math.random() * 100 + '%';
         confetti.style.top = '-10px';
         confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
@@ -167,9 +168,9 @@ export default function WelcomePage() {
 
   if (loading || (!isAuthenticated && !isDev)) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-800">
-        <div className="text-white text-center">
-          <div className="loading w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+      <div className={styles.loadingContainer}>
+        <div className={styles.loadingContent}>
+          <div className={styles.loadingSpinner}></div>
           <p>Loading welcome screen...</p>
         </div>
       </div>
@@ -177,22 +178,22 @@ export default function WelcomePage() {
   }
 
   return (
-    <div className="welcome-page">
+    <div className={styles.welcomePage}>
       <AnimatedBackground />
       
       {/* Progress Bar */}
-      <div className="welcome-progress-bar">
-        <div className="welcome-progress-fill"></div>
+      <div className={styles.welcomeProgressBar}>
+        <div className={styles.welcomeProgressFill}></div>
       </div>
 
       {/* Skip Button */}
-      <button className="welcome-skip-button" onClick={skipOnboarding}>
+      <button className={styles.welcomeSkipButton} onClick={skipOnboarding}>
         Skip
       </button>
 
       {/* Debug: Reset Button (for testing - remove in production) */}
       <button 
-        className="welcome-skip-button" 
+        className={styles.welcomeSkipButton} 
         style={{ top: '80px' }}
         onClick={() => {
           localStorage.removeItem('user_onboarded');
@@ -203,95 +204,95 @@ export default function WelcomePage() {
       </button>
 
       {/* Welcome Container */}
-      <div className="welcome-container">
-        <div className="welcome-content">
+      <div className={styles.welcomeContainer}>
+        <div className={styles.welcomeContent}>
           {/* Step 1: Welcome Message */}
-          <div className={`welcome-step ${currentStep === 1 ? 'active' : ''}`}>
-            <div className="welcome-logo">B</div>
-            <div className="welcome-user-greeting">
+          <div className={`${styles.welcomeStep} ${currentStep === 1 ? styles.active : ''}`}>
+            <div className={styles.welcomeLogo}>B</div>
+            <div className={styles.welcomeUserGreeting}>
               👋 Welcome, {displayUser.name}!
             </div>
-            <h1 className="welcome-title">Welcome to BusinessHub</h1>
-            <p className="welcome-subtitle">
+            <h1 className={styles.welcomeTitle}>Welcome to BusinessHub</h1>
+            <p className={styles.welcomeSubtitle}>
               Your all-in-one platform for managing and growing your business.<br />
               Let&apos;s get you set up in just a few steps.
             </p>
-            <div className="welcome-action-buttons">
-              <button className="welcome-btn-primary" onClick={nextStep}>
+            <div className={styles.welcomeActionButtons}>
+              <button className={styles.welcomeBtnPrimary} onClick={nextStep}>
                 Get Started
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight style={{width: '20px', height: '20px'}} />
               </button>
             </div>
           </div>
 
           {/* Step 2: Choose Business Type */}
-          <div className={`welcome-step ${currentStep === 2 ? 'active' : ''}`}>
-            <h1 className="welcome-title">What type of business do you run?</h1>
-            <p className="welcome-subtitle">Select all that apply. You can add more later.</p>
+          <div className={`${styles.welcomeStep} ${currentStep === 2 ? styles.active : ''}`}>
+            <h1 className={styles.welcomeTitle}>What type of business do you run?</h1>
+            <p className={styles.welcomeSubtitle}>Select all that apply. You can add more later.</p>
             
-            <div className="welcome-business-types-grid">
+            <div className={styles.welcomeBusinessTypesGrid}>
               {businessTypes.map((type, index) => (
                 <div
                   key={index}
-                  className={`welcome-business-type-card ${selectedBusinessTypes.has(index) ? 'selected' : ''}`}
+                  className={`${styles.welcomeBusinessTypeCard} ${selectedBusinessTypes.has(index) ? styles.selected : ''}`}
                   onClick={() => selectBusinessType(index)}
                 >
-                  <div className="welcome-business-icon">{type.icon}</div>
-                  <div className="welcome-business-name">{type.name}</div>
-                  <div className="welcome-business-description">{type.description}</div>
+                  <div className={styles.welcomeBusinessIcon}>{type.icon}</div>
+                  <div className={styles.welcomeBusinessName}>{type.name}</div>
+                  <div className={styles.welcomeBusinessDescription}>{type.description}</div>
                 </div>
               ))}
             </div>
 
-            <div className="welcome-action-buttons">
-              <button className="welcome-btn-secondary" onClick={previousStep}>
-                <ArrowLeft className="w-5 h-5" />
+            <div className={styles.welcomeActionButtons}>
+              <button className={styles.welcomeBtnSecondary} onClick={previousStep}>
+                <ArrowLeft style={{width: '20px', height: '20px'}} />
                 Back
               </button>
-              <button className="welcome-btn-primary" onClick={nextStep}>
+              <button className={styles.welcomeBtnPrimary} onClick={nextStep}>
                 Continue
-                <ArrowRight className="w-5 h-5" />
+                <ArrowRight style={{width: '20px', height: '20px'}} />
               </button>
             </div>
           </div>
 
           {/* Step 3: Feature Overview */}
-          <div className={`welcome-step ${currentStep === 3 ? 'active' : ''}`}>
-            <h1 className="welcome-title">Everything you need to succeed</h1>
-            <p className="welcome-subtitle">Here&apos;s what BusinessHub offers for your business</p>
+          <div className={`${styles.welcomeStep} ${currentStep === 3 ? styles.active : ''}`}>
+            <h1 className={styles.welcomeTitle}>Everything you need to succeed</h1>
+            <p className={styles.welcomeSubtitle}>Here&apos;s what BusinessHub offers for your business</p>
             
-            <div className="welcome-features-showcase">
+            <div className={styles.welcomeFeaturesGrid}>
               {features.map((feature, index) => (
-                <div key={index} className="welcome-feature-item">
-                  <div className="welcome-feature-icon-wrapper">
+                <div key={index} className={styles.welcomeFeatureCard}>
+                  <div className={styles.welcomeFeatureIcon}>
                     {feature.icon}
                   </div>
-                  <div className="welcome-feature-content">
-                    <h3>{feature.title}</h3>
-                    <p>{feature.description}</p>
+                  <div>
+                    <h3 className={styles.welcomeFeatureTitle}>{feature.title}</h3>
+                    <p className={styles.welcomeFeatureDescription}>{feature.description}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="welcome-action-buttons">
-              <button className="welcome-btn-secondary" onClick={previousStep}>
-                <ArrowLeft className="w-5 h-5" />
+            <div className={styles.welcomeActionButtons}>
+              <button className={styles.welcomeBtnSecondary} onClick={previousStep}>
+                <ArrowLeft style={{width: '20px', height: '20px'}} />
                 Back
               </button>
-              <button className="welcome-btn-primary" onClick={completeOnboarding}>
+              <button className={styles.welcomeBtnPrimary} onClick={completeOnboarding}>
                 Start Building
-                <CheckCircle className="w-5 h-5" />
+                <CheckCircle style={{width: '20px', height: '20px'}} />
               </button>
             </div>
           </div>
 
           {/* Step Indicators */}
-          <div className="welcome-step-indicators">
+          <div className={styles.welcomeStepIndicators}>
             {[1, 2, 3].map((step) => (
               <div
                 key={step}
-                className={`welcome-step-dot ${currentStep === step ? 'active' : ''}`}
+                className={`${styles.welcomeStepDot} ${currentStep === step ? styles.active : ''}`}
                 onClick={() => goToStep(step)}
               />
             ))}

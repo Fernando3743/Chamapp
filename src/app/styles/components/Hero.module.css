@@ -10,7 +10,7 @@
   z-index: var(--z-content);
 }
 
-.hero-content {
+.heroContent {
   max-width: 1400px;
   width: 100%;
   display: grid;
@@ -19,7 +19,7 @@
   align-items: center;
 }
 
-.hero-text h1 {
+.heroText h1 {
   font-size: clamp(var(--font-size-5xl), 6vw, var(--font-size-6xl));
   font-weight: 700;
   line-height: 1.1;
@@ -30,32 +30,79 @@
   -webkit-text-fill-color: transparent;
 }
 
-.hero-text p {
+.heroText p {
   font-size: var(--font-size-xl);
   color: var(--text-secondary);
   margin-bottom: var(--spacing-xl);
   line-height: 1.6;
 }
 
-.hero-buttons {
+.heroButtons {
   display: flex;
   gap: var(--spacing-md);
   flex-wrap: wrap;
 }
 
-.hero-visual {
+.heroVisual {
   position: relative;
 }
 
+/* Gradient Text */
+.gradientText {
+  background: var(--primary-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* CTA Buttons */
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--font-size-base);
+  transition: all var(--duration-normal) ease;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+
+.ctaButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.ctaButtonPrimary {
+  background: var(--primary-gradient, linear-gradient(135deg, #667eea 0%, #764ba2 100%));
+  border: none;
+  color: white;
+}
+
+.ctaButtonPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+}
+
 /* Trust Indicators */
-.trust-indicators {
+.trustIndicators {
   display: flex;
   gap: var(--spacing-lg);
   margin-top: var(--spacing-2xl);
   flex-wrap: wrap;
 }
 
-.trust-item {
+.trustItem {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -63,19 +110,44 @@
   font-size: var(--font-size-sm);
 }
 
-.trust-item svg {
+.trustItem svg {
   width: 20px;
   height: 20px;
   color: var(--success-color);
 }
 
+/* Glass Card */
+.glassCard {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-medium));
+  -webkit-backdrop-filter: blur(var(--glass-blur-medium));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  padding: var(--spacing-lg);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--duration-normal) ease;
+}
+
+.glassCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(102, 126, 234, 0.2);
+}
+
+.glassCard h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin-bottom: 25px;
+  color: var(--text-primary);
+}
+
 /* Business Preview */
-.business-preview {
+.businessPreview {
   display: grid;
   gap: var(--spacing-md);
 }
 
-.business-type {
+.businessType {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -85,12 +157,12 @@
   transition: all var(--duration-normal) ease;
 }
 
-.business-type:hover {
+.businessType:hover {
   background: rgba(255, 255, 255, 0.1);
   transform: translateX(10px);
 }
 
-.business-icon {
+.businessIcon {
   width: 50px;
   height: 50px;
   background: var(--primary-gradient);
@@ -101,12 +173,12 @@
   font-size: var(--font-size-2xl);
 }
 
-.business-info h3 {
+.businessInfo h3 {
   font-size: var(--font-size-lg);
   margin-bottom: 5px;
 }
 
-.business-info p {
+.businessInfo p {
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
 }
@@ -119,7 +191,7 @@
     overflow-x: hidden;
   }
 
-  .hero-content {
+  .heroContent {
     grid-template-columns: 1fr;
     gap: var(--spacing-xl);
     text-align: center;
@@ -127,14 +199,14 @@
     max-width: 100%;
   }
 
-  .hero-buttons {
+  .heroButtons {
     justify-content: center;
     flex-direction: column;
     align-items: center;
     gap: 15px;
   }
 
-  .trust-indicators {
+  .trustIndicators {
     justify-content: center;
     flex-direction: column;
     align-items: center;

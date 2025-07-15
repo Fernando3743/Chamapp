@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
+import styles from '../styles/components/Testimonials.module.css';
 
 const Testimonials = React.memo(() => {
   const { t } = usePageTranslations('home');
@@ -55,18 +56,18 @@ const Testimonials = React.memo(() => {
   const duplicatedTestimonials = [...testimonials, ...testimonials];
 
   return (
-    <section className="testimonials" id="testimonials">
-      <div className="testimonials-container">
-        <div className="section-header">
+    <section className={styles.testimonials} id="testimonials">
+      <div className={styles.testimonialsContainer}>
+        <div className={styles.sectionHeader}>
           <h2>
-            {t('lovedByThousands')} <span className="gradient-text">{t('thousandsOfBusinesses')}</span>
+            {t('lovedByThousands')} <span className={styles.gradientText}>{t('thousandsOfBusinesses')}</span>
           </h2>
           <p>
             {t('seeWhatCustomersSay')}
           </p>
         </div>
 
-        <div className="testimonials-track"
+        <div className={styles.testimonialsTrack}
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
           style={{
@@ -74,20 +75,20 @@ const Testimonials = React.memo(() => {
           }}
         >
           {duplicatedTestimonials.map((testimonial, index) => (
-            <div key={`${testimonial.id}-${index}`} className="testimonial-card">
-              <div className="rating">
+            <div key={`${testimonial.id}-${index}`} className={styles.testimonialCard}>
+              <div className={styles.rating}>
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <div className="testimonial-content">
+              <div className={styles.testimonialContent}>
                 &ldquo;{testimonial.content}&rdquo;
               </div>
-              <div className="testimonial-author">
-                <div className="author-avatar">
+              <div className={styles.testimonialAuthor}>
+                <div className={styles.authorAvatar}>
                   {testimonial.avatar}
                 </div>
-                <div className="author-info">
+                <div className={styles.authorInfo}>
                   <h4>{testimonial.author}</h4>
                   <p>{testimonial.role}</p>
                 </div>

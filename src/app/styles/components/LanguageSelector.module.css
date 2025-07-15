@@ -1,11 +1,11 @@
 /* Language Selector Component */
 
-.language-selector {
+.languageSelector {
   position: relative;
   display: inline-block;
 }
 
-.language-toggle {
+.languageToggle {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
@@ -24,37 +24,37 @@
   justify-content: space-between;
 }
 
-.language-toggle:hover {
+.languageToggle:hover {
   background: rgba(255, 255, 255, 0.15);
   transform: translateY(-1px);
 }
 
-.language-toggle:focus-visible {
+.languageToggle:focus-visible {
   outline: 2px solid var(--primary-gradient);
   outline-offset: 2px;
 }
 
-.language-flag {
+.languageFlag {
   font-size: 16px;
   line-height: 1;
 }
 
-.language-code {
+.languageCode {
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 
-.language-arrow {
+.languageArrow {
   font-size: 10px;
   transition: transform var(--duration-normal) ease;
   color: var(--text-secondary);
 }
 
-.language-arrow.open {
+.languageArrow.open {
   transform: rotate(180deg);
 }
 
-.language-dropdown {
+.languageDropdown {
   position: absolute;
   top: calc(100% + 8px);
   right: 0;
@@ -81,7 +81,7 @@
   }
 }
 
-.language-option {
+.languageOption {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
@@ -96,45 +96,45 @@
   text-align: left;
 }
 
-.language-option:hover {
+.languageOption:hover {
   background: rgba(255, 255, 255, 0.1);
 }
 
-.language-option.active {
+.languageOption.active {
   background: rgba(102, 126, 234, 0.2);
   color: var(--text-primary);
 }
 
-.language-option.active::after {
+.languageOption.active::after {
   content: '✓';
   margin-left: auto;
   color: var(--success-color);
   font-weight: bold;
 }
 
-.language-name {
+.languageName {
   font-weight: 500;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .language-toggle {
+  .languageToggle {
     padding: 6px 10px;
     min-width: 70px;
     font-size: var(--font-size-xs);
   }
 
-  .language-dropdown {
+  .languageDropdown {
     min-width: 120px;
     right: -10px;
   }
 
-  .language-option {
+  .languageOption {
     padding: 10px 12px;
     font-size: var(--font-size-xs);
   }
 
-  .language-flag {
+  .languageFlag {
     font-size: 14px;
   }
 }

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Home, Scissors, Utensils, Dumbbell, Heart, Briefcase } from 'lucide-react';
 import { usePageTranslations } from '../../hooks/usePageTranslations';
+import styles from '../styles/components/BusinessTypes.module.css';
 
 const BusinessTypes = React.memo(() => {
   const { t } = usePageTranslations('home');
@@ -77,20 +78,20 @@ const BusinessTypes = React.memo(() => {
   ];
 
   return (
-    <section className="business-types" id="solutions">
-      <div className="section-header">
+    <section className={styles.businessTypes} id="solutions">
+      <div className={styles.sectionHeader}>
         <h2>
-          {t('solutionsForEveryIndustry').split(' ').slice(0, 2).join(' ')} <span className="gradient-text">{t('solutionsForEveryIndustry').split(' ').slice(2).join(' ')}</span>
+          {t('solutionsForEveryIndustry').split(' ').slice(0, 2).join(' ')} <span className={styles.gradientText}>{t('solutionsForEveryIndustry').split(' ').slice(2).join(' ')}</span>
         </h2>
         <p>
           {t('preBuiltSolutions')}
         </p>
       </div>
 
-      <div className="business-showcase">
+      <div className={styles.businessShowcase}>
         {businessTypes.map((business, index) => (
-          <div key={index} className="business-card glass-card">
-            <div className="business-card-icon">
+          <div key={index} className={styles.businessCard}>
+            <div className={styles.businessCardIcon}>
               {business.icon}
             </div>
             
