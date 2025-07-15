@@ -11,12 +11,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 20px;
-  border: none;
-  background: rgba(255, 255, 255, 0.15) ;
+  padding: 12px 24px;
+  background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur-heavy));
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
   color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
@@ -39,11 +38,11 @@
 /* Dropdown Menu */
 .loginDropdownMenu {
   position: fixed;
-  top: 80px;
+  top: 90px;
   right: 20px;
   width: 430px;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(60px);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur-heavy));
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   padding: 30px;
@@ -161,7 +160,7 @@
 }
 
 .loginDropdownInput::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--text-secondary);
 }
 
 .loginDropdownInput.error {
@@ -316,7 +315,6 @@
   position: relative;
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur-heavy));
-  -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
   padding: 0 15px;
   color: var(--text-secondary);
   font-size: 12px;
@@ -374,10 +372,10 @@
   text-decoration: underline;
 }
 
-/* Mobile - Full width dropdown */
-@media (max-width: 600px) {
+/* Mobile - Hide login dropdown */
+@media (max-width: 1280px) {
   .loginDropdownContainer {
-    display: inline-block;
+    display: none;
   }
   
   .loginDropdownMenu {
@@ -397,7 +395,7 @@
 }
 
 /* Tablet - Right-aligned dropdown menu */
-@media (min-width: 601px) and (max-width: 1280px) {
+@media (min-width: 1281px) and (max-width: 1440px) {
   .loginDropdownContainer {
     display: inline-block;
   }
