@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import Link from 'next/link'
 
 export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -176,9 +177,9 @@ export default function Home() {
                 FAQ
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-gradient group-hover:w-full transition-all duration-300"></span>
               </a>
-              <button className="px-7 py-3 glass rounded-full font-semibold hover:bg-white/20 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
+              <Link href="/signin" className="inline-block px-7 py-3 glass rounded-full font-semibold hover:bg-white/20 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
                 Sign In
-              </button>
+              </Link>
               <button className="relative px-7 py-3 bg-primary-gradient rounded-full font-semibold hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
                 Get Started
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold">New</span>
@@ -186,7 +187,7 @@ export default function Home() {
             </div>
             
             {/* Mobile Menu Toggle */}
-            <button className="lg:hidden flex flex-col gap-1" onClick={toggleMobileMenu}>
+            <button className="lg:hidden flex flex-col gap-1 cursor-pointer" onClick={toggleMobileMenu}>
               <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-[6px]' : ''}`}></span>
               <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`}></span>
               <span className={`w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-[6px]' : ''}`}></span>
@@ -201,7 +202,7 @@ export default function Home() {
               <a href="#pricing" className="text-white/80 hover:text-white font-medium py-2">Pricing</a>
               <a href="#testimonials" className="text-white/80 hover:text-white font-medium py-2">Testimonials</a>
               <a href="#faq" className="text-white/80 hover:text-white font-medium py-2">FAQ</a>
-              <button className="px-7 py-3 glass rounded-full font-semibold hover:bg-white/20 transition-all">Sign In</button>
+              <Link href="/signin" className="inline-block px-7 py-3 glass rounded-full font-semibold hover:bg-white/20 transition-all text-center">Sign In</Link>
               <button className="px-7 py-3 bg-primary-gradient rounded-full font-semibold hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all">Get Started</button>
             </div>
           </div>
@@ -314,7 +315,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-4xl lg:text-5xl font-bold mb-5">
-              Everything You Need, <span className="gradient-text">Nothing You Don't</span>
+              Everything You Need, <span className="gradient-text">Nothing You Don&apos;t</span>
             </h2>
             <p className="text-lg text-white/80">Powerful features designed for modern businesses</p>
           </div>
@@ -393,7 +394,7 @@ export default function Home() {
             {/* First set of testimonials */}
             <div className="min-w-[400px] glass rounded-3xl p-10 relative">
               <div className="absolute top-5 right-5 text-yellow-400">⭐⭐⭐⭐⭐</div>
-              <p className="text-white/80 mb-8 leading-relaxed">"BusinessHub transformed how we manage our real estate portfolio. The automation features alone save us 20+ hours per week. Absolutely game-changing!"</p>
+              <p className="text-white/80 mb-8 leading-relaxed">&quot;BusinessHub transformed how we manage our real estate portfolio. The automation features alone save us 20+ hours per week. Absolutely game-changing!&quot;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-xl font-semibold">JD</div>
                 <div>
@@ -405,7 +406,7 @@ export default function Home() {
             
             <div className="min-w-[400px] glass rounded-3xl p-10 relative">
               <div className="absolute top-5 right-5 text-yellow-400">⭐⭐⭐⭐⭐</div>
-              <p className="text-white/80 mb-8 leading-relaxed">"The appointment scheduling system is perfect for our barbershop. Clients love the easy booking process, and we've reduced no-shows by 40%."</p>
+              <p className="text-white/80 mb-8 leading-relaxed">&quot;The appointment scheduling system is perfect for our barbershop. Clients love the easy booking process, and we&apos;ve reduced no-shows by 40%.&quot;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-xl font-semibold">MW</div>
                 <div>
@@ -417,7 +418,7 @@ export default function Home() {
             
             <div className="min-w-[400px] glass rounded-3xl p-10 relative">
               <div className="absolute top-5 right-5 text-yellow-400">⭐⭐⭐⭐⭐</div>
-              <p className="text-white/80 mb-8 leading-relaxed">"Managing multiple restaurant locations has never been easier. The real-time analytics help us make better decisions every day."</p>
+              <p className="text-white/80 mb-8 leading-relaxed">&quot;Managing multiple restaurant locations has never been easier. The real-time analytics help us make better decisions every day.&quot;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-xl font-semibold">SC</div>
                 <div>
@@ -429,7 +430,7 @@ export default function Home() {
             
             <div className="min-w-[400px] glass rounded-3xl p-10 relative">
               <div className="absolute top-5 right-5 text-yellow-400">⭐⭐⭐⭐⭐</div>
-              <p className="text-white/80 mb-8 leading-relaxed">"BusinessHub's gym management features are incredible. Member check-ins, class bookings, and payment processing all in one place!"</p>
+              <p className="text-white/80 mb-8 leading-relaxed">&quot;BusinessHub&apos;s gym management features are incredible. Member check-ins, class bookings, and payment processing all in one place!&quot;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-xl font-semibold">AL</div>
                 <div>
@@ -441,7 +442,7 @@ export default function Home() {
             
             <div className="min-w-[400px] glass rounded-3xl p-10 relative">
               <div className="absolute top-5 right-5 text-yellow-400">⭐⭐⭐⭐⭐</div>
-              <p className="text-white/80 mb-8 leading-relaxed">"The customization options are endless. We've built exactly what we need for our medical practice without any coding knowledge."</p>
+              <p className="text-white/80 mb-8 leading-relaxed">&quot;The customization options are endless. We&apos;ve built exactly what we need for our medical practice without any coding knowledge.&quot;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-xl font-semibold">RP</div>
                 <div>
@@ -454,7 +455,7 @@ export default function Home() {
             {/* Duplicate set for seamless scrolling */}
             <div className="min-w-[400px] glass rounded-3xl p-10 relative">
               <div className="absolute top-5 right-5 text-yellow-400">⭐⭐⭐⭐⭐</div>
-              <p className="text-white/80 mb-8 leading-relaxed">"BusinessHub transformed how we manage our real estate portfolio. The automation features alone save us 20+ hours per week. Absolutely game-changing!"</p>
+              <p className="text-white/80 mb-8 leading-relaxed">&quot;BusinessHub transformed how we manage our real estate portfolio. The automation features alone save us 20+ hours per week. Absolutely game-changing!&quot;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-xl font-semibold">JD</div>
                 <div>
@@ -466,7 +467,7 @@ export default function Home() {
             
             <div className="min-w-[400px] glass rounded-3xl p-10 relative">
               <div className="absolute top-5 right-5 text-yellow-400">⭐⭐⭐⭐⭐</div>
-              <p className="text-white/80 mb-8 leading-relaxed">"The appointment scheduling system is perfect for our barbershop. Clients love the easy booking process, and we've reduced no-shows by 40%."</p>
+              <p className="text-white/80 mb-8 leading-relaxed">&quot;The appointment scheduling system is perfect for our barbershop. Clients love the easy booking process, and we&apos;ve reduced no-shows by 40%.&quot;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-xl font-semibold">MW</div>
                 <div>
@@ -478,7 +479,7 @@ export default function Home() {
             
             <div className="min-w-[400px] glass rounded-3xl p-10 relative">
               <div className="absolute top-5 right-5 text-yellow-400">⭐⭐⭐⭐⭐</div>
-              <p className="text-white/80 mb-8 leading-relaxed">"Managing multiple restaurant locations has never been easier. The real-time analytics help us make better decisions every day."</p>
+              <p className="text-white/80 mb-8 leading-relaxed">&quot;Managing multiple restaurant locations has never been easier. The real-time analytics help us make better decisions every day.&quot;</p>
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-gradient flex items-center justify-center text-xl font-semibold">SC</div>
                 <div>
@@ -719,7 +720,7 @@ export default function Home() {
               </button>
               <div className="faq-answer max-h-0 overflow-hidden transition-all duration-300">
                 <div className="px-8 pb-6 text-white/80 leading-relaxed">
-                  You can get started immediately! After signing up, you'll have access to our template library. Most businesses are up and running within 15 minutes using our pre-built templates. Customization can be done at your own pace.
+                  You can get started immediately! After signing up, you&apos;ll have access to our template library. Most businesses are up and running within 15 minutes using our pre-built templates. Customization can be done at your own pace.
                 </div>
               </div>
             </div>
