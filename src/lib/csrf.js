@@ -15,7 +15,7 @@ export async function createCSRFToken() {
   const token = generateCSRFToken();
   const secret = randomBytes(32).toString('hex');
   
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   
   // Store secret in httpOnly cookie
   cookieStore.set(CSRF_SECRET_NAME, secret, {
@@ -45,7 +45,7 @@ export async function verifyCSRFToken(request) {
     return true;
   }
   
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const storedToken = cookieStore.get(CSRF_TOKEN_NAME)?.value;
   const headerToken = request.headers.get(CSRF_HEADER_NAME);
   

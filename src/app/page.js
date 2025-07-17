@@ -180,10 +180,10 @@ export default function Home() {
               <Link href="/signin" className="inline-block px-7 py-3 glass rounded-full font-semibold hover:bg-white/20 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
                 Sign In
               </Link>
-              <button className="relative px-7 py-3 bg-primary-gradient rounded-full font-semibold hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
+              <Link href="/register" className="relative inline-block px-7 py-3 bg-primary-gradient rounded-full font-semibold hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
                 Get Started
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full font-semibold">New</span>
-              </button>
+              </Link>
             </div>
             
             {/* Mobile Menu Toggle */}
@@ -203,7 +203,7 @@ export default function Home() {
               <a href="#testimonials" className="text-white/80 hover:text-white font-medium py-2">Testimonials</a>
               <a href="#faq" className="text-white/80 hover:text-white font-medium py-2">FAQ</a>
               <Link href="/signin" className="inline-block px-7 py-3 glass rounded-full font-semibold hover:bg-white/20 transition-all text-center">Sign In</Link>
-              <button className="px-7 py-3 bg-primary-gradient rounded-full font-semibold hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all">Get Started</button>
+              <Link href="/register" className="inline-block px-7 py-3 bg-primary-gradient rounded-full font-semibold hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all text-center">Get Started</Link>
             </div>
           </div>
         </div>
@@ -223,9 +223,9 @@ export default function Home() {
               Transform your business with our all-in-one software platform. From real estate to barbershops, we provide everything you need to run, manage, and grow your business.
             </p>
             <div className="flex flex-wrap gap-5 justify-center lg:justify-start mb-12">
-              <button className="px-8 py-4 bg-primary-gradient rounded-full font-semibold hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
+              <Link href="/register" className="inline-block px-8 py-4 bg-primary-gradient rounded-full font-semibold hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
                 Start Free Trial
-              </button>
+              </Link>
               <button className="px-8 py-4 glass rounded-full font-semibold hover:bg-white/20 hover:-translate-y-0.5 transition-all duration-300">
                 Watch Demo
               </button>
@@ -615,9 +615,9 @@ export default function Home() {
                   Basic analytics
                 </li>
               </ul>
-              <button className="w-full py-3 glass rounded-full font-semibold hover:bg-white/20 transition-all duration-300">
+              <Link href="/register" className="block w-full py-3 glass rounded-full font-semibold hover:bg-white/20 transition-all duration-300 text-center">
                 Get Started
-              </button>
+              </Link>
             </div>
             
             <div className="glass rounded-3xl p-10 border-purple-500/50 scale-105 relative hover:-translate-y-2 transition-all duration-300">
@@ -655,9 +655,9 @@ export default function Home() {
                   API access
                 </li>
               </ul>
-              <button className="w-full py-3 bg-primary-gradient rounded-full font-semibold hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300">
+              <Link href="/register" className="block w-full py-3 bg-primary-gradient rounded-full font-semibold hover:shadow-[0_10px_30px_rgba(102,126,234,0.3)] transition-all duration-300 text-center">
                 Get Started
-              </button>
+              </Link>
             </div>
             
             <div className="glass rounded-3xl p-10 hover:-translate-y-2 hover:border-purple-500/50 transition-all duration-300">

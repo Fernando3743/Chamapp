@@ -169,7 +169,7 @@ export default function SignInPage() {
             <p className="text-white/80 text-base">
               {t("dontHaveAccount")}{" "}
               <Link
-                href="/signup"
+                href="/register"
                 className="text-indigo-400 hover:text-purple-400 transition-colors duration-300"
               >
                 {t("SignUp")}
