@@ -2,7 +2,7 @@
 
 import { SupabaseAuthProvider } from './contexts/SupabaseAuthContext';
 import { LanguageProvider } from './contexts/LanguageContext';
-import ReduxProvider from './components/providers/ReduxProvider';
+import ReduxProvider from '@/components/providers/ReduxProvider';
 import { Toaster } from 'react-hot-toast';
 
 export function Providers({ children }) {
