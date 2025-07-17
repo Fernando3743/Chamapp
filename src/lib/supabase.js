@@ -10,4 +10,18 @@ if (!supabaseUrl || !supabaseAnonKey) {
   });
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Create Supabase client with additional options for better error handling
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+    storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+  },
+  // Add global error handler
+  global: {
+    headers: {
+      'x-client-info': 'supabase-js-web'
+    },
+  },
+})

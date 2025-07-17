@@ -23,8 +23,8 @@ export const SupabaseAuthProvider = ({ children }) => {
   useEffect(() => {
     // Check active session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
+        setSession(session);
+        setUser(session?.user ?? null);
       setLoading(false);
     });
 
@@ -32,19 +32,17 @@ export const SupabaseAuthProvider = ({ children }) => {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('Auth event:', event);
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
 
       // Handle auth events
       if (event === 'SIGNED_IN') {
-        console.log('User signed in:', session.user);
+        // User signed in
       } else if (event === 'SIGNED_OUT') {
-        console.log('User signed out');
         router.push('/');
       } else if (event === 'TOKEN_REFRESHED') {
-        console.log('Token refreshed');
+        // Token refreshed
       }
     });
 

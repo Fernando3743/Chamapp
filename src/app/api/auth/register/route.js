@@ -81,7 +81,6 @@ export async function POST(request) {
     // For local development, auto-confirm email
     if (process.env.NODE_ENV === 'development' && data.user) {
       // In production, users would need to confirm their email
-      console.log('Development mode: User auto-confirmed');
     }
 
     return NextResponse.json({
