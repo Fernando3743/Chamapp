@@ -38,6 +38,17 @@
   to { transform: rotate(360deg); }
 }
 
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
@@ -120,6 +131,10 @@
   animation: scaleIn 0.5s ease-out;
 }
 
+.animate-modalSlideIn {
+  animation: modalSlideIn 0.3s ease;
+}
+
 /* Prevent testimonial text selection during scroll */
 .testimonials-track {
   user-select: none;
@@ -128,6 +143,15 @@
 /* Mobile menu animation */
 .mobile-menu {
   transform-origin: top right;
+}
+
+/* Hide scrollbar for modal */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
 }
 
 /* Glass input styles */

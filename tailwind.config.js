@@ -11,6 +11,7 @@ module.exports = {
         'float': 'float 20s ease-in-out infinite',
         'scroll': 'scroll 30s linear infinite',
         'spin-slow': 'spin 3s linear infinite',
+        'modalSlideIn': 'modalSlideIn 0.3s ease',
       },
       keyframes: {
         float: {
@@ -22,7 +23,17 @@ module.exports = {
         scroll: {
           '0%': { transform: 'translateX(0)' },
           '100%': { transform: 'translateX(-50%)' }
-        }
+        },
+        modalSlideIn: {
+          'from': {
+            transform: 'translateY(-50px)',
+            opacity: '0',
+          },
+          'to': {
+            transform: 'translateY(0)',
+            opacity: '1',
+          },
+        },
       },
       backgroundImage: {
         'primary-gradient': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
