@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { customersTranslations } from "@/lib/translations/pages/customers";
 
 export default function CustomersPage() {
+  const router = useRouter();
   const { language } = useLanguage();
   const t = useCallback(
     (key) =>
@@ -372,7 +374,9 @@ export default function CustomersPage() {
                       {/* Action Menu Dropdown */}
                       {openActionMenu === customer.id && (
                         <div className="absolute right-0 top-full mt-2 w-48 bg-black/90 backdrop-blur-xl border border-white/20 rounded-xl overflow-hidden z-10">
-                          <button className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
+                          <button 
+                            onClick={() => router.push(`/dashboard/customers/${customer.id}`)}
+                            className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
                             <span className="mr-2">👁️</span> {t("viewDetails")}
                           </button>
                           <button className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
@@ -478,7 +482,9 @@ export default function CustomersPage() {
                 ))}
               </div>
               <div className="flex gap-2 mt-4 pt-4 border-t border-white/10">
-                <button className="flex-1 px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-xs transition-all duration-300 hover:bg-white/10">
+                <button 
+                  onClick={() => router.push(`/dashboard/customers/${customer.id}`)}
+                  className="flex-1 px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-xs transition-all duration-300 hover:bg-white/10">
                   {t("viewDetails")}
                 </button>
                 <button className="flex-1 px-3 py-2 bg-primary-gradient rounded-lg text-white text-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/30">

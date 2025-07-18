@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# node version
+.nvmrc
+
 # claude
 /.claude
 CLAUDE.md
