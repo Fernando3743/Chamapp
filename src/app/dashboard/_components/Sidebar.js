@@ -40,6 +40,7 @@ export default function Sidebar({ isOpen, onClose }) {
     {
       title: "Business",
       items: [
+        { icon: "📦", label: "Products", href: "/dashboard/products" },
         { icon: "🏢", label: "Properties", href: "/dashboard/properties" },
         { icon: "📅", label: t("appointments"), href: "/dashboard/appointments" },
         { icon: "💰", label: "Finance", href: "/dashboard/finance" },
