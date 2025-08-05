@@ -110,6 +110,10 @@
   background: linear-gradient(135deg, #ffffff 0%, #a8a8a8 100%);
 }
 
+.bg-glass-gradient {
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+}
+
 /* Animations - defined as regular classes */
 .animate-float {
   animation: float 20s ease-in-out infinite;
