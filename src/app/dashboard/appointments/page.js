@@ -399,7 +399,7 @@ export default function AppointmentsPage() {
           {/* Today's Schedule */}
           <div className="glass border border-white/20 rounded-2xl p-6">
             <div className="flex justify-between items-center mb-5">
-              <h3 className="text-lg font-semibold">Today's Schedule</h3>
+              <h3 className="text-lg font-semibold">Today&apos;s Schedule</h3>
               <a
                 href="#"
                 className="text-white/60 hover:text-white transition-colors duration-300 text-sm"
@@ -470,7 +470,7 @@ export default function AppointmentsPage() {
       {/* Time Slots Section */}
       <div className="glass border border-white/20 rounded-2xl p-6 mt-8">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-lg font-semibold">Today's Time Slots</h2>
+          <h2 className="text-lg font-semibold">Today&apos;s Time Slots</h2>
           <button className="px-6 py-3 bg-white/10 border border-white/20 rounded-xl text-white font-semibold transition-all duration-300 flex items-center gap-2 hover:bg-white/15">
             <span>⚙️</span> Manage Availability
           </button>
