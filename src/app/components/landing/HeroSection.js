@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import { useAuth } from '@/app/contexts/AuthContext'
 
-export default function HeroSection({ user }) {
+export default function HeroSection() {
+  const { user } = useAuth()
   return (
     <section className="min-h-screen flex items-center justify-center px-6 lg:px-12 pt-32 pb-20">
       <div className="max-w-7xl w-full grid lg:grid-cols-2 gap-20 items-center">

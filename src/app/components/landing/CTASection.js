@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import { useAuth } from '@/app/contexts/AuthContext'
 
-export default function CTASection({ user }) {
+export default function CTASection() {
+  const { user } = useAuth()
   return (
     <section className="py-24 px-6 lg:px-12">
       <div className="max-w-3xl mx-auto text-center">

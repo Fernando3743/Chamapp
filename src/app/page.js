@@ -1,6 +1,5 @@
 'use client'
 
-import { useAuth } from './contexts/AuthContext'
 import { useScrollAnimations, useStatsAnimation } from './hooks/useScrollAnimations'
 import AnimatedBackground from './components/landing/AnimatedBackground'
 import Navigation from './components/landing/Navigation'
@@ -15,22 +14,21 @@ import CTASection from './components/landing/CTASection'
 import Footer from './components/landing/Footer'
 
 export default function Home() {
-  const { user } = useAuth()
   useScrollAnimations()
   useStatsAnimation()
 
   return (
     <>
       <AnimatedBackground />
-      <Navigation user={user} />
-      <HeroSection user={user} />
+      <Navigation />
+      <HeroSection />
       <StatsSection />
       <FeaturesSection />
       <TestimonialsSection />
       <BusinessTypesSection />
       <PricingSection />
       <FAQSection />
-      <CTASection user={user} />
+      <CTASection />
       <Footer />
     </>
   )
