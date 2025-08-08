@@ -173,6 +173,22 @@
   display: none;  /* Chrome, Safari and Opera */
 }
 
+/* Hide scrollbar for horizontal scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Swiper hero pagination inside slide */
+.swiper-hero .swiper-pagination {
+  position: absolute;
+  bottom: 16px !important;
+  z-index: 10;
+}
+
 /* Glass input styles */
 .glass-input {
   background: rgba(255, 255, 255, 0.05);
