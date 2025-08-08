@@ -2,8 +2,11 @@
 
 import { useState } from 'react';
 import { useLanguage } from '@/app/contexts/LanguageContext';
-import ProductCard from './ProductCard';
-import ProductModal from './ProductModal';
+import FilterBar from '@/app/components/dashboard/products/FilterBar';
+import CategorySidebar from '@/app/components/dashboard/products/CategorySidebar';
+import ProductGrid from '@/app/components/dashboard/products/ProductGrid';
+import ProductList from '@/app/components/dashboard/products/ProductList';
+import ProductModal from '@/app/components/dashboard/products/ProductModal';
 
 const productsData = [
   {
@@ -85,15 +88,6 @@ const productsData = [
   }
 ];
 
-const categories = [
-  { name: 'All Categories', icon: '🎯', count: 248, active: true },
-  { name: 'Hair Care', icon: '💇', count: 56 },
-  { name: 'Nail Services', icon: '💅', count: 34 },
-  { name: 'Spa & Massage', icon: '🧖', count: 45 },
-  { name: 'Cosmetics', icon: '💄', count: 67 },
-  { name: 'Fitness', icon: '🏋️', count: 28 },
-  { name: 'Health Services', icon: '🩺', count: 18 }
-];
 
 export default function ProductsDashboard() {
   const { t } = useLanguage();
@@ -189,50 +183,14 @@ export default function ProductsDashboard() {
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-8">
-        <div className="flex flex-wrap gap-3">
-          <select 
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2.5 glass backdrop-blur-20 rounded-xl cursor-pointer hover:bg-white/10 transition-all bg-white/5 border border-white/10"
-          >
-            <option value="all">All Products</option>
-            <option value="products">Products Only</option>
-            <option value="services">Services Only</option>
-          </select>
-          <select className="px-4 py-2.5 glass backdrop-blur-20 rounded-xl cursor-pointer hover:bg-white/10 transition-all bg-white/5 border border-white/10">
-            <option>All Status</option>
-            <option>Active</option>
-            <option>Inactive</option>
-            <option>Out of Stock</option>
-          </select>
-          <select 
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-2.5 glass backdrop-blur-20 rounded-xl cursor-pointer hover:bg-white/10 transition-all bg-white/5 border border-white/10"
-          >
-            <option value="name">Sort by: Name</option>
-            <option value="priceLow">Sort by: Price (Low to High)</option>
-            <option value="priceHigh">Sort by: Price (High to Low)</option>
-            <option value="stock">Sort by: Stock</option>
-            <option value="date">Sort by: Date Added</option>
-          </select>
-        </div>
-        <div className="flex gap-1 glass backdrop-blur-20 p-1.5 rounded-xl bg-white/5">
-          <button 
-            onClick={() => setViewMode('grid')}
-            className={`px-3 py-2 rounded-lg transition-all ${viewMode === 'grid' ? 'bg-violet-600/20 text-white' : 'text-white/60 hover:text-white'}`}
-          >
-            ⊞
-          </button>
-          <button 
-            onClick={() => setViewMode('list')}
-            className={`px-3 py-2 rounded-lg transition-all ${viewMode === 'list' ? 'bg-violet-600/20 text-white' : 'text-white/60 hover:text-white'}`}
-          >
-            ☰
-          </button>
-        </div>
-      </div>
+      <FilterBar 
+        filterStatus={filterStatus}
+        setFilterStatus={setFilterStatus}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+        viewMode={viewMode}
+        setViewMode={setViewMode}
+      />
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
@@ -260,116 +218,27 @@ export default function ProductsDashboard() {
       {/* Products Layout */}
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Categories Sidebar */}
-        <aside className="w-full lg:w-[280px] flex-shrink-0">
-          <div className="glass backdrop-blur-20 rounded-2xl p-6 lg:sticky lg:top-5 bg-white/5 border border-white/10">
-            <div className="flex justify-between items-center mb-5">
-              <h3 className="text-lg font-semibold">Categories</h3>
-              <button className="w-8 h-8 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center hover:bg-white/20 transition-all text-base">
-                +
-              </button>
-            </div>
-            <div className="space-y-1">
-              {categories.map((category) => (
-                <div 
-                  key={category.name}
-                  onClick={() => setSelectedCategory(category.name)}
-                  className={`px-4 py-3 rounded-xl flex justify-between items-center cursor-pointer transition-all ${
-                    selectedCategory === category.name 
-                      ? 'bg-violet-600/20 text-white' 
-                      : 'hover:bg-white/5 text-white/80 hover:text-white'
-                  }`}
-                >
-                  <span className="flex items-center gap-2.5 text-sm font-medium">
-                    <span>{category.icon}</span> {category.name}
-                  </span>
-                  <span className="text-xs px-2 py-0.5 bg-white/10 rounded-full">{category.count}</span>
-                </div>
-              ))}
-            </div>
-
-            {/* Quick Stats */}
-            <div className="mt-6 pt-6 border-t border-white/10">
-              <h4 className="text-base font-semibold mb-5">Quick Stats</h4>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-white/60">Active Items</span>
-                  <span className="font-semibold">212</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-white/60">Out of Stock</span>
-                  <span className="font-semibold">14</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-white/60">Services</span>
-                  <span className="font-semibold">85</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-white/60">Products</span>
-                  <span className="font-semibold">163</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
+        <CategorySidebar 
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
 
         {/* Products Content */}
         <div className="flex-1">
           {viewMode === 'grid' ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5" style={{gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))'}}>
-              {products.map((product) => (
-                <ProductCard 
-                  key={product.id} 
-                  product={product}
-                  onEdit={handleEditProduct}
-                  onDelete={handleDeleteProduct}
-                  onDuplicate={handleDuplicateProduct}
-                />
-              ))}
-            </div>
+            <ProductGrid 
+              products={products}
+              onEdit={handleEditProduct}
+              onDelete={handleDeleteProduct}
+              onDuplicate={handleDuplicateProduct}
+            />
           ) : (
-            <div className="space-y-4">
-              {products.map((product) => (
-                <div key={product.id} className="glass backdrop-blur-20 rounded-2xl p-5 flex gap-5 items-center hover:translate-x-1 hover:shadow-lg hover:shadow-violet-500/20 transition-all bg-white/5 border border-white/10">
-                  <div className="w-20 h-20 bg-gradient-to-br from-violet-600/20 to-purple-600/20 rounded-xl flex items-center justify-center text-3xl flex-shrink-0">
-                    {product.icon}
-                  </div>
-                  <div className="flex-1 grid grid-cols-1 lg:grid-cols-5 gap-5 items-center">
-                    <div>
-                      <div className="font-semibold">{product.name}</div>
-                      <div className="text-sm text-white/60">{product.category}</div>
-                    </div>
-                    <div className="text-lg font-semibold">${product.price}</div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 bg-green-400 rounded-full"></span>
-                      <span className="text-sm">
-                        {product.type === 'product' ? `${product.stock} in stock` : 'Active'}
-                      </span>
-                    </div>
-                    <div className="text-sm text-white/60">⭐ {product.rating} ({product.reviews})</div>
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => handleEditProduct(product)}
-                        className="w-8 h-8 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center hover:bg-white/20 transition-all text-sm"
-                      >
-                        ✏️
-                      </button>
-                      <button 
-                        onClick={() => handleDuplicateProduct(product)}
-                        className="w-8 h-8 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center hover:bg-white/20 transition-all text-sm"
-                      >
-                        📋
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteProduct(product.id)}
-                        className="w-8 h-8 bg-white/10 border border-white/20 rounded-lg flex items-center justify-center hover:bg-white/20 transition-all text-sm"
-                      >
-                        🗑️
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <ProductList 
+              products={products}
+              onEdit={handleEditProduct}
+              onDelete={handleDeleteProduct}
+              onDuplicate={handleDuplicateProduct}
+            />
           )}
         </div>
       </div>

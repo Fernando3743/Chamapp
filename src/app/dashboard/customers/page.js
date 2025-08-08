@@ -4,6 +4,11 @@ import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguage } from "@/app/contexts/LanguageContext";
 import { customersTranslations } from "@/lib/translations/pages/customers";
+import StatsCard from "@/app/components/dashboard/common/StatsCard";
+import SearchFilters from "@/app/components/dashboard/customers/SearchFilters";
+import ViewToggle from "@/app/components/dashboard/customers/ViewToggle";
+import CustomerTable from "@/app/components/dashboard/customers/CustomerTable";
+import CustomerCard from "@/app/components/dashboard/customers/CustomerCard";
 
 export default function CustomersPage() {
   const router = useRouter();
@@ -20,7 +25,6 @@ export default function CustomersPage() {
   const [selectedCustomers, setSelectedCustomers] = useState([]);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [viewMode, setViewMode] = useState("table"); // table or grid
-  const [openActionMenu, setOpenActionMenu] = useState(null);
 
   // Mock customer data
   const customersData = [
@@ -152,10 +156,10 @@ export default function CustomersPage() {
   };
 
   const toggleAllCustomers = () => {
-    if (selectedCustomers.length === customersData.length) {
+    if (selectedCustomers.length === filteredCustomers.length) {
       setSelectedCustomers([]);
     } else {
-      setSelectedCustomers(customersData.map((c) => c.id));
+      setSelectedCustomers(filteredCustomers.map((c) => c.id));
     }
   };
 
@@ -189,309 +193,56 @@ export default function CustomersPage() {
         </div>
 
         <div className="flex gap-4 items-center flex-wrap">
-          <div className="flex-1 min-w-[300px] relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60">
-              🔍
-            </span>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full py-3 pl-12 pr-5 bg-white/5 border border-white/20 rounded-xl text-white placeholder-white/60 transition-all duration-300 focus:outline-none focus:bg-white/10 focus:border-indigo-500/50"
-              placeholder={t("searchPlaceholder")}
-            />
-          </div>
-          <button
-            onClick={() => setShowFilterModal(!showFilterModal)}
-            className="px-5 py-3 bg-white/5 border border-white/20 rounded-xl text-white transition-all duration-300 flex items-center gap-2 hover:bg-white/10"
-          >
-            <span>⚙️</span> {t("filters")}
-            <span className="bg-primary-gradient text-white text-xs px-2 py-0.5 rounded-full font-semibold">
-              3
-            </span>
-          </button>
-          <div className="flex gap-1 bg-white/5 p-1 rounded-lg">
-            <button
-              onClick={() => setViewMode("table")}
-              className={`w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 ${
-                viewMode === "table"
-                  ? "bg-indigo-500/20 text-white"
-                  : "text-white/60 hover:text-white hover:bg-white/10"
-              }`}
-            >
-              ☰
-            </button>
-            <button
-              onClick={() => setViewMode("grid")}
-              className={`w-9 h-9 flex items-center justify-center rounded-lg transition-all duration-300 ${
-                viewMode === "grid"
-                  ? "bg-indigo-500/20 text-white"
-                  : "text-white/60 hover:text-white hover:bg-white/10"
-              }`}
-            >
-              ⊞
-            </button>
-          </div>
+          <SearchFilters 
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            showFilterModal={showFilterModal}
+            setShowFilterModal={setShowFilterModal}
+            t={t}
+          />
+          <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
         </div>
       </div>
 
       {/* Customer Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
         {stats.map((stat, index) => (
-          <div
+          <StatsCard
             key={index}
-            className="glass border border-white/20 rounded-2xl p-6 flex items-center gap-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/20"
-          >
-            <div className="w-15 h-15 bg-indigo-500/10 rounded-2xl flex items-center justify-center text-3xl">
-              {stat.icon}
-            </div>
-            <div className="flex-1">
-              <div className="text-3xl font-bold mb-1">{stat.value}</div>
-              <div className="text-sm text-white/80">{stat.label}</div>
-              <div className="text-xs font-semibold mt-1 text-green-400">
-                {stat.change} {stat.changeText}
-              </div>
-            </div>
-          </div>
+            icon={stat.icon}
+            label={stat.label}
+            value={stat.value}
+            change={stat.change}
+            changeLabel={stat.changeText}
+            trend={stat.positive ? "up" : "down"}
+            variant="horizontal"
+            iconBgColor="indigo-500/10"
+          />
         ))}
       </div>
 
       {/* Customers Table */}
       {viewMode === "table" && (
-        <div className="glass border border-white/20 rounded-2xl overflow-hidden">
-          {selectedCustomers.length > 0 && (
-            <div className="p-6 border-b border-white/10 flex justify-between items-center">
-              <div className="text-sm text-white/80">
-                {selectedCustomers.length} selected
-              </div>
-              <div className="flex gap-2">
-                <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-xs transition-all duration-300 hover:bg-white/10">
-                  📧 {t("sendEmail")}
-                </button>
-                <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-xs transition-all duration-300 hover:bg-white/10">
-                  🏷️ {t("addTags")}
-                </button>
-                <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-xs transition-all duration-300 hover:bg-white/10">
-                  🗑️ {t("delete")}
-                </button>
-              </div>
-            </div>
-          )}
-
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-white/5 border-b border-white/10">
-                  <th className="w-12 p-4">
-                    <input
-                      type="checkbox"
-                      checked={selectedCustomers.length === customersData.length}
-                      onChange={toggleAllCustomers}
-                      className="w-5 h-5 bg-white/5 border-2 border-white/20 rounded cursor-pointer"
-                    />
-                  </th>
-                  <th className="text-left p-4 text-xs font-semibold uppercase tracking-wider text-white/60">
-                    {t("customer")}
-                  </th>
-                  <th className="text-left p-4 text-xs font-semibold uppercase tracking-wider text-white/60">
-                    {t("status")}
-                  </th>
-                  <th className="text-left p-4 text-xs font-semibold uppercase tracking-wider text-white/60">
-                    {t("orders")}
-                  </th>
-                  <th className="text-left p-4 text-xs font-semibold uppercase tracking-wider text-white/60">
-                    {t("totalSpent")}
-                  </th>
-                  <th className="text-left p-4 text-xs font-semibold uppercase tracking-wider text-white/60">
-                    {t("lastVisit")}
-                  </th>
-                  <th className="text-left p-4 text-xs font-semibold uppercase tracking-wider text-white/60">
-                    {t("rating")}
-                  </th>
-                  <th className="w-12 p-4"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredCustomers.map((customer) => (
-                  <tr
-                    key={customer.id}
-                    className="border-b border-white/5 hover:bg-white/5 transition-colors"
-                  >
-                    <td className="p-4">
-                      <input
-                        type="checkbox"
-                        checked={selectedCustomers.includes(customer.id)}
-                        onChange={() => toggleCustomerSelection(customer.id)}
-                        className="w-5 h-5 bg-white/5 border-2 border-white/20 rounded cursor-pointer"
-                      />
-                    </td>
-                    <td className="p-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-primary-gradient rounded-full flex items-center justify-center font-semibold text-sm">
-                          {customer.initials}
-                        </div>
-                        <div>
-                          <div className="font-semibold">{customer.name}</div>
-                          <div className="text-sm text-white/80">
-                            {customer.email}
-                          </div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                          customer.status
-                        )}`}
-                      >
-                        {t(customer.status)}
-                      </span>
-                    </td>
-                    <td className="p-4">{customer.orders}</td>
-                    <td className="p-4">${customer.totalSpent.toLocaleString()}</td>
-                    <td className="p-4">{customer.lastVisit}</td>
-                    <td className="p-4">
-                      <div className="flex gap-0.5 text-yellow-400">
-                        {[...Array(5)].map((_, i) => (
-                          <span key={i}>
-                            {i < customer.rating ? "⭐" : "☆"}
-                          </span>
-                        ))}
-                      </div>
-                    </td>
-                    <td className="p-4 relative">
-                      <button
-                        onClick={() =>
-                          setOpenActionMenu(
-                            openActionMenu === customer.id ? null : customer.id
-                          )
-                        }
-                        className="w-9 h-9 flex items-center justify-center bg-white/5 border border-white/20 rounded-lg cursor-pointer transition-all duration-300 hover:bg-white/10"
-                      >
-                        ⋮
-                      </button>
-                      
-                      {/* Action Menu Dropdown */}
-                      {openActionMenu === customer.id && (
-                        <div className="absolute right-0 top-full mt-2 w-48 bg-black/90 backdrop-blur-xl border border-white/20 rounded-xl overflow-hidden z-10">
-                          <button 
-                            onClick={() => router.push(`/dashboard/customers/${customer.id}`)}
-                            className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
-                            <span className="mr-2">👁️</span> {t("viewDetails")}
-                          </button>
-                          <button className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
-                            <span className="mr-2">✏️</span> {t("edit")}
-                          </button>
-                          <button className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
-                            <span className="mr-2">💬</span> {t("sendMessage")}
-                          </button>
-                          <button className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
-                            <span className="mr-2">📋</span> {t("viewOrders")}
-                          </button>
-                          <button className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
-                            <span className="mr-2">📝</span> {t("addNote")}
-                          </button>
-                          <button className="w-full px-4 py-3 text-left text-sm text-white/80 hover:bg-white/10 hover:text-white transition-all duration-300">
-                            <span className="mr-2">⭐</span> {t("markAsVIP")}
-                          </button>
-                          <div className="border-t border-white/10"></div>
-                          <button className="w-full px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-300">
-                            <span className="mr-2">🗑️</span> {t("removeCustomer")}
-                          </button>
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Pagination */}
-          <div className="p-6 border-t border-white/10 flex justify-between items-center">
-            <div className="text-sm text-white/80">
-              {t("showing")} 1-{filteredCustomers.length} {t("of")} 3,247{" "}
-              {t("customers").toLowerCase()}
-            </div>
-            <div className="flex gap-2">
-              <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-sm transition-all duration-300 hover:bg-white/10">
-                ←
-              </button>
-              <button className="px-4 py-2 bg-indigo-500/20 border border-indigo-500/50 rounded-lg text-white text-sm">
-                1
-              </button>
-              <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-sm transition-all duration-300 hover:bg-white/10">
-                2
-              </button>
-              <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-sm transition-all duration-300 hover:bg-white/10">
-                3
-              </button>
-              <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-sm transition-all duration-300 hover:bg-white/10">
-                ...
-              </button>
-              <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-sm transition-all duration-300 hover:bg-white/10">
-                325
-              </button>
-              <button className="px-4 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-sm transition-all duration-300 hover:bg-white/10">
-                →
-              </button>
-            </div>
-          </div>
-        </div>
+        <CustomerTable
+          filteredCustomers={filteredCustomers}
+          selectedCustomers={selectedCustomers}
+          toggleCustomerSelection={toggleCustomerSelection}
+          toggleAllCustomers={toggleAllCustomers}
+          getStatusColor={getStatusColor}
+          t={t}
+        />
       )}
 
       {/* Grid View (Alternative view) */}
       {viewMode === "grid" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {filteredCustomers.map((customer) => (
-            <div
+            <CustomerCard
               key={customer.id}
-              className="glass border border-white/20 rounded-2xl p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-500/20"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-14 h-14 bg-primary-gradient rounded-full flex items-center justify-center font-semibold text-lg">
-                  {customer.initials}
-                </div>
-                <span
-                  className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                    customer.status
-                  )}`}
-                >
-                  {t(customer.status)}
-                </span>
-              </div>
-              <h3 className="font-semibold text-lg mb-1">{customer.name}</h3>
-              <p className="text-sm text-white/80 mb-4">{customer.email}</p>
-              <div className="space-y-2 text-sm">
-                <div className="flex justify-between">
-                  <span className="text-white/60">{t("orders")}:</span>
-                  <span>{customer.orders}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/60">{t("totalSpent")}:</span>
-                  <span>${customer.totalSpent.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-white/60">{t("lastVisit")}:</span>
-                  <span>{customer.lastVisit}</span>
-                </div>
-              </div>
-              <div className="flex gap-0.5 text-yellow-400 mt-3">
-                {[...Array(5)].map((_, i) => (
-                  <span key={i}>{i < customer.rating ? "⭐" : "☆"}</span>
-                ))}
-              </div>
-              <div className="flex gap-2 mt-4 pt-4 border-t border-white/10">
-                <button 
-                  onClick={() => router.push(`/dashboard/customers/${customer.id}`)}
-                  className="flex-1 px-3 py-2 bg-white/5 border border-white/20 rounded-lg text-white text-xs transition-all duration-300 hover:bg-white/10">
-                  {t("viewDetails")}
-                </button>
-                <button className="flex-1 px-3 py-2 bg-primary-gradient rounded-lg text-white text-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/30">
-                  {t("sendMessage")}
-                </button>
-              </div>
-            </div>
+              customer={customer}
+              getStatusColor={getStatusColor}
+              t={t}
+            />
           ))}
         </div>
       )}

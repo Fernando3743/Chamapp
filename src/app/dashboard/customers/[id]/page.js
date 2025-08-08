@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useLanguage } from "@/app/contexts/LanguageContext";
+import CustomerHeader from "@/app/components/dashboard/customer-details/CustomerHeader";
+import TabNavigation from "@/app/components/dashboard/customer-details/TabNavigation";
+import CustomerInfo from "@/app/components/dashboard/customer-details/CustomerInfo";
+import AppointmentHistory from "@/app/components/dashboard/customer-details/AppointmentHistory";
+import PurchaseHistory from "@/app/components/dashboard/customer-details/PurchaseHistory";
+import NotesSection from "@/app/components/dashboard/customer-details/NotesSection";
+import CommunicationTimeline from "@/app/components/dashboard/customer-details/CommunicationTimeline";
 
 export default function CustomerDetailsPage() {
   const params = useParams();
@@ -292,58 +299,7 @@ export default function CustomerDetailsPage() {
       </div>
 
       {/* Customer Header */}
-      <div className="glass border border-white/20 rounded-2xl p-8 mb-8">
-        <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
-          <div className="flex flex-col lg:flex-row items-center gap-6 flex-1">
-            <div className="relative">
-              <div className="w-24 h-24 bg-primary-gradient rounded-full flex items-center justify-center text-3xl font-bold text-white">
-                {customer.initials}
-              </div>
-              <div className="absolute bottom-1 right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-black"></div>
-            </div>
-            <div className="text-center lg:text-left flex-1">
-              <h1 className="text-3xl font-bold mb-2">{customer.name}</h1>
-              <div className="flex flex-col lg:flex-row items-center gap-5 mb-4 text-sm text-white/80">
-                <span className="flex items-center gap-2">
-                  📧 {customer.email}
-                </span>
-                <span className="flex items-center gap-2">
-                  📱 {customer.phone}
-                </span>
-                <span className="flex items-center gap-2">
-                  📍 {customer.location}
-                </span>
-              </div>
-              <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
-                <span
-                  className={`px-4 py-1 ${
-                    getStatusBadge("vip").style
-                  } rounded-full text-sm font-medium`}
-                >
-                  {getStatusBadge("vip").label}
-                </span>
-                <span className="px-4 py-1 bg-green-500/20 text-green-400 rounded-full text-sm font-medium">
-                  Loyal (3+ years)
-                </span>
-                <span className="px-4 py-1 bg-indigo-500/20 text-indigo-400 rounded-full text-sm font-medium">
-                  Premium Member
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col lg:flex-row gap-4 w-full lg:w-auto">
-            <button className="px-6 py-3 bg-primary-gradient rounded-xl text-white font-semibold transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/30">
-              <span>📅</span> Book Appointment
-            </button>
-            <button className="px-6 py-3 bg-white/10 border border-white/20 rounded-xl text-white font-semibold transition-all duration-300 flex items-center justify-center gap-2 hover:bg-white/15">
-              <span>💬</span> Send Message
-            </button>
-            <button className="px-6 py-3 bg-white/10 border border-white/20 rounded-xl text-white font-semibold transition-all duration-300 flex items-center justify-center hover:bg-white/15">
-              <span>⋮</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <CustomerHeader customer={customer} getStatusBadge={getStatusBadge} />
 
       {/* Customer Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
@@ -365,387 +321,39 @@ export default function CustomerDetailsPage() {
       </div>
 
       {/* Content Tabs */}
-      <div className="flex gap-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-1 w-fit mb-8">
-        {[
-          "details",
-          "appointments",
-          "purchases",
-          "notes",
-          "communications",
-        ].map((tab) => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-              activeTab === tab
-                ? "bg-indigo-500/20 text-white"
-                : "text-white/70 hover:text-white"
-            }`}
-          >
-            {tab.charAt(0).toUpperCase() + tab.slice(1)}
-          </button>
-        ))}
-      </div>
+      <TabNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Tab Contents */}
       {activeTab === "details" && (
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-          {/* Personal Information */}
-          <div className="glass border border-white/20 rounded-2xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold">Personal Information</h3>
-              <span className="text-white/70 cursor-pointer hover:text-white transition-colors">
-                ✏️
-              </span>
-            </div>
-            <div className="space-y-5">
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">Full Name</div>
-                  <div className="text-sm font-medium">{customer.name}</div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Date of Birth
-                  </div>
-                  <div className="text-sm font-medium">
-                    {customer.birthDate}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">Gender</div>
-                  <div className="text-sm font-medium">{customer.gender}</div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Preferred Language
-                  </div>
-                  <div className="text-sm font-medium">
-                    {customer.preferredLanguage}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Information */}
-          <div className="glass border border-white/20 rounded-2xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold">Contact Information</h3>
-              <span className="text-white/70 cursor-pointer hover:text-white transition-colors">
-                ✏️
-              </span>
-            </div>
-            <div className="space-y-5">
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">Email</div>
-                  <div className="text-sm font-medium">{customer.email}</div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">Phone</div>
-                  <div className="text-sm font-medium">{customer.phone}</div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">Address</div>
-                  <div className="text-sm font-medium whitespace-pre-line">
-                    {customer.address}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Emergency Contact
-                  </div>
-                  <div className="text-sm font-medium whitespace-pre-line">
-                    {customer.emergencyContact}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Preferences */}
-          <div className="glass border border-white/20 rounded-2xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold">Preferences</h3>
-              <span className="text-white/70 cursor-pointer hover:text-white transition-colors">
-                ✏️
-              </span>
-            </div>
-            <div className="space-y-5">
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Preferred Services
-                  </div>
-                  <div className="text-sm font-medium">
-                    {customer.preferredServices.join(", ")}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Preferred Staff
-                  </div>
-                  <div className="text-sm font-medium">
-                    {customer.preferredStaff.join(", ")}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Allergies/Sensitivities
-                  </div>
-                  <div className="text-sm font-medium">
-                    {customer.allergies}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Marketing Preferences
-                  </div>
-                  <div className="text-sm font-medium">
-                    Email: {customer.marketingPreferences.email ? "✓" : "✗"}{" "}
-                    SMS: {customer.marketingPreferences.sms ? "✓" : "✗"} Push:{" "}
-                    {customer.marketingPreferences.push ? "✓" : "✗"}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Membership & Loyalty */}
-          <div className="glass border border-white/20 rounded-2xl p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-semibold">Membership & Loyalty</h3>
-              <span className="text-white/70 cursor-pointer hover:text-white transition-colors">
-                ✏️
-              </span>
-            </div>
-            <div className="space-y-5">
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Membership Type
-                  </div>
-                  <div className="text-sm font-medium">
-                    {customer.membershipType}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">Member Since</div>
-                  <div className="text-sm font-medium">
-                    {customer.memberSince}
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start pb-5 border-b border-white/10">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Loyalty Points
-                  </div>
-                  <div className="text-sm font-medium">
-                    {customer.loyaltyPoints.toLocaleString()} points
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-between items-start">
-                <div>
-                  <div className="text-sm text-white/70 mb-1">
-                    Referrals Made
-                  </div>
-                  <div className="text-sm font-medium">
-                    {customer.referrals} customers
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <CustomerInfo customer={customer} />
       )}
 
       {activeTab === "appointments" && (
-        <div className="glass border border-white/20 rounded-2xl p-6 overflow-x-auto">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-semibold">Appointment History</h3>
-          </div>
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-white/10">
-                <th className="text-left py-4 text-xs font-semibold text-white/70 uppercase tracking-wide">
-                  Date
-                </th>
-                <th className="text-left py-4 text-xs font-semibold text-white/70 uppercase tracking-wide">
-                  Service
-                </th>
-                <th className="text-left py-4 text-xs font-semibold text-white/70 uppercase tracking-wide">
-                  Staff
-                </th>
-                <th className="text-left py-4 text-xs font-semibold text-white/70 uppercase tracking-wide">
-                  Duration
-                </th>
-                <th className="text-left py-4 text-xs font-semibold text-white/70 uppercase tracking-wide">
-                  Status
-                </th>
-                <th className="text-left py-4 text-xs font-semibold text-white/70 uppercase tracking-wide">
-                  Amount
-                </th>
-                <th className="text-left py-4 text-xs font-semibold text-white/70 uppercase tracking-wide">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {appointments.map((appointment, index) => (
-                <tr
-                  key={index}
-                  className="border-b border-white/5 hover:bg-white/5 transition-colors"
-                >
-                  <td className="py-5 text-sm">{appointment.date}</td>
-                  <td className="py-5 text-sm font-medium">
-                    {appointment.service}
-                  </td>
-                  <td className="py-5 text-sm">{appointment.staff}</td>
-                  <td className="py-5 text-sm">{appointment.duration}</td>
-                  <td className="py-5">
-                    <span
-                      className={`px-3 py-1 ${getAppointmentStatusBadge(
-                        appointment.status
-                      )} rounded-full text-xs font-semibold`}
-                    >
-                      {appointment.status.charAt(0).toUpperCase() +
-                        appointment.status.slice(1).replace("-", " ")}
-                    </span>
-                  </td>
-                  <td className="py-5 text-sm">${appointment.amount}</td>
-                  <td className="py-5">
-                    <button className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-xs font-semibold hover:bg-white/15 transition-colors">
-                      {appointment.status === "completed" ? "Rebook" : "View"}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <AppointmentHistory
+          appointments={appointments}
+          getAppointmentStatusBadge={getAppointmentStatusBadge}
+        />
       )}
 
       {activeTab === "purchases" && (
-        <div className="glass border border-white/20 rounded-2xl p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-semibold">Purchase History</h3>
-          </div>
-          <div className="space-y-4">
-            {purchases.map((purchase) => (
-              <div
-                key={purchase.id}
-                className="bg-white/5 rounded-2xl p-5 flex justify-between items-center hover:bg-white/8 hover:translate-x-1 transition-all"
-              >
-                <div className="flex items-center gap-5">
-                  <div className="w-12 h-12 bg-indigo-500/10 rounded-xl flex items-center justify-center text-2xl">
-                    {purchase.icon}
-                  </div>
-                  <div>
-                    <h4 className="text-base font-medium">{purchase.name}</h4>
-                    <span className="text-sm text-white/70">
-                      {purchase.date}
-                    </span>
-                  </div>
-                </div>
-                <div className="text-xl font-bold gradient-text">
-                  ${purchase.amount}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <PurchaseHistory purchases={purchases} />
       )}
 
       {activeTab === "notes" && (
-        <div className="glass border border-white/20 rounded-2xl p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-semibold">Customer Notes</h3>
-          </div>
-          <div
-            className="space-y-4 max-h-96 overflow-y-auto pr-3"
-            style={{
-              scrollbarWidth: "thin",
-              scrollbarColor: "rgba(255,255,255,0.2) rgba(255,255,255,0.05)",
-            }}
-          >
-            {notes.map((note) => (
-              <div key={note.id} className="bg-white/5 rounded-xl p-4">
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-sm font-medium">{note.author}</span>
-                  <span className="text-xs text-white/70">{note.date}</span>
-                </div>
-                <div className="text-sm text-white/80 leading-relaxed">
-                  {note.content}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-5 pt-5 border-t border-white/10">
-            <textarea
-              value={noteText}
-              onChange={(e) => setNoteText(e.target.value)}
-              className="w-full p-3 bg-white/5 border border-white/20 rounded-xl text-white text-sm resize-y min-h-20 mb-4 focus:outline-none focus:bg-white/8 focus:border-indigo-500/50 transition-colors"
-              placeholder="Add a note about this customer..."
-            />
-            <button
-              onClick={addNote}
-              className="px-6 py-3 bg-primary-gradient rounded-xl text-white font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-500/30"
-            >
-              Add Note
-            </button>
-          </div>
-        </div>
+        <NotesSection
+          notes={notes}
+          setNotes={setNotes}
+          noteText={noteText}
+          setNoteText={setNoteText}
+          addNote={addNote}
+        />
       )}
 
       {activeTab === "communications" && (
-        <div className="glass border border-white/20 rounded-2xl p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-lg font-semibold">Communication History</h3>
-          </div>
-          <div className="relative pl-8">
-            <div className="absolute left-2 top-0 bottom-0 w-0.5 bg-white/10"></div>
-            {communications.map((comm, index) => (
-              <div key={index} className="relative mb-8 last:mb-0">
-                <div className="absolute -left-6 top-1 w-3 h-3 bg-primary-gradient rounded-full border-2 border-black"></div>
-                <div className="bg-white/5 rounded-xl p-4">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="flex items-center gap-2 text-sm font-medium">
-                      <span>{getCommunicationIcon(comm.type)}</span>{" "}
-                      {comm.action}
-                    </span>
-                    <span className="text-xs text-white/70">{comm.date}</span>
-                  </div>
-                  <div className="text-sm text-white/80 leading-relaxed">
-                    {comm.content}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <CommunicationTimeline
+          communications={communications}
+          getCommunicationIcon={getCommunicationIcon}
+        />
       )}
     </main>
   );
