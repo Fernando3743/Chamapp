@@ -42,6 +42,16 @@ global.Response = class Response {
     };
   }
 
+  static json(data, init = {}) {
+    return new Response(JSON.stringify(data), {
+      ...init,
+      headers: {
+        'content-type': 'application/json',
+        ...(init.headers || {}),
+      },
+    });
+  }
+
   async json() {
     return JSON.parse(this.body);
   }
